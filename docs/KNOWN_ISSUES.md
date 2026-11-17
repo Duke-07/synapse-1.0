@@ -41,3 +41,8 @@ This document catalogs known constraints, scientific limitations, and environmen
 ### 2.3 Audio Conversion (FFmpeg)
 - **Condition**: FFmpeg binary absent from system path.
 - **Fallback**: Python's native `wave`, `soundfile`, and `scipy.io.wavfile` modules parse standard WAV recordings natively. For compressed formats (`.webm`, `.mp3`), `pydub`/`soundfile` or an advisory error is returned instructing uncompressed PCM upload.
+
+
+### 2.4 Cloud Platform Automated Deployment & SSO Authentication
+- **Condition**: Automated command-line cloud deployment to Vercel/Render requires interactive browser SSO login, card verification, or an authentication token (`VERCEL_TOKEN`, `RENDER_API_KEY`).
+- **Mitigation & Turnkey Deployment**: Complete production configurations are provided in `frontend/vercel.json`, `render.yaml`, `railway.json`, and `fly.toml`, plus a turnkey multi-container `docker-compose.yml`. The repository includes 1-click blueprint deployment instructions for Vercel and Render in `README.md`.

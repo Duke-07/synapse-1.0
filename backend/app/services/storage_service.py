@@ -8,7 +8,10 @@ import uuid
 from datetime import UTC, datetime
 from typing import Any
 
-from backend.app.core.config import settings
+try:
+    from backend.app.core.config import settings
+except ModuleNotFoundError:
+    from app.core.config import settings
 
 
 class StorageService:

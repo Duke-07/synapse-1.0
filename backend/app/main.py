@@ -9,8 +9,12 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from backend.app.api.endpoints import router as api_router
-from backend.app.core.config import settings
+try:
+    from backend.app.api.endpoints import router as api_router
+    from backend.app.core.config import settings
+except ModuleNotFoundError:
+    from app.api.endpoints import router as api_router
+    from app.core.config import settings
 
 # Configure logging
 logging.basicConfig(

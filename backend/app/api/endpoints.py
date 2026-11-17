@@ -12,22 +12,40 @@ from datetime import UTC, datetime
 import pandas as pd
 from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
 
-from backend.app.core.config import settings
-from backend.app.models.schemas import (
-    AnalysisResponse,
-    BenchmarksResponse,
-    BiomarkerAttribution,
-    ChatRequest,
-    ChatResponse,
-    CitationItem,
-    HealthResponse,
-)
-from backend.app.services.ml_service import ml_service
-from backend.app.services.rag_service import (
-    generate_explanation,
-    retrieve_relevant_passages,
-)
-from backend.app.services.storage_service import storage_service
+try:
+    from backend.app.core.config import settings
+    from backend.app.models.schemas import (
+        AnalysisResponse,
+        BenchmarksResponse,
+        BiomarkerAttribution,
+        ChatRequest,
+        ChatResponse,
+        CitationItem,
+        HealthResponse,
+    )
+    from backend.app.services.ml_service import ml_service
+    from backend.app.services.rag_service import (
+        generate_explanation,
+        retrieve_relevant_passages,
+    )
+    from backend.app.services.storage_service import storage_service
+except ModuleNotFoundError:
+    from app.core.config import settings
+    from app.models.schemas import (
+        AnalysisResponse,
+        BenchmarksResponse,
+        BiomarkerAttribution,
+        ChatRequest,
+        ChatResponse,
+        CitationItem,
+        HealthResponse,
+    )
+    from app.services.ml_service import ml_service
+    from app.services.rag_service import (
+        generate_explanation,
+        retrieve_relevant_passages,
+    )
+    from app.services.storage_service import storage_service
 from ml.src.features import (
     AudioQualityError,
     extract_features_from_audio,

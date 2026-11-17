@@ -14,9 +14,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application and ML models
+# Copy application and bundled models
 COPY . /app
-COPY ../ml /ml
+
+# Set PYTHONPATH so ml package and app are importable
+ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 EXPOSE 8000
 

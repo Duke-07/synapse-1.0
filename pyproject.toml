@@ -19,7 +19,7 @@ ignore_missing_imports = true
 warn_unused_configs = true
 disallow_untyped_defs = false
 check_untyped_defs = false
-disable_error_code = ["attr-defined", "operator", "arg-type", "call-overload", "return-value", "assignment"]
+disable_error_code = ["attr-defined", "operator", "arg-type", "call-overload", "return-value", "assignment", "no-redef"]
 
 [tool.pytest.ini_options]
 testpaths = ["backend/tests", "ml/tests"]
