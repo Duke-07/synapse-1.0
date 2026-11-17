@@ -110,3 +110,23 @@ This document tracks key engineering, modeling, and architectural decisions made
   - *Localhost only with ngrok*: Fragile and temporary.
 - **Consequences**:
   Reliable, cost-free public deployment with SSL and continuous deployment from GitHub.
+
+
+---
+
+## ADR-008: Frontend Phonation Protocol, Local Session Fallback, and Screening UX
+
+- **Status**: Accepted
+- **Context**: 
+  Users require a frictionless voice recording flow on mobile and desktop without mandatory account creation or cloud data leakage. Real-time visual feedback is necessary during vocalization to ensure the user sustains a steady tone.
+- **Decision**: 
+  1. Build a specialized HTML5 Web Audio API capture pipeline in `frontend/src/app/screen/page.tsx` utilizing `MediaRecorder` with dynamic MIME type negotiation (`audio/webm;codecs=opus`, `audio/ogg`, `audio/mp4`, `audio/wav`).
+  2. Implement `WaveformVisualizer` driving a continuous 2D HTML5 Canvas oscillogram via `AudioContext` and `AnalyserNode`.
+  3. Support drag-and-drop file upload fallback (`.wav`, `.mp3`, `.m4a`, `.webm`, `.ogg`) capped at 25 MB.
+  4. Store session results locally in `sessionStorage` and `localStorage` so results and history pages render reliably even if the backend uses ephemeral persistence.
+  5. Enforce non-diagnostic disclaimers on every view and require explicit user consent checkbox before audio analysis.
+- **Alternatives Considered**:
+  - *Server-side WebSocket streaming*: Unnecessary network overhead and latency for 3-5 second vowel phonations.
+  - *Mandatory OAuth login*: Degrades user privacy and introduces onboarding friction for anonymous screening.
+- **Consequences**:
+  Privacy-preserving, responsive client interface with zero-retention compliance and client-side history control.
