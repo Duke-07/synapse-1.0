@@ -72,3 +72,7 @@ temp_audio/
 !ml/data/parkinsons.csv
 !ml/data/parkinsons_standardized.csv
 !ml/data/parkinsons_telemonitoring.csv
+
+# Presentation slides (kept locally, not pushed)
+*.pptx
+*.ppt
