@@ -2,7 +2,7 @@ name: Synapse-Voice CI
 
 on:
   push:
-    branches: [ main, phase-* ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -41,7 +41,7 @@ jobs:
 
       - name: Run Pytest Suite
         run: |
-          python -m pytest backend/tests ml/tests -v
+          PYTHONPATH=. python -m pytest backend/tests ml/tests -v
 
   frontend-checks:
     name: Frontend Lint, Typecheck & Build
@@ -59,15 +59,15 @@ jobs:
 
       - name: Install Dependencies
         working-directory: ./frontend
-        run: npm ci || npm install
+        run: npm install
 
       - name: Run TypeScript Check
         working-directory: ./frontend
-        run: npm run typecheck || npx tsc --noEmit
+        run: npx tsc --noEmit
 
-      - name: Run ESLint
+      - name: Run Vitest Unit Tests
         working-directory: ./frontend
-        run: npm run lint || true
+        run: npx vitest run
 
       - name: Build Next.js App
         working-directory: ./frontend
