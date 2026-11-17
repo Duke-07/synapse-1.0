@@ -1,0 +1,134 @@
+{
+  "MDVP:Fo(Hz)": {
+    "min": 140.0,
+    "max": 220.0,
+    "unit": "Hz",
+    "label": "Mean Pitch"
+  },
+  "MDVP:Fhi(Hz)": {
+    "min": 160.0,
+    "max": 260.0,
+    "unit": "Hz",
+    "label": "Max Pitch"
+  },
+  "MDVP:Flo(Hz)": {
+    "min": 110.0,
+    "max": 190.0,
+    "unit": "Hz",
+    "label": "Min Pitch"
+  },
+  "MDVP:Jitter(%)": {
+    "min": 0.001,
+    "max": 0.005,
+    "unit": "%",
+    "label": "Jitter (Relative)"
+  },
+  "MDVP:Jitter(Abs)": {
+    "min": 1e-05,
+    "max": 4e-05,
+    "unit": "s",
+    "label": "Jitter (Absolute)"
+  },
+  "MDVP:RAP": {
+    "min": 0.0005,
+    "max": 0.0025,
+    "unit": "ratio",
+    "label": "RAP"
+  },
+  "MDVP:PPQ": {
+    "min": 0.0005,
+    "max": 0.0028,
+    "unit": "ratio",
+    "label": "PPQ"
+  },
+  "Jitter:DDP": {
+    "min": 0.0015,
+    "max": 0.0075,
+    "unit": "ratio",
+    "label": "Jitter DDP"
+  },
+  "MDVP:Shimmer": {
+    "min": 0.01,
+    "max": 0.035,
+    "unit": "ratio",
+    "label": "Shimmer (Relative)"
+  },
+  "MDVP:Shimmer(dB)": {
+    "min": 0.08,
+    "max": 0.3,
+    "unit": "dB",
+    "label": "Shimmer (dB)"
+  },
+  "Shimmer:APQ3": {
+    "min": 0.004,
+    "max": 0.018,
+    "unit": "ratio",
+    "label": "APQ3"
+  },
+  "Shimmer:APQ5": {
+    "min": 0.006,
+    "max": 0.022,
+    "unit": "ratio",
+    "label": "APQ5"
+  },
+  "MDVP:APQ": {
+    "min": 0.008,
+    "max": 0.025,
+    "unit": "ratio",
+    "label": "MDVP APQ"
+  },
+  "Shimmer:DDA": {
+    "min": 0.012,
+    "max": 0.054,
+    "unit": "ratio",
+    "label": "Shimmer DDA"
+  },
+  "NHR": {
+    "min": 0.001,
+    "max": 0.015,
+    "unit": "ratio",
+    "label": "Noise-to-Harmonics Ratio"
+  },
+  "HNR": {
+    "min": 22.0,
+    "max": 33.0,
+    "unit": "dB",
+    "label": "Harmonics-to-Noise Ratio"
+  },
+  "RPDE": {
+    "min": 0.3,
+    "max": 0.55,
+    "unit": "ratio",
+    "label": "Recurrence Period Density Entropy"
+  },
+  "DFA": {
+    "min": 0.55,
+    "max": 0.72,
+    "unit": "exponent",
+    "label": "Detrended Fluctuation Analysis"
+  },
+  "spread1": {
+    "min": -7.5,
+    "max": -5.5,
+    "unit": "log",
+    "label": "Spread 1 (Nonlinear F0 Var)"
+  },
+  "spread2": {
+    "min": 0.08,
+    "max": 0.22,
+    "unit": "ratio",
+    "label": "Spread 2 (Nonlinear F0 Var)"
+  },
+  "D2": {
+    "min": 1.8,
+    "max": 2.3,
+    "unit": "dimension",
+    "label": "Correlation Dimension (D2)"
+  },
+  "PPE": {
+    "min": 0.05,
+    "max": 0.18,
+    "unit": "entropy",
+    "label": "Pitch Period Entropy (PPE)"
+  }
+}

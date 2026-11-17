@@ -1,0 +1,122 @@
+{
+  "Logistic Regression": {
+    "accuracy": 0.7184,
+    "accuracy_std": 0.0623,
+    "accuracy_ci95": 0.0546,
+    "precision": 0.8363,
+    "recall": 0.7928,
+    "f1": 0.8083,
+    "roc_auc": 0.7073,
+    "pr_auc": 0.9037
+  },
+  "Logistic Regression ('FS-12')": {
+    "accuracy": 0.7312,
+    "accuracy_std": 0.099,
+    "accuracy_ci95": 0.0867,
+    "precision": 0.8697,
+    "recall": 0.7608,
+    "f1": 0.8024,
+    "roc_auc": 0.7959,
+    "pr_auc": 0.9382
+  },
+  "SVM-RBF": {
+    "accuracy": 0.7158,
+    "accuracy_std": 0.0857,
+    "accuracy_ci95": 0.0751,
+    "precision": 0.7828,
+    "recall": 0.8473,
+    "f1": 0.8128,
+    "roc_auc": 0.5947,
+    "pr_auc": 0.8413
+  },
+  "SVM-RBF ('FS-12')": {
+    "accuracy": 0.7048,
+    "accuracy_std": 0.1102,
+    "accuracy_ci95": 0.0966,
+    "precision": 0.8154,
+    "recall": 0.7706,
+    "f1": 0.7824,
+    "roc_auc": 0.6617,
+    "pr_auc": 0.8575
+  },
+  "KNN": {
+    "accuracy": 0.7007,
+    "accuracy_std": 0.0829,
+    "accuracy_ci95": 0.0726,
+    "precision": 0.827,
+    "recall": 0.7557,
+    "f1": 0.7841,
+    "roc_auc": 0.7379,
+    "pr_auc": 0.9187
+  },
+  "KNN ('FS-12')": {
+    "accuracy": 0.7117,
+    "accuracy_std": 0.0925,
+    "accuracy_ci95": 0.0811,
+    "precision": 0.8279,
+    "recall": 0.7757,
+    "f1": 0.7972,
+    "roc_auc": 0.7176,
+    "pr_auc": 0.9195
+  },
+  "Random Forest": {
+    "accuracy": 0.7183,
+    "accuracy_std": 0.0867,
+    "accuracy_ci95": 0.076,
+    "precision": 0.797,
+    "recall": 0.8233,
+    "f1": 0.8062,
+    "roc_auc": 0.7356,
+    "pr_auc": 0.9018
+  },
+  "Random Forest ('FS-12')": {
+    "accuracy": 0.7182,
+    "accuracy_std": 0.0919,
+    "accuracy_ci95": 0.0806,
+    "precision": 0.7967,
+    "recall": 0.8233,
+    "f1": 0.8075,
+    "roc_auc": 0.773,
+    "pr_auc": 0.918
+  },
+  "XGBoost": {
+    "accuracy": 0.7532,
+    "accuracy_std": 0.0884,
+    "accuracy_ci95": 0.0775,
+    "precision": 0.8364,
+    "recall": 0.8299,
+    "f1": 0.8284,
+    "roc_auc": 0.7335,
+    "pr_auc": 0.8955
+  },
+  "XGBoost ('FS-12')": {
+    "accuracy": 0.7537,
+    "accuracy_std": 0.1125,
+    "accuracy_ci95": 0.0986,
+    "precision": 0.8598,
+    "recall": 0.8022,
+    "f1": 0.822,
+    "roc_auc": 0.7721,
+    "pr_auc": 0.9247
+  },
+  "MLP (Neural Net)": {
+    "accuracy": 0.7723,
+    "accuracy_std": 0.0563,
+    "accuracy_ci95": 0.0493,
+    "precision": 0.8248,
+    "recall": 0.8842,
+    "f1": 0.8522,
+    "roc_auc": 0.7677,
+    "pr_auc": 0.9221
+  },
+  "MLP (Neural Net) ('FS-12')": {
+    "accuracy": 0.7941,
+    "accuracy_std": 0.0777,
+    "accuracy_ci95": 0.0681,
+    "precision": 0.8311,
+    "recall": 0.9131,
+    "f1": 0.8695,
+    "roc_auc": 0.7963,
+    "pr_auc": 0.9348
+  }
+}
