@@ -4,18 +4,20 @@ Executes all candidate reproductions, outputs reproduction/results.csv,
 reproduction/RESULTS.md, and backend/app/models/benchmarks_data.json.
 """
 
+import json
 import os
 import sys
-import json
+
 import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from reproduction.little_2008.reproduce import run_little_2008
 from reproduction.alshammri_2023.reproduce import run_alshammri_2023
-from reproduction.srinivasan_2024.reproduce import run_srinivasan_2024
 from reproduction.kalomitsinis_github.reproduce import run_kalomitsinis
+from reproduction.little_2008.reproduce import run_little_2008
+from reproduction.srinivasan_2024.reproduce import run_srinivasan_2024
 from reproduction.yadav_rf_leakage.reproduce import run_yadav_rf_leakage
+
 
 def main():
     print("=" * 70)

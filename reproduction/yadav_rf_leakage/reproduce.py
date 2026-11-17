@@ -12,17 +12,30 @@ Evaluated under:
 
 import os
 import sys
-import numpy as np
-import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import StratifiedKFold, StratifiedGroupKFold, cross_validate, train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 import warnings
+
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (
+    accuracy_score,
+    f1_score,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+)
+from sklearn.model_selection import (
+    StratifiedGroupKFold,
+    StratifiedKFold,
+    cross_validate,
+    train_test_split,
+)
+from sklearn.preprocessing import StandardScaler
+
 warnings.filterwarnings('ignore')
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from reproduction.common import load_data
+
 
 def run_yadav_rf_leakage():
     X, y, groups, feats = load_data()
@@ -105,7 +118,7 @@ def run_yadav_rf_leakage():
     print(f"  ROC-AUC:  {auc_grp_mean:.4f}")
     
     diff = (acc_sample_mean - acc_grp_mean) * 100
-    print(f"\nCRITICAL LEAKAGE FINDING:")
+    print("\nCRITICAL LEAKAGE FINDING:")
     print(f"  Sample-level accuracy: {acc_sample_mean * 100:.2f}%")
     print(f"  Grouped-level accuracy: {acc_grp_mean * 100:.2f}%")
     print(f"  Accuracy Collapse Due to Patient Memorization: -{diff:.2f}%!")

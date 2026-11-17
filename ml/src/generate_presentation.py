@@ -1,10 +1,11 @@
 """Generate a 7-slide literature review and project presentation for Synapse-Voice."""
 
-from pptx import Presentation
-from pptx.util import Inches, Pt
-from pptx.dml.color import RGBColor
-from pptx.enum.text import PP_ALIGN
 import os
+
+from pptx import Presentation
+from pptx.dml.color import RGBColor
+from pptx.util import Inches, Pt
+
 
 def create_deck():
     prs = Presentation()
@@ -15,7 +16,6 @@ def create_deck():
     c_primary = RGBColor(15, 23, 42)      # Slate 900
     c_accent = RGBColor(14, 165, 233)     # Sky 500
     c_secondary = RGBColor(71, 85, 105)   # Slate 600
-    c_card_bg = RGBColor(248, 250, 252)   # Slate 50
     c_white = RGBColor(255, 255, 255)
     c_dark = RGBColor(30, 41, 59)         # Slate 800
 

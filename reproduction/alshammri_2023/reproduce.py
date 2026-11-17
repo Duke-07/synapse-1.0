@@ -11,19 +11,25 @@ Evaluated under:
 
 import os
 import sys
-import numpy as np
-import pandas as pd
-from sklearn.neural_network import MLPClassifier
-from sklearn.svm import SVC
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split, StratifiedGroupKFold
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
-from imblearn.over_sampling import SMOTE
 import warnings
+
+import numpy as np
+from imblearn.over_sampling import SMOTE
+from sklearn.metrics import (
+    accuracy_score,
+    f1_score,
+    roc_auc_score,
+)
+from sklearn.model_selection import StratifiedGroupKFold, train_test_split
+from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+
 warnings.filterwarnings('ignore')
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from reproduction.common import load_data
+
 
 def run_alshammri_2023():
     X, y, groups, feats = load_data()
@@ -61,7 +67,6 @@ def run_alshammri_2023():
     svm = SVC(C=10.0, kernel='rbf', gamma='scale', probability=True, random_state=42)
     svm.fit(X_train_sm, y_train_sm)
     svm_preds = svm.predict(X_test_s)
-    svm_probs = svm.predict_proba(X_test_s)[:, 1]
     svm_acc_own = accuracy_score(y_test, svm_preds)
     svm_f1_own = f1_score(y_test, svm_preds)
     

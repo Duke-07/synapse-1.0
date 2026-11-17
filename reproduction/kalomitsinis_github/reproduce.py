@@ -11,19 +11,25 @@ Evaluated under:
 
 import os
 import sys
-import numpy as np
-import pandas as pd
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import GroupKFold, StratifiedGroupKFold
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 import warnings
+
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    accuracy_score,
+    f1_score,
+    roc_auc_score,
+)
+from sklearn.model_selection import GroupKFold, StratifiedGroupKFold
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+
 warnings.filterwarnings('ignore')
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from reproduction.common import load_data
+
 
 def run_kalomitsinis():
     X, y, groups, feats = load_data()

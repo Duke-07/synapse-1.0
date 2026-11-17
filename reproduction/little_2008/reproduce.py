@@ -11,17 +11,28 @@ Evaluated under:
 
 import os
 import sys
+
 import numpy as np
-import pandas as pd
-from sklearn.svm import SVC
-from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import (
+    accuracy_score,
+    f1_score,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+)
+from sklearn.model_selection import (
+    StratifiedGroupKFold,
+    StratifiedKFold,
+    cross_validate,
+)
 from sklearn.pipeline import Pipeline
-from sklearn.model_selection import StratifiedKFold, StratifiedGroupKFold, cross_validate
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
 
 # Ensure root is in path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from reproduction.common import load_data
+
 
 def run_little_2008():
     X, y, groups, feats = load_data()
@@ -33,7 +44,7 @@ def run_little_2008():
     print("=" * 60)
     print("REPRODUCTION: Little et al. (2008 / 2009 IEEE TBME)")
     print(f"Target features: {selected_features}")
-    print(f"Reported Metric: 91.4% accuracy (RBF SVM)")
+    print("Reported Metric: 91.4% accuracy (RBF SVM)")
     print("=" * 60)
     
     # -------------------------------------------------------------

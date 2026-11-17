@@ -14,42 +14,49 @@ Compares full features vs. feature selection, applies probability calibration,
 fits SHAP explainability, saves artifacts, and computes metrics with 95% confidence intervals.
 """
 
+import json
 import os
 import sys
-import json
+
 import joblib
-import numpy as np
-import pandas as pd
 import matplotlib
+import numpy as np
+
 matplotlib.use('Agg')
+import warnings
+
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-from sklearn.neighbors import KNeighborsClassifier
+import shap
+from imblearn.over_sampling import SMOTE
+from sklearn.base import clone
+from sklearn.calibration import CalibratedClassifierCV
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_selection import SelectKBest, f_classif
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    accuracy_score,
+    auc,
+    confusion_matrix,
+    f1_score,
+    precision_recall_curve,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+    roc_curve,
+)
+from sklearn.model_selection import StratifiedGroupKFold
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
 from xgboost import XGBClassifier
 
-from sklearn.preprocessing import StandardScaler
-from sklearn.base import clone
-from sklearn.feature_selection import SelectKBest, f_classif
-from sklearn.calibration import CalibratedClassifierCV
-from sklearn.model_selection import StratifiedGroupKFold
-from sklearn.metrics import (
-    accuracy_score, precision_score, recall_score, f1_score,
-    roc_auc_score, precision_recall_curve, auc, confusion_matrix, roc_curve
-)
-from imblearn.pipeline import Pipeline as ImbPipeline
-from imblearn.over_sampling import SMOTE
-import shap
-import warnings
 warnings.filterwarnings('ignore')
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+from ml.src.features import REFERENCE_RANGES
 from reproduction.common import load_data
-from ml.src.features import REFERENCE_RANGES, CANONICAL_FEATURES
 
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)

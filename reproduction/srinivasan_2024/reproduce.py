@@ -11,19 +11,25 @@ Evaluated under:
 
 import os
 import sys
+import warnings
+
 import numpy as np
-import pandas as pd
+from imblearn.over_sampling import SMOTE
+from sklearn.metrics import (
+    accuracy_score,
+    f1_score,
+    roc_auc_score,
+)
+from sklearn.model_selection import StratifiedGroupKFold, train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split, StratifiedGroupKFold
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
-from imblearn.over_sampling import SMOTE
-import warnings
+
 warnings.filterwarnings('ignore')
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from reproduction.common import load_data
+
 
 def run_srinivasan_2024():
     X, y, groups, feats = load_data()
@@ -61,7 +67,6 @@ def run_srinivasan_2024():
     knn = KNeighborsClassifier(n_neighbors=5, metric='minkowski', p=2)
     knn.fit(X_train_sm, y_train_sm)
     knn_preds = knn.predict(X_test_s)
-    knn_probs = knn.predict_proba(X_test_s)[:, 1]
     knn_acc_own = accuracy_score(y_test, knn_preds)
     knn_f1_own = f1_score(y_test, knn_preds)
     

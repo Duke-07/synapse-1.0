@@ -4,21 +4,23 @@ Analyzes UCI 174 dataset: class balance, feature distributions,
 per-subject recording counts, PCA, and t-SNE projections.
 """
 
+import json
 import os
 import sys
-import json
-import numpy as np
-import pandas as pd
+
 import matplotlib
+import numpy as np
+
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
+from sklearn.preprocessing import StandardScaler
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from reproduction.common import load_data
+
 
 def run_eda():
     print("=" * 60)

@@ -2,9 +2,9 @@
 
 import os
 import re
+
 import pandas as pd
-import numpy as np
-from typing import Tuple
+
 
 def get_dataset_path() -> str:
     possible_paths = [
@@ -32,7 +32,7 @@ def parse_subject_id(name: str) -> str:
     parts = str(name).rsplit('_', 1)
     return parts[0] if len(parts) > 1 else str(name)
 
-def load_data() -> Tuple[pd.DataFrame, pd.Series, pd.Series, list]:
+def load_data() -> tuple[pd.DataFrame, pd.Series, pd.Series, list]:
     """
     Loads dataset, extracts feature matrix X, target y (status), and subject grouping array.
     Returns: (X, y, groups, feature_names)

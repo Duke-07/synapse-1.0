@@ -12,13 +12,13 @@ Also performs audio pre-validation: duration, silence/RMS, clipping, and SNR.
 """
 
 import os
-import math
-import numpy as np
-import soundfile as sf
-import parselmouth
-from parselmouth.praat import call
+from typing import Any
+
 import nolds
-from typing import Dict, Any, Tuple, Optional
+import numpy as np
+import parselmouth
+import soundfile as sf
+from parselmouth.praat import call
 
 # Expected feature keys matching UCI dataset ID 174
 CANONICAL_FEATURES = [
@@ -56,9 +56,8 @@ REFERENCE_RANGES = {
 
 class AudioQualityError(ValueError):
     """Raised when recorded audio fails basic acoustic quality checks."""
-    pass
 
-def check_audio_quality(samples: np.ndarray, sr: int) -> Tuple[bool, Dict[str, Any]]:
+def check_audio_quality(samples: np.ndarray, sr: int) -> tuple[bool, dict[str, Any]]:
     """
     Validates audio recording suitability:
     - Duration: >= 1.0 s and <= 90.0 s
@@ -107,7 +106,7 @@ def check_audio_quality(samples: np.ndarray, sr: int) -> Tuple[bool, Dict[str, A
         
     return quality_report["is_valid"], quality_report
 
-def extract_features_from_audio(file_path: str) -> Dict[str, float]:
+def extract_features_from_audio(file_path: str) -> dict[str, float]:
     """
     Extracts all 22 acoustic biomarkers from an audio file using Parselmouth (Praat) and Nolds.
     Returns a dictionary mapping feature names to extracted float values.
@@ -126,7 +125,6 @@ def extract_features_from_audio(file_path: str) -> Dict[str, float]:
         
     # 2. Load into Parselmouth Sound object
     sound = parselmouth.Sound(file_path)
-    duration = sound.get_total_duration()
     
     # Pitch extraction (standard vocal range 75 Hz - 500 Hz)
     pitch = sound.to_pitch(time_step=0.01, pitch_floor=75.0, pitch_ceiling=500.0)
@@ -276,7 +274,6 @@ def generate_synthetic_vowel(
     bandwidths = [80.0, 90.0, 120.0]
     
     # Pulse train with jitter
-    phase = 0.0
     waveform = np.zeros_like(t)
     dt = 1.0 / sr
     
