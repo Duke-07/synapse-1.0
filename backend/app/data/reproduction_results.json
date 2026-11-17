@@ -1,0 +1,57 @@
+[
+  {
+    "work": "Little et al. (2008)",
+    "reported_metric": "91.4% Accuracy",
+    "reproduced_own": "88.53% \u00b1 9.43%",
+    "reproduced_grouped": "78.96% \u00b1 7.61%",
+    "diff_pct": 9.570333228839957,
+    "auc_grouped": 0.6334659498207885,
+    "f1_grouped": 0.8686547874783169,
+    "leakage_risk": "Moderate (repetitive phonations across bootstrap resamples in original study)",
+    "notes": "Using 4-feature subset (PPE, spread1, RPDE, DFA) + RBF SVM. Performance drops when patients are isolated."
+  },
+  {
+    "work": "Alshammri et al. (2023)",
+    "reported_metric": "MLP: 98.31% Acc, SVM: 95.0% Acc",
+    "reproduced_own": "MLP: 91.53%, SVM: 89.83%",
+    "reproduced_grouped": "MLP: 80.12% \u00b1 4.34%, SVM: 73.14%",
+    "diff_pct": 11.40824675117148,
+    "auc_grouped": 0.788516129032258,
+    "f1_grouped": 0.873148028442146,
+    "leakage_risk": "Severe (naive 70:30 random train-test split over 195 recordings from 31 subjects)",
+    "notes": "Demonstrates severe data leakage. Subject isolation drops MLP accuracy significantly."
+  },
+  {
+    "work": "Srinivasan et al. (2024)",
+    "reported_metric": "FNN: ~96.5% Acc, KSVM: ~94.8% Acc",
+    "reproduced_own": "FNN: 94.87%, KNN: 92.31%",
+    "reproduced_grouped": "FNN: 77.23% \u00b1 5.63%, KNN: 70.07%",
+    "diff_pct": 17.64288822428357,
+    "auc_grouped": 0.7677347670250896,
+    "f1_grouped": 0.8522379268647349,
+    "leakage_risk": "High (random 80:20 split allows patient recordings in both partitions)",
+    "notes": "FNN performance drops significantly when evaluated on unseen patients."
+  },
+  {
+    "work": "Kalomitsinis (GitHub)",
+    "reported_metric": "Subject-wise CV: ~82-85% Acc",
+    "reproduced_own": "RF: 74.88% \u00b1 17.24%",
+    "reproduced_grouped": "RF: 75.63% \u00b1 7.41%",
+    "diff_pct": -0.7496034240220273,
+    "auc_grouped": 0.7549999999999999,
+    "f1_grouped": 0.8412871614900013,
+    "leakage_risk": "Low (Correctly utilizes group-aware cross-validation)",
+    "notes": "One of the few open-source implementations to properly acknowledge and avoid recording-level leakage."
+  },
+  {
+    "work": "Yadav (GitHub RF Baseline)",
+    "reported_metric": "99.4% - 99.6% Accuracy",
+    "reproduced_own": "80:20 Split: 92.31%, 10-Fold: 91.18% \u00b1 6.71%",
+    "reproduced_grouped": "78.00% \u00b1 5.51%",
+    "diff_pct": 13.183053222832886,
+    "auc_grouped": 0.7987168458781362,
+    "f1_grouped": 0.8598722038177954,
+    "leakage_risk": "Catastrophic (unpartitioned patient recordings allow tree ensemble to memorize vocal fundamental pitch and anatomy)",
+    "notes": "Classic example of recording leakage. Trees memorize patient-specific baseline F0, achieving near-perfect sample accuracy that drops ~15% on unseen patients."
+  }
+]
