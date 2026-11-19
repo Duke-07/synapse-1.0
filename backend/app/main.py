@@ -3,7 +3,16 @@ Main FastAPI Application Entrypoint for Synapse-Voice.
 """
 
 import logging
+import os
+import sys
 import time
+
+# Ensure project root and backend dir are in sys.path
+_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+_BACKEND = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+for _p in [_ROOT, _BACKEND]:
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware

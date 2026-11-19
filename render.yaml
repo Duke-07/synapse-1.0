@@ -1,21 +1,19 @@
 services:
-  # Synapse-Voice FastAPI Backend Service
+  # Synapse-Voice FastAPI Backend Service (Docker container on Free Tier)
   - type: web
     name: synapse-voice-backend
-    env: python
+    env: docker
     region: oregon
     plan: free
     branch: main
-    rootDir: backend
-    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    healthCheckPath: /api/v1/health
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.9
       - key: ENVIRONMENT
         value: production
       - key: CORS_ORIGINS
-        value: https://synapse-voice.vercel.app,http://localhost:3000
+        value: "*"
       - key: LLM_PROVIDER
         value: gemini
       - key: GEMINI_API_KEY

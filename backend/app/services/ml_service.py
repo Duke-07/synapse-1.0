@@ -42,7 +42,40 @@ class MLService:
                     return
                 except Exception as e:
                     print(f"MLService: Error loading {p}: {e}")
-        print("MLService: Model bundle not found; running in heuristic baseline mode.")
+        
+        # Self-healing fallback: train champion calibrated classifier on UCI dataset
+        print("MLService: Model bundle not loaded; attempting self-healing fit on UCI dataset...")
+        self._fit_fallback_model()
+        
+    def _fit_fallback_model(self):
+        """Fits calibrated classifier on UCI dataset when precomputed joblib bundle is missing or version-incompatible."""
+        try:
+            data_candidates = [
+                os.path.join(os.path.dirname(__file__), "..", "..", "..", "ml", "data", "parkinsons.data"),
+                os.path.join(os.path.dirname(__file__), "..", "..", "ml", "data", "parkinsons.data"),
+                os.path.join(os.getcwd(), "ml", "data", "parkinsons.data"),
+                os.path.join(os.getcwd(), "backend", "ml", "data", "parkinsons.data")
+            ]
+            csv_path = next((path for path in data_candidates if os.path.exists(path)), None)
+            if csv_path:
+                df = pd.read_csv(csv_path)
+                y = df["status"].values
+                feature_cols = [c for c in CANONICAL_FEATURES if c in df.columns]
+                X = df[feature_cols].values
+                from sklearn.calibration import CalibratedClassifierCV
+                from sklearn.neural_network import MLPClassifier
+                from sklearn.preprocessing import StandardScaler
+                self.scaler = StandardScaler().fit(X)
+                X_scaled = self.scaler.transform(X)
+                base = MLPClassifier(hidden_layer_sizes=(32, 16), max_iter=200, random_state=42)
+                self.model = CalibratedClassifierCV(base, method="sigmoid", cv=3).fit(X_scaled, y)
+                self.feature_names = feature_cols
+                self.bundle = {"best_config": "v1.0.0-mlp-calibrated-fallback", "feature_names": feature_cols}
+                print(f"MLService: Successfully initialized calibrated fallback model on {len(df)} samples.")
+                return
+        except Exception as ex:
+            print(f"MLService: Fallback fit failed: {ex}")
+        print("MLService: Operating in rule-based heuristic screening mode.")
         
     def predict(self, features: dict[str, float]) -> tuple[float, int, str, dict[str, float], list[dict[str, Any]]]:
         """
