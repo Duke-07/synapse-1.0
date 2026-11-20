@@ -10,6 +10,9 @@ jobs:
   backend-checks:
     name: Backend Lint, Typecheck & Test
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -41,10 +44,8 @@ jobs:
           python -m mypy backend/app ml/src --ignore-missing-imports
 
       - name: Run Pytest Suite
-        env:
-          PYTHONPATH: ${{ github.workspace }}
         run: |
-          python -m pytest -v --tb=short
+          python -m pytest -v --tb=short -p no:cacheprovider
 
   frontend-checks:
     name: Frontend Lint, Typecheck & Build
