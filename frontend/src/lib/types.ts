@@ -71,3 +71,25 @@ export interface ChatResponse {
   citations: any[];
   analysis_id?: string;
 }
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  full_name: string;
+  is_verified: boolean;
+  created_at: string;
+}
+
+export interface TokenResponse {
+  access_token: string;
+  token_type: string;
+  expires_in_sec: number;
+  user: UserProfile;
+}
+
+export interface AuthMessage {
+  success: boolean;
+  message: string;
+  detail?: string;
+  verification_code_preview?: string;
+}

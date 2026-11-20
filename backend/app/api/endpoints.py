@@ -10,14 +10,17 @@ import tempfile
 import uuid
 from datetime import UTC, datetime
 
-# Ensure project root is first in sys.path
-_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-if _ROOT in sys.path:
-    sys.path.remove(_ROOT)
-sys.path.insert(0, _ROOT)
+# Ensure paths containing ml and app are registered in sys.path
+_CUR = os.path.dirname(os.path.abspath(__file__))
+_candidate = _CUR
+while _candidate and _candidate != os.path.dirname(_candidate):
+    if os.path.exists(os.path.join(_candidate, "ml")) or os.path.exists(os.path.join(_candidate, "backend")):
+        if _candidate not in sys.path:
+            sys.path.insert(0, _candidate)
+    _candidate = os.path.dirname(_candidate)
 
 import pandas as pd
-from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
+from fastapi import APIRouter, File, Form, Header, HTTPException, Query, UploadFile
 
 try:
     from backend.app.core.config import settings
@@ -36,6 +39,7 @@ try:
         retrieve_relevant_passages,
     )
     from backend.app.services.storage_service import storage_service
+    from backend.app.services.auth_service import auth_service
 except ModuleNotFoundError:
     from app.core.config import settings
     from app.models.schemas import (
@@ -53,6 +57,7 @@ except ModuleNotFoundError:
         retrieve_relevant_passages,
     )
     from app.services.storage_service import storage_service
+    from app.services.auth_service import auth_service
 from ml.src.features import (
     AudioQualityError,
     extract_features_from_audio,
@@ -74,7 +79,8 @@ async def health_check():
 async def analyze_voice(
     audio: UploadFile = File(..., description="Audio recording of sustained vowel phonation"),
     anonymous: bool = Form(False, description="If true, executes prediction without persistent storage"),
-    consent: bool = Form(True, description="Explicit user consent for processing")
+    consent: bool = Form(True, description="Explicit user consent for processing"),
+    authorization: str | None = Header(None, description="Optional Bearer token to associate screening with user profile")
 ):
     """
     Ingests audio, verifies format & duration, extracts 22 acoustic biomarkers,
@@ -156,6 +162,14 @@ async def analyze_voice(
             features=features
         )
         
+        # Resolve optional authenticated user ID
+        user_id = None
+        if authorization and authorization.startswith("Bearer "):
+            token = authorization[7:].strip()
+            payload = auth_service.decode_access_token(token)
+            if payload and "sub" in payload:
+                user_id = payload["sub"]
+
         # Prepare structured response
         record_id = str(uuid.uuid4())
         now_iso = datetime.now(UTC).isoformat()
@@ -173,6 +187,7 @@ async def analyze_voice(
         
         analysis_data = {
             "id": record_id,
+            "user_id": user_id,
             "probability": prob,
             "label": label,
             "confidence_band": confidence_band,
@@ -205,9 +220,18 @@ async def get_analysis_result(record_id: str):
     return AnalysisResponse(**record)
 
 @router.get("/history")
-async def get_history(limit: int = Query(20, ge=1, le=100)):
-    """Retrieves recent screening analysis sessions."""
-    return storage_service.get_history(limit=limit)
+async def get_history(
+    limit: int = Query(20, ge=1, le=100),
+    authorization: str | None = Header(None, description="Optional Bearer token to filter history by user profile")
+):
+    """Retrieves recent screening analysis sessions, filtered to user if authenticated."""
+    user_id = None
+    if authorization and authorization.startswith("Bearer "):
+        token = authorization[7:].strip()
+        payload = auth_service.decode_access_token(token)
+        if payload and "sub" in payload:
+            user_id = payload["sub"]
+    return storage_service.get_history(limit=limit, user_id=user_id)
 
 @router.post("/chat", response_model=ChatResponse)
 async def chat_followup(request: ChatRequest):

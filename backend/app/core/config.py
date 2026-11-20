@@ -39,4 +39,17 @@ class Settings(BaseModel):
     MAX_AUDIO_SIZE_BYTES: int = 15 * 1024 * 1024 # 15 MB
     MAX_RECORDING_DURATION_SEC: float = 90.0
 
+    # Auth & JWT Settings
+    JWT_SECRET: str = os.getenv("JWT_SECRET", "synapse-voice-secret-key-epics-2026-screening-platform")
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRE_MINUTES: int = 60 * 24 * 7 # 7 days
+    
+    # Email / SMTP Settings (Optional - fallback to simulation / Supabase Auth)
+    SMTP_HOST: str = os.getenv("SMTP_HOST", "")
+    SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
+    SMTP_USER: str = os.getenv("SMTP_USER", "")
+    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
+    SMTP_FROM_EMAIL: str = os.getenv("SMTP_FROM_EMAIL", "noreply@synapse-voice.org")
+    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
 settings = Settings()

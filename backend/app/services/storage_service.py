@@ -39,10 +39,13 @@ class StorageService:
         if "created_at" not in analysis_data:
             analysis_data["created_at"] = datetime.now(UTC).isoformat()
             
+        user_id = analysis_data.get("user_id")
+            
         # Store in local memory cache
         self._local_analyses[record_id] = analysis_data
         self._local_history.insert(0, {
             "id": record_id,
+            "user_id": user_id,
             "probability": analysis_data.get("probability"),
             "label": analysis_data.get("label"),
             "confidence_band": analysis_data.get("confidence_band"),
@@ -55,6 +58,7 @@ class StorageService:
             try:
                 payload = {
                     "id": record_id,
+                    "user_id": user_id,
                     "probability": analysis_data["probability"],
                     "label": analysis_data["label"],
                     "confidence_band": analysis_data["confidence_band"],
@@ -87,14 +91,20 @@ class StorageService:
                 print(f"StorageService: Cloud get note: {e}")
         return None
         
-    def get_history(self, limit: int = 20) -> list[dict[str, Any]]:
+    def get_history(self, limit: int = 20, user_id: str | None = None) -> list[dict[str, Any]]:
         if self.supabase:
             try:
-                res = self.supabase.table("analyses").select("id, probability, label, confidence_band, created_at, top_biomarkers").order("created_at", desc=True).limit(limit).execute()
+                query = self.supabase.table("analyses").select("id, user_id, probability, label, confidence_band, created_at, top_biomarkers")
+                if user_id:
+                    query = query.eq("user_id", user_id)
+                res = query.order("created_at", desc=True).limit(limit).execute()
                 if res.data:
                     return res.data
             except Exception as e:
                 print(f"StorageService: Cloud history note: {e}")
+        if user_id:
+            filtered = [h for h in self._local_history if h.get("user_id") == user_id]
+            return filtered[:limit]
         return self._local_history[:limit]
 
 storage_service = StorageService()

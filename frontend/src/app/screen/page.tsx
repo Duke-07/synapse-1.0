@@ -17,9 +17,11 @@ import {
 } from 'lucide-react';
 import WaveformVisualizer from '@/components/WaveformVisualizer';
 import { analyzeVoice } from '@/lib/api';
+import { useAuth } from '@/lib/auth-context';
 
 export default function ScreenPage() {
   const router = useRouter();
+  const { user, token } = useAuth();
 
   // Mode: 'mic' | 'upload'
   const [mode, setMode] = useState<'mic' | 'upload'>('mic');
@@ -251,7 +253,7 @@ export default function ScreenPage() {
       setTimeout(() => setLoadingStep('Evaluating calibrated neural classifier (StratifiedGroupKFold)...'), 1800);
       setTimeout(() => setLoadingStep('Generating SHAP feature attributions & querying RAG literature corpus...'), 2800);
 
-      const result = await analyzeVoice(fileToUpload, anonymous, consent);
+      const result = await analyzeVoice(fileToUpload, anonymous, consent, token || undefined);
 
       // Save to localStorage for history
       try {
@@ -478,6 +480,27 @@ export default function ScreenPage() {
 
       {/* Configuration & Consent Section */}
       <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6 mt-6 space-y-4">
+        {user ? (
+          <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-lg bg-stone-950 border border-stone-800 text-xs">
+            <span className="text-stone-300">
+              Authenticated Screening Session:{' '}
+              <strong className="text-white">{user.full_name}</strong> ({user.email})
+            </span>
+            <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-medium">
+              <CheckCircle className="w-3.5 h-3.5" /> Synced to Researcher Profile
+            </span>
+          </div>
+        ) : (
+          <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-lg bg-stone-950 border border-stone-800 text-xs">
+            <span className="text-stone-400">
+              Guest Mode: Screening stored in local browser session only.
+            </span>
+            <a href="/login" className="text-red-400 hover:text-red-300 font-semibold underline">
+              Sign in to link screenings to your permanent profile
+            </a>
+          </div>
+        )}
+
         <h4 className="text-sm font-semibold text-slate-200 flex items-center gap-2">
           <Shield className="w-4 h-4 text-cyan-400" />
           Screening Consent & Zero-Retention Configuration

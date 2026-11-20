@@ -7,11 +7,14 @@ import os
 import sys
 import time
 
-# Ensure project root is first in sys.path
-_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-if _ROOT in sys.path:
-    sys.path.remove(_ROOT)
-sys.path.insert(0, _ROOT)
+# Ensure paths containing ml and app are registered in sys.path
+_CUR = os.path.dirname(os.path.abspath(__file__))
+_candidate = _CUR
+while _candidate and _candidate != os.path.dirname(_candidate):
+    if os.path.exists(os.path.join(_candidate, "ml")) or os.path.exists(os.path.join(_candidate, "backend")):
+        if _candidate not in sys.path:
+            sys.path.insert(0, _candidate)
+    _candidate = os.path.dirname(_candidate)
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,9 +22,11 @@ from fastapi.responses import JSONResponse
 
 try:
     from backend.app.api.endpoints import router as api_router
+    from backend.app.api.auth_endpoints import router as auth_router
     from backend.app.core.config import settings
 except ModuleNotFoundError:
     from app.api.endpoints import router as api_router
+    from app.api.auth_endpoints import router as auth_router
     from app.core.config import settings
 
 # Configure logging
@@ -72,8 +77,9 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={"detail": "An unexpected internal server error occurred. Please try again or upload a valid uncompressed WAV file."}
     )
 
-# Include API Router under /api/v1
+# Include API Routers under /api/v1
 app.include_router(api_router, prefix="/api/v1")
+app.include_router(auth_router, prefix="/api/v1")
 
 @app.get("/")
 async def root():

@@ -42,7 +42,7 @@ jobs:
 
       - name: Run Pytest Suite
         env:
-          PYTHONPATH: ${{ github.workspace }}
+          PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/backend
         run: |
           python -m pytest -v --tb=short
 

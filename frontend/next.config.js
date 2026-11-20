@@ -1,4 +1,13 @@
 /** @type {import('next').NextConfig} */
+const getBackendDestination = () => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (!envUrl) {
+    return 'http://localhost:8000/api/v1/:path*';
+  }
+  const clean = envUrl.replace(/\/+$/, '');
+  return clean.endsWith('/api/v1') ? `${clean}/:path*` : `${clean}/api/v1/:path*`;
+};
+
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
@@ -6,9 +15,7 @@ const nextConfig = {
     return [
       {
         source: '/api/v1/:path*',
-        destination: process.env.NEXT_PUBLIC_API_URL 
-          ? `${process.env.NEXT_PUBLIC_API_URL}/:path*`
-          : 'http://localhost:8000/api/v1/:path*',
+        destination: getBackendDestination(),
       },
     ];
   },

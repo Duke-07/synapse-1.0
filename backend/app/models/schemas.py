@@ -33,6 +33,7 @@ class AnalysisResponse(BaseModel):
     literature_citations: list[CitationItem] = Field(default_factory=list)
     model_version: str = "v1.0.0-mlp-fs12"
     audio_quality: dict[str, Any] = Field(default_factory=dict)
+    user_id: str | None = Field(default=None, description="Optional authenticated user ID")
     disclaimer: str = (
         "Synapse-Voice is an academic research screening aid (EPICS project) and NOT a certified medical diagnostic device. "
         "Consult a board-certified neurologist or licensed medical professional for clinical diagnosis."
@@ -84,3 +85,49 @@ class BenchmarksResponse(BaseModel):
     literature_papers: list[PaperItem]
     reproduced_works: list[BenchmarkItem]
     model_summary: dict[str, Any]
+
+# ==========================================
+# Authentication & Email Verification Schemas
+# ==========================================
+
+class UserProfile(BaseModel):
+    id: str
+    email: str
+    full_name: str
+    is_verified: bool = False
+    created_at: str
+
+class UserRegisterRequest(BaseModel):
+    email: str = Field(..., description="Valid user email address")
+    password: str = Field(..., min_length=8, description="Minimum 8 characters password")
+    full_name: str = Field(..., min_length=2, description="User's full name")
+
+class UserLoginRequest(BaseModel):
+    email: str
+    password: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    expires_in_sec: int = 86400 * 7 # 7 days
+    user: UserProfile
+
+class EmailVerificationRequest(BaseModel):
+    email: str
+    code: str = Field(..., description="6-digit verification code or token")
+
+class ResendVerificationRequest(BaseModel):
+    email: str
+
+class PasswordResetRequest(BaseModel):
+    email: str
+
+class PasswordResetConfirm(BaseModel):
+    token: str
+    new_password: str = Field(..., min_length=8)
+
+class AuthMessageResponse(BaseModel):
+    success: bool
+    message: str
+    detail: str | None = None
+    verification_code_preview: str | None = None # Exposed in development/test mode for seamless verification
