@@ -10,12 +10,11 @@ import tempfile
 import uuid
 from datetime import UTC, datetime
 
-# Ensure project root and backend dir are in sys.path
+# Ensure project root is first in sys.path
 _ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-_BACKEND = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-for _p in [_ROOT, _BACKEND]:
-    if _p not in sys.path:
-        sys.path.insert(0, _p)
+if _ROOT in sys.path:
+    sys.path.remove(_ROOT)
+sys.path.insert(0, _ROOT)
 
 import pandas as pd
 from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile

@@ -172,9 +172,9 @@ def extract_features_from_audio(file_path: str) -> dict[str, float]:
     nhr = float(10.0 ** (-hnr / 10.0))
     
     # 5. Nonlinear Dynamical Measures (RPDE, D2, DFA, spread1, spread2, PPE)
-    # DFA via nolds
-    # Resample audio to 1000 samples for fast, stable fractal dimension calculation
-    step = max(1, len(samples) // 3000)
+    # DFA & D2 via nolds
+    # Resample audio to ~600 samples for sub-second, highly stable fractal dimension calculation
+    step = max(1, len(samples) // 600)
     subsampled = samples[::step]
     
     try:
