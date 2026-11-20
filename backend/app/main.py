@@ -7,14 +7,22 @@ import os
 import sys
 import time
 
-# Ensure paths containing ml and app are registered in sys.path
+# Ensure project root or container root is first in sys.path
 _CUR = os.path.dirname(os.path.abspath(__file__))
 _candidate = _CUR
+_root = None
 while _candidate and _candidate != os.path.dirname(_candidate):
-    if os.path.exists(os.path.join(_candidate, "ml")) or os.path.exists(os.path.join(_candidate, "backend")):
-        if _candidate not in sys.path:
-            sys.path.insert(0, _candidate)
+    if os.path.exists(os.path.join(_candidate, "pyproject.toml")) or os.path.exists(os.path.join(_candidate, "frontend")):
+        _root = _candidate
+        break
+    if os.path.exists(os.path.join(_candidate, "app")) and os.path.exists(os.path.join(_candidate, "ml")):
+        _root = _candidate
     _candidate = os.path.dirname(_candidate)
+
+if _root:
+    if _root in sys.path:
+        sys.path.remove(_root)
+    sys.path.insert(0, _root)
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
