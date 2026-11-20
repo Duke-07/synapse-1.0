@@ -1,0 +1,21 @@
+{
+  "name": "synapse-voice",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Synapse-Voice: Academic Pre-Clinical Screening Aid for Parkinson's Disease Vocal Biomarkers",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "cd frontend && npm install && npm run build && cp -r .next ../.next || true",
+    "start": "npm --prefix frontend run start",
+    "test": "npm --prefix frontend test",
+    "typecheck": "npm --prefix frontend run typecheck"
+  },
+  "dependencies": {
+    "next": "^14.2.23",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "lucide-react": "^0.460.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.4"
+  }
+}
