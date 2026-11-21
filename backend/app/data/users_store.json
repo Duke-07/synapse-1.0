@@ -1,3 +1,92 @@
 {
-  "users": {}
+  "users": {
+    "c0d0573344e364af8913b478": {
+      "id": "c0d0573344e364af8913b478",
+      "email": "user_e1559213@example.com",
+      "full_name": "Dr. Sarah Connor",
+      "password_hash": "041da001f6754b0b194c0160ecb84c6c$100000$61911a65882ddefb6df8ab0312ccbf302225b5e02703f26348c690b66651f064",
+      "is_verified": true,
+      "verification_code": null,
+      "verification_token": null,
+      "verification_expires_at": "2026-11-20T19:55:00.935131+00:00",
+      "created_at": "2026-11-20T18:55:00.864214+00:00"
+    },
+    "07659a7c46e8b11ffc490277": {
+      "id": "07659a7c46e8b11ffc490277",
+      "email": "resend_user_40af90a2@example.com",
+      "full_name": "Alex Mercer",
+      "password_hash": "aa80b78d1e284e7a63c2e7b7dbfb8829$100000$c66495a2578a1076066a65bfbe5ac6e479541e18bcb1ae56787fd7ba50290da5",
+      "is_verified": false,
+      "verification_code": "484533",
+      "verification_token": "5E-Si2LXPYAbJbcI2BesM_REE4SayXahg8vpzkIMEVw",
+      "verification_expires_at": "2026-11-20T19:55:01.141752+00:00",
+      "created_at": "2026-11-20T18:55:01.092830+00:00"
+    },
+    "be48e83fcda630783d236180": {
+      "id": "be48e83fcda630783d236180",
+      "email": "user_9439369f@example.com",
+      "full_name": "Dr. Sarah Connor",
+      "password_hash": "5807404ba619bd5b32850c24ebbf15c5$100000$82bd98fa4bf213664fae2c7e66cb5bdfa95305baa2fd838e5cb25a609c7b075e",
+      "is_verified": true,
+      "verification_code": null,
+      "verification_token": null,
+      "verification_expires_at": "2026-11-20T19:57:59.819603+00:00",
+      "created_at": "2026-11-20T18:57:59.788077+00:00"
+    },
+    "adf54efa82a013b6870689e0": {
+      "id": "adf54efa82a013b6870689e0",
+      "email": "resend_user_ec24e71c@example.com",
+      "full_name": "Alex Mercer",
+      "password_hash": "320410362b64481a2a95fce459afbeeb$100000$6ba8e470a153a14885ddd2493975b030a58d12f929a65e08a88039227ae3c8ca",
+      "is_verified": false,
+      "verification_code": "385552",
+      "verification_token": "5F4q1_Zl4mPlBHrrN5IB2JFOspFHQ716Q-sGjJgUHdY",
+      "verification_expires_at": "2026-11-20T19:57:59.973991+00:00",
+      "created_at": "2026-11-20T18:57:59.935166+00:00"
+    },
+    "be686b828bf63e671c7c1100": {
+      "id": "be686b828bf63e671c7c1100",
+      "email": "user_d04d772b@example.com",
+      "full_name": "Dr. Sarah Connor",
+      "password_hash": "3fbeb772153fd730dbd4982ccc4c1a36$100000$4e397af9ea67e4b355d97182ccea8b4ef1b077e02eaab442f4762abdda9a0799",
+      "is_verified": true,
+      "verification_code": null,
+      "verification_token": null,
+      "verification_expires_at": "2026-11-20T20:07:34.959873+00:00",
+      "created_at": "2026-11-20T19:07:34.922298+00:00"
+    },
+    "a06516f5b20784fcec9205b5": {
+      "id": "a06516f5b20784fcec9205b5",
+      "email": "resend_user_6d3c06cc@example.com",
+      "full_name": "Alex Mercer",
+      "password_hash": "031b68f15825ddbbe92be0e1d36d9194$100000$a06d3ffed3a17325b7340714ffb78045805bfd75dff8b56a73cc9c7054ca45e8",
+      "is_verified": false,
+      "verification_code": "704835",
+      "verification_token": "FYsMkBjyoh8Xi7jfF0LlNoj91wPe95lrz8A0alHDjx4",
+      "verification_expires_at": "2026-11-20T20:07:35.150521+00:00",
+      "created_at": "2026-11-20T19:07:35.108100+00:00"
+    },
+    "e7e92425c57114d881c6dd1a": {
+      "id": "e7e92425c57114d881c6dd1a",
+      "email": "user_b9fe1087@example.com",
+      "full_name": "Dr. Sarah Connor",
+      "password_hash": "c721c05300483db1885ddcd71011ba2c$100000$295fe0f6bd8b068d25f8641bd9a5a52b4fbead587eb29fefdca38b5e21c3264b",
+      "is_verified": true,
+      "verification_code": null,
+      "verification_token": null,
+      "verification_expires_at": "2026-11-21T07:42:31.068111+00:00",
+      "created_at": "2026-11-21T06:42:30.991441+00:00"
+    },
+    "3396d650da3bec67907d24d4": {
+      "id": "3396d650da3bec67907d24d4",
+      "email": "resend_user_87897834@example.com",
+      "full_name": "Alex Mercer",
+      "password_hash": "944ac152422a15802caa876de68e8c7b$100000$3d42298691b08d23ca33c639a79b573d0169fe9f9fb7a64fbf5dfa5fa75416ed",
+      "is_verified": false,
+      "verification_code": "575767",
+      "verification_token": "KfvzISsNbhf_uP2Inratfv8b5LO5zRp5q8I6WNOm1E4",
+      "verification_expires_at": "2026-11-21T07:42:31.464410+00:00",
+      "created_at": "2026-11-21T06:42:31.367208+00:00"
+    }
+  }
 }

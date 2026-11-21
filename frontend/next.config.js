@@ -1,21 +1,27 @@
 /** @type {import('next').NextConfig} */
-const getBackendDestination = () => {
-  const envUrl = process.env.NEXT_PUBLIC_API_URL;
-  if (!envUrl) {
-    return 'http://localhost:8000/api/v1/:path*';
-  }
-  const clean = envUrl.replace(/\/+$/, '');
-  return clean.endsWith('/api/v1') ? `${clean}/:path*` : `${clean}/api/v1/:path*`;
-};
-
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
+  // NOTE: Do NOT set output:'standalone' — Vercel handles output format automatically.
   async rewrites() {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (!apiUrl) {
+      // Local dev: proxy to backend running on localhost:8000
+      return [
+        {
+          source: '/api/v1/:path*',
+          destination: 'http://localhost:8000/api/v1/:path*',
+        },
+      ];
+    }
+    // Production: proxy to deployed backend URL
+    const base = apiUrl.replace(/\/+$/, '');
+    const dest = base.endsWith('/api/v1')
+      ? `${base}/:path*`
+      : `${base}/api/v1/:path*`;
     return [
       {
         source: '/api/v1/:path*',
-        destination: getBackendDestination(),
+        destination: dest,
       },
     ];
   },

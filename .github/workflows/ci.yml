@@ -36,16 +36,14 @@ jobs:
           python -m pip install ruff mypy pytest httpx
 
       - name: Run Ruff Linting
-        run: |
-          python -m ruff check backend ml
+        run: python -m ruff check backend ml
 
       - name: Run Mypy Typecheck
-        run: |
-          python -m mypy backend/app ml/src --ignore-missing-imports
+        run: python -m mypy backend/app ml/src --ignore-missing-imports
 
       - name: Run Pytest Suite
         run: |
-          python -m pytest -v --tb=short -p no:cacheprovider
+          python -m pytest backend/tests ml/tests -v --tb=short -p no:cacheprovider --import-mode=importlib
 
   frontend-checks:
     name: Frontend Lint, Typecheck & Build

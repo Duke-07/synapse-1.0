@@ -22,11 +22,15 @@ check_untyped_defs = false
 disable_error_code = ["attr-defined", "operator", "arg-type", "call-overload", "return-value", "assignment", "no-redef"]
 
 [tool.pytest.ini_options]
+# Explicit test paths avoid pytest walking into backend/ml/ and confusing it with root ml/
 testpaths = ["backend/tests", "ml/tests"]
 python_files = ["test_*.py"]
+# importlib mode prevents pytest from inserting implicit paths into sys.path,
+# so 'ml' always resolves to <repo-root>/ml/ and not to backend/ml/
+addopts = "--import-mode=importlib"
 filterwarnings = [
     "ignore::DeprecationWarning",
     "ignore::PendingDeprecationWarning",
     "ignore::UserWarning",
-    "ignore::FutureWarning"
+    "ignore::FutureWarning",
 ]
