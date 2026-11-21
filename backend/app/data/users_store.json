@@ -1,3 +1,26 @@
 {
-  "users": {}
+  "users": {
+    "5908de1c3d6716c845f8c77d": {
+      "id": "5908de1c3d6716c845f8c77d",
+      "email": "user_2dddb0f2@example.com",
+      "full_name": "Dr. Sarah Connor",
+      "password_hash": "5d4642ff5911b019f3f4a5de2b56e225$100000$eab06c43e8c99cc079a3deeb499185d752b8f9e84723ff2ef163fb0996ce86f6",
+      "is_verified": true,
+      "verification_code": null,
+      "verification_token": null,
+      "verification_expires_at": "2026-11-21T20:33:55.908042+00:00",
+      "created_at": "2026-11-21T19:33:55.875722+00:00"
+    },
+    "afc439c11126f9a2576a17c7": {
+      "id": "afc439c11126f9a2576a17c7",
+      "email": "resend_user_44666a27@example.com",
+      "full_name": "Alex Mercer",
+      "password_hash": "1f388f64747c5a55ed209d590acd1cfb$100000$73df12fc0f7620eadcaed15eb3692a77a1e8f06b0ba9bbfb456d4edf1b1a746a",
+      "is_verified": false,
+      "verification_code": "737907",
+      "verification_token": "1ElgapXpz1_PTC88iERspU7sXlWXkEbyZge_mmSeNqY",
+      "verification_expires_at": "2026-11-21T20:33:56.065510+00:00",
+      "created_at": "2026-11-21T19:33:56.023136+00:00"
+    }
+  }
 }

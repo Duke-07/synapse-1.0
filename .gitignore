@@ -48,6 +48,7 @@ node_modules/
 .pnp.js
 coverage/
 .next/
+*.tsbuildinfo
 *users_store.json
 *history_store.json
 out/
