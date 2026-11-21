@@ -1,53 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Force Atom Red dark theme always */
 :root {
-  --foreground-rgb: 231, 229, 228;    /* stone-200 */
-  --background-rgb: 12, 10, 9;        /* stone-950 */
+  --yellow: #FFCE32;
+  --yellow-hover: #F2C32B;
+  --blue: #1D63FF;
+  --blue-hover: #1453E6;
+  --blue-pale: #E8F2FF;
+  --ink: #141414;
+  --ink-muted: #6B6D72;
+  --white: #FFFFFF;
+  --red: #E53E3E;
+
+  --font-headline: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background-color: rgb(var(--background-rgb));
-  min-height: 100vh;
-}
-
-/* Smooth scrolling */
 html {
+  background-color: var(--yellow);
+  color: var(--ink);
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar — dark Atom Red style */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #0c0a09;
-}
-::-webkit-scrollbar-thumb {
-  background: #3f2020;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #7f1d1d;
+body {
+  background-color: var(--yellow);
+  color: var(--ink);
+  font-family: var(--font-body), sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Audio element dark style */
-audio {
-  filter: invert(0.85) hue-rotate(180deg);
-  border-radius: 8px;
+/* Custom Banky Typography Utilities */
+.font-headline {
+  font-family: var(--font-headline), sans-serif;
+  letter-spacing: -0.015em;
+  line-height: 0.92;
+  font-weight: 500;
 }
 
-/* Print styles */
-@media print {
-  body {
-    background: white !important;
-    color: black !important;
+.font-body {
+  font-family: var(--font-body), sans-serif;
+}
+
+/* Banky-style animations */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px);
   }
-  .print\\:hidden {
-    display: none !important;
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 4s ease-in-out infinite;
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulseRing 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+/* Banky Card & Pill Elevation */
+.banky-card {
+  background-color: var(--white);
+  border-radius: 32px;
+  box-shadow: 0 4px 20px rgba(20, 20, 20, 0.04);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.banky-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgba(20, 20, 20, 0.08);
+}
+
+.banky-pill-cta {
+  background-color: var(--blue);
+  color: var(--white);
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgba(29, 99, 255, 0.35);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease-out;
+}
+
+.banky-pill-cta:hover {
+  background-color: var(--blue-hover);
+  transform: scale(1.03);
+}
+
+.banky-pill-cta:active {
+  transform: scale(0.97);
+}
+
+/* Smooth nav slide-in underline */
+.nav-link-underline {
+  position: relative;
+}
+
+.nav-link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--ink);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Respect user motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

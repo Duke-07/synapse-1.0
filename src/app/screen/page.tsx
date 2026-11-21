@@ -7,17 +7,19 @@ import {
   Square,
   Upload,
   AlertCircle,
-  Play,
   RotateCcw,
   CheckCircle,
   Shield,
   Activity,
   FileAudio,
   Info,
+  Clock,
+  Sparkles,
 } from 'lucide-react';
 import WaveformVisualizer from '@/components/WaveformVisualizer';
 import { analyzeVoice } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
+import { PillButton } from '@/components/ui/PillButton';
 
 export default function ScreenPage() {
   const router = useRouter();
@@ -99,7 +101,6 @@ export default function ScreenPage() {
       });
       streamRef.current = stream;
 
-      // Initialize Web Audio API Analyser
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
       const audioCtx = new AudioCtx();
       audioContextRef.current = audioCtx;
@@ -109,7 +110,6 @@ export default function ScreenPage() {
       source.connect(analyser);
       analyserRef.current = analyser;
 
-      // Determine supported mimeType
       const mimeTypes = [
         'audio/webm;codecs=opus',
         'audio/webm',
@@ -163,7 +163,7 @@ export default function ScreenPage() {
       console.error('Mic error:', err);
       setMicError(
         err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError'
-          ? 'Microphone permission was denied. Please allow microphone access in your browser address bar.'
+          ? 'Microphone permission was denied. Please allow microphone access in your browser.'
           : `Failed to access microphone: ${err.message || 'Unknown error'}`
       );
     }
@@ -204,8 +204,7 @@ export default function ScreenPage() {
     e.stopPropagation();
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const file = e.dataTransfer.files[0];
-      validateAndSetFile(file);
+      validateAndSetFile(e.dataTransfer.files[0]);
     }
   };
 
@@ -255,7 +254,6 @@ export default function ScreenPage() {
 
       const result = await analyzeVoice(fileToUpload, anonymous, consent, token || undefined);
 
-      // Save to localStorage for history
       try {
         const storedHistory = JSON.parse(localStorage.getItem('synapse_history') || '[]');
         const historyItem = {
@@ -269,11 +267,9 @@ export default function ScreenPage() {
           'synapse_history',
           JSON.stringify([historyItem, ...storedHistory.slice(0, 49)])
         );
-
-        // Also stash full result in sessionStorage as quick fallback
         sessionStorage.setItem(`synapse_result_${result.id}`, JSON.stringify(result));
       } catch (err) {
-        console.warn('Failed to save to local/session storage:', err);
+        console.warn('Failed to save to storage:', err);
       }
 
       router.push(`/results?id=${result.id}`);
@@ -284,135 +280,212 @@ export default function ScreenPage() {
     }
   };
 
+  // 5-second circular progress metrics
+  const targetSeconds = 5;
+  const progressRatio = Math.min(recordingTime / targetSeconds, 1);
+  const ringRadius = 88;
+  const ringCircumference = 2 * Math.PI * ringRadius;
+  const strokeDashoffset = ringCircumference * (1 - progressRatio);
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-14 space-y-10">
       {/* Page Header */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-950/60 border border-red-800/60 text-red-400 text-xs font-medium mb-3">
-          <Activity className="w-3.5 h-3.5" />
-          Acoustic Voice Screening Protocol
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Parkinson's Voice Screening
+      <div className="text-center space-y-3">
+        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1D63FF]">
+          Acoustic Voice Screening
+        </span>
+        <h1 className="font-headline text-4xl sm:text-6xl font-medium tracking-tight text-[#141414] uppercase leading-[0.92]">
+          Screen in 5 Seconds
         </h1>
-        <p className="mt-2 text-stone-400 text-sm max-w-2xl mx-auto">
-          Screen for phonatory anomalies using validated acoustic parameters.
-          Produce a continuous sustained <span className="font-semibold text-red-400">“a-a-a-h”</span> vowel sound at a comfortable pitch and volume for at least 3 to 5 seconds.
+        <p className="text-sm sm:text-base text-[#141414]/75 max-w-xl mx-auto font-normal">
+          Hold a sustained steady <strong className="text-[#141414]">&quot;ahhh&quot;</strong> vowel at a comfortable pitch. Our neural engine extracts 22 biomarkers for microtremors.
         </p>
       </div>
 
-      {/* Protocol Guide Box */}
-      <div className="bg-stone-900/60 border border-stone-800 rounded-xl p-5 mb-8 text-sm">
-        <h3 className="font-semibold text-white flex items-center gap-2 mb-2">
-          <Info className="w-4 h-4 text-red-400" />
-          Recording Instructions for Clinical Relevance
+      {/* Protocol Instructions Box */}
+      <div className="banky-card p-6 sm:p-8 space-y-3 text-sm">
+        <h3 className="font-headline text-lg sm:text-xl font-medium text-[#141414] flex items-center gap-2">
+          <Info className="w-5 h-5 text-[#1D63FF]" />
+          Quick Instructions For Accurate Screening
         </h3>
-        <ol className="list-decimal list-inside space-y-1.5 text-stone-300 text-xs sm:text-sm">
-          <li>Sit in a quiet room with minimal background noise, fans, or echo.</li>
-          <li>Hold the microphone roughly 15 cm (6 inches) from your mouth.</li>
-          <li>Take a deep breath and vocalize a continuous, steady <strong className="text-red-400">“a-a-a-h”</strong> (like in <em>father</em>).</li>
-          <li>Hold the tone steady without whispering, shouting, or wavering for 3 to 10 seconds.</li>
+        <ol className="list-decimal list-inside space-y-1.5 text-xs sm:text-sm text-[#141414]/80 font-normal">
+          <li>Sit in a quiet room with minimal background noise or echo.</li>
+          <li>Hold your microphone approximately 15 cm (6 inches) from your mouth.</li>
+          <li>Take a breath and vocalize a steady <strong className="text-[#1D63FF]">&quot;ahhh&quot;</strong> for at least 5 seconds.</li>
+          <li>Maintain a consistent loudness without whispering or straining.</li>
         </ol>
       </div>
 
-      {/* Method Switcher Tabs */}
-      <div className="flex border-b border-stone-800 mb-6">
+      {/* Mode Switcher Pills */}
+      <div className="flex items-center justify-center gap-3">
         <button
           onClick={() => setMode('mic')}
-          className={`flex items-center gap-2 py-3 px-6 text-sm font-medium border-b-2 transition-all ${
+          className={`px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
             mode === 'mic'
-              ? 'border-red-500 text-red-400 bg-slate-900/40'
-              : 'border-transparent text-stone-400 hover:text-stone-200'
+              ? 'bg-[#1D63FF] text-white shadow-[0_4px_16px_rgba(29,99,255,0.35)] scale-[1.02]'
+              : 'bg-white text-[#141414] hover:bg-white/80 shadow-sm'
           }`}
         >
-          <Mic className="w-4 h-4" />
-          Live Microphone Recording
+          <span className="flex items-center gap-2">
+            <Mic className="w-4 h-4" /> Live Microphone
+          </span>
         </button>
         <button
           onClick={() => setMode('upload')}
-          className={`flex items-center gap-2 py-3 px-6 text-sm font-medium border-b-2 transition-all ${
+          className={`px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
             mode === 'upload'
-              ? 'border-red-500 text-red-400 bg-slate-900/40'
-              : 'border-transparent text-stone-400 hover:text-stone-200'
+              ? 'bg-[#1D63FF] text-white shadow-[0_4px_16px_rgba(29,99,255,0.35)] scale-[1.02]'
+              : 'bg-white text-[#141414] hover:bg-white/80 shadow-sm'
           }`}
         >
-          <Upload className="w-4 h-4" />
-          Upload Audio File
+          <span className="flex items-center gap-2">
+            <Upload className="w-4 h-4" /> Drop Audio File
+          </span>
         </button>
       </div>
 
-      {/* Mic Mode */}
+      {/* Mic Recording Card */}
       {mode === 'mic' && (
-        <div className="bg-stone-900/70 border border-stone-800 rounded-2xl p-6 sm:p-8 text-center space-y-6">
-          {/* Waveform Visualization */}
-          <div className="bg-stone-950/80 rounded-xl p-4 border border-stone-800/80">
-            <div className="h-28 flex items-center justify-center">
+        <div className="banky-card p-8 sm:p-12 text-center space-y-8">
+          {/* Live Waveform Canvas in Blue on Yellow */}
+          <div className="space-y-2">
+            <div className="h-28 sm:h-32 flex items-center justify-center">
               <WaveformVisualizer
                 analyser={analyserRef.current}
                 isRecording={isRecording}
               />
             </div>
-            <div className="flex justify-between items-center text-xs text-stone-500 mt-2 px-1">
-              <span>{isRecording ? 'Capturing live audio signal...' : 'Ready to capture'}</span>
-              <span className="font-mono font-semibold text-stone-400">
-                {Math.floor(recordingTime / 60)}:{(recordingTime % 60).toString().padStart(2, '0')} / 01:30
+            <div className="flex justify-between items-center text-xs font-semibold tracking-wider uppercase text-[#141414]/60 px-1">
+              <span>{isRecording ? 'Capturing Acoustic Signal...' : 'Microphone Ready'}</span>
+              <span className="font-mono text-[#1D63FF]">
+                {recordingTime}s / 5s minimum
               </span>
             </div>
           </div>
 
-          {/* Controls */}
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            {!isRecording && !audioBlob && (
-              <button
-                onClick={startRecording}
-                disabled={isLoading}
-                className="flex items-center gap-2.5 px-6 py-3.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-semibold rounded-xl shadow-lg shadow-red-950/50 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
-              >
-                <Mic className="w-5 h-5 text-white animate-pulse" />
-                Start Voice Recording
-              </button>
-            )}
+          {/* Huge Blue Circular Mic Button with Pulsing Ring & 5s Circular Progress Ring */}
+          <div className="flex flex-col items-center justify-center py-4">
+            <div className="relative flex items-center justify-center">
+              {/* Outer Pulsing Ring when recording */}
+              {isRecording && (
+                <div className="absolute inset-0 -m-4 rounded-full border-4 border-[#1D63FF]/30 animate-pulse-ring pointer-events-none" />
+              )}
 
-            {isRecording && (
-              <button
-                onClick={stopRecording}
-                className="flex items-center gap-2.5 px-6 py-3.5 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-xl shadow-lg shadow-red-950/50 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              {/* 5-Second Circular Progress Ring SVG */}
+              <svg
+                width="220"
+                height="220"
+                className="transform -rotate-90 pointer-events-none select-none"
               >
-                <Square className="w-5 h-5 fill-current text-white" />
-                Stop Recording ({recordingTime}s)
-              </button>
-            )}
+                <circle
+                  cx="110"
+                  cy="110"
+                  r={ringRadius}
+                  stroke="#F0F0F0"
+                  strokeWidth="8"
+                  fill="transparent"
+                />
+                <circle
+                  cx="110"
+                  cy="110"
+                  r={ringRadius}
+                  stroke={recordingTime >= 5 ? '#22C55E' : '#1D63FF'}
+                  strokeWidth="8"
+                  fill="transparent"
+                  strokeDasharray={ringCircumference}
+                  strokeDashoffset={isRecording ? strokeDashoffset : ringCircumference}
+                  strokeLinecap="round"
+                  className="transition-all duration-300"
+                />
+              </svg>
 
-            {audioBlob && !isRecording && (
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  onClick={resetRecording}
-                  disabled={isLoading}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-stone-800 hover:bg-stone-700 text-stone-200 text-sm font-medium rounded-lg transition-colors"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  Re-record
-                </button>
-                {audioUrl && (
-                  <audio
-                    src={audioUrl}
-                    controls
-                    className="h-10 rounded-lg max-w-xs bg-slate-950"
-                  />
+              {/* Huge Blue Circular Mic Button */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                {!isRecording && !audioBlob && (
+                  <button
+                    onClick={startRecording}
+                    disabled={isLoading}
+                    className="w-40 h-40 rounded-full bg-[#1D63FF] hover:bg-[#1453E6] text-white shadow-[0_12px_32px_rgba(29,99,255,0.4)] hover:scale-105 active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer group"
+                    aria-label="Start Voice Recording"
+                  >
+                    <Mic className="w-10 h-10 group-hover:scale-110 transition-transform" />
+                    <span className="font-headline text-base font-medium tracking-wide uppercase mt-1">
+                      RECORD
+                    </span>
+                  </button>
+                )}
+
+                {isRecording && (
+                  <button
+                    onClick={stopRecording}
+                    className="w-40 h-40 rounded-full bg-red-600 hover:bg-red-700 text-white shadow-[0_12px_32px_rgba(220,38,38,0.4)] flex flex-col items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-all"
+                    aria-label="Stop Voice Recording"
+                  >
+                    <Square className="w-9 h-9 fill-current" />
+                    <span className="font-headline text-base font-medium tracking-wide uppercase mt-1">
+                      STOP ({recordingTime}s)
+                    </span>
+                  </button>
+                )}
+
+                {audioBlob && !isRecording && (
+                  <button
+                    onClick={resetRecording}
+                    disabled={isLoading}
+                    className="w-40 h-40 rounded-full bg-[#FFCE32] hover:bg-[#F2C32B] text-[#141414] shadow-[0_8px_24px_rgba(20,20,20,0.1)] hover:scale-105 active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer"
+                    aria-label="Re-record voice"
+                  >
+                    <RotateCcw className="w-9 h-9" />
+                    <span className="font-headline text-sm font-medium tracking-wide uppercase mt-1">
+                      RE-RECORD
+                    </span>
+                  </button>
                 )}
               </div>
-            )}
+            </div>
+
+            {/* Timing feedback status */}
+            <div className="mt-4 text-center">
+              {isRecording ? (
+                recordingTime < 5 ? (
+                  <p className="text-xs sm:text-sm font-semibold text-[#1D63FF] uppercase tracking-wider">
+                    Sustaining vowel... {5 - recordingTime}s remaining for full 22 biomarkers
+                  </p>
+                ) : (
+                  <p className="text-xs sm:text-sm font-semibold text-emerald-600 uppercase tracking-wider">
+                    ✓ 5s threshold achieved! Tap stop or keep holding.
+                  </p>
+                )
+              ) : audioBlob ? (
+                <div className="flex flex-col items-center gap-2">
+                  <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wider">
+                    Vowel Recorded ({recordingTime}s)
+                  </span>
+                  {audioUrl && (
+                    <audio
+                      src={audioUrl}
+                      controls
+                      className="h-10 rounded-full shadow-sm"
+                    />
+                  )}
+                </div>
+              ) : (
+                <p className="text-xs text-[#141414]/60 uppercase tracking-wider font-semibold">
+                  Tap the blue circle to record your 5-second sustained vowel
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Mic Error */}
           {micError && (
-            <div className="p-4 bg-red-950/40 border border-red-800/60 rounded-xl text-left flex items-start gap-3 text-red-300 text-sm">
-              <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+            <div className="p-4 bg-red-50 border border-red-200 rounded-2xl text-left flex items-start gap-3 text-xs sm:text-sm text-red-700">
+              <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
               <div>
-                <p className="font-semibold text-red-200">Microphone Access Error</p>
-                <p className="mt-1 text-xs text-red-300/90">{micError}</p>
-                <p className="mt-2 text-xs text-red-400">
-                  Tip: If browser permissions are blocked, try the “Upload Audio File” tab instead.
+                <p className="font-bold">Microphone Access Error</p>
+                <p className="mt-1">{micError}</p>
+                <p className="mt-1 font-semibold text-[#1D63FF]">
+                  Tip: You can switch to the &quot;Drop Audio File&quot; tab above if permissions are restricted.
                 </p>
               </div>
             </div>
@@ -422,18 +495,18 @@ export default function ScreenPage() {
 
       {/* File Upload Mode */}
       {mode === 'upload' && (
-        <div className="bg-stone-900/70 border border-stone-800 rounded-2xl p-6 sm:p-8 space-y-6">
+        <div className="banky-card p-8 sm:p-12 space-y-6">
           <div
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
             onDrop={handleDrop}
-            className={`border-2 border-dashed rounded-xl p-8 text-center transition-all ${
+            className={`border-2 border-dashed rounded-3xl p-8 sm:p-14 text-center transition-all ${
               dragActive
-                ? 'border-red-500 bg-red-950/20'
+                ? 'border-[#1D63FF] bg-[#E8F2FF] scale-[1.01]'
                 : selectedFile
-                ? 'border-green-600/60 bg-green-950/10'
-                : 'border-stone-700 hover:border-slate-600 bg-stone-950/40'
+                ? 'border-emerald-500 bg-emerald-50/50'
+                : 'border-[#141414]/20 hover:border-[#1D63FF] bg-white'
             }`}
           >
             <input
@@ -445,31 +518,31 @@ export default function ScreenPage() {
             />
             <label
               htmlFor="file-upload"
-              className="cursor-pointer flex flex-col items-center justify-center space-y-3"
+              className="cursor-pointer flex flex-col items-center justify-center space-y-4"
             >
-              <div className="w-12 h-12 rounded-full bg-stone-800 flex items-center justify-center text-red-400">
+              <div className="w-16 h-16 rounded-full bg-[#E8F2FF] text-[#1D63FF] flex items-center justify-center shadow-sm">
                 {selectedFile ? (
-                  <CheckCircle className="w-6 h-6 text-green-400" />
+                  <CheckCircle className="w-8 h-8 text-emerald-600" />
                 ) : (
-                  <FileAudio className="w-6 h-6" />
+                  <FileAudio className="w-8 h-8 text-[#1D63FF]" />
                 )}
               </div>
               {selectedFile ? (
                 <div>
-                  <p className="text-sm font-semibold text-green-400">
+                  <p className="font-headline text-2xl font-medium text-[#141414]">
                     {selectedFile.name}
                   </p>
-                  <p className="text-xs text-stone-400 mt-1">
-                    {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB • Ready for analysis
+                  <p className="text-xs text-[#141414]/70 mt-1">
+                    {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB &middot; Ready for acoustic screening
                   </p>
                 </div>
               ) : (
                 <div>
-                  <p className="text-sm font-medium text-stone-200">
-                    Click to browse or drag and drop your voice recording
+                  <p className="font-headline text-2xl sm:text-3xl font-medium text-[#141414] uppercase tracking-tight">
+                    Drop Your Audio File Here
                   </p>
-                  <p className="text-xs text-stone-500 mt-1">
-                    Supports WAV, MP3, M4A, WebM, OGG (Max 25 MB)
+                  <p className="text-xs text-[#141414]/65 mt-1 font-normal">
+                    Supports uncompressed WAV, MP3, M4A, WebM (Max 25 MB)
                   </p>
                 </div>
               )}
@@ -478,32 +551,29 @@ export default function ScreenPage() {
         </div>
       )}
 
-      {/* Configuration & Consent Section */}
-      <div className="bg-stone-900/60 border border-stone-800 rounded-xl p-6 mt-6 space-y-4">
+      {/* Consent & Settings Card */}
+      <div className="banky-card p-6 sm:p-8 space-y-4">
         {user ? (
-          <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-lg bg-stone-950 border border-stone-800 text-xs">
-            <span className="text-stone-300">
-              Authenticated Screening Session:{' '}
-              <strong className="text-white">{user.full_name}</strong> ({user.email})
+          <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-2xl bg-[#E8F2FF] text-xs font-semibold text-[#141414]">
+            <span>
+              Signed in: <strong>{user.full_name}</strong> ({user.email})
             </span>
-            <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-medium">
-              <CheckCircle className="w-3.5 h-3.5" /> Synced to Researcher Profile
+            <span className="inline-flex items-center gap-1 text-emerald-600 font-bold">
+              <CheckCircle className="w-3.5 h-3.5" /> Result synced to profile history
             </span>
           </div>
         ) : (
-          <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-lg bg-stone-950 border border-stone-800 text-xs">
-            <span className="text-stone-400">
-              Guest Mode: Screening stored in local browser session only.
-            </span>
-            <a href="/login" className="text-red-400 hover:text-red-300 font-semibold underline">
-              Sign in to link screenings to your permanent profile
+          <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-2xl bg-[#FFF4DC] text-xs font-semibold text-[#141414]">
+            <span>Guest Mode: Result cached in browser session only.</span>
+            <a href="/login" className="text-[#1D63FF] hover:underline font-bold">
+              Sign in to save permanently &rarr;
             </a>
           </div>
         )}
 
-        <h4 className="text-sm font-semibold text-stone-200 flex items-center gap-2">
-          <Shield className="w-4 h-4 text-red-400" />
-          Screening Consent & Zero-Retention Configuration
+        <h4 className="font-headline text-lg sm:text-xl font-medium text-[#141414] flex items-center gap-2 uppercase tracking-tight">
+          <Shield className="w-5 h-5 text-[#1D63FF]" />
+          Research Consent &amp; Privacy Protocol
         </h4>
 
         <div className="space-y-3">
@@ -512,10 +582,10 @@ export default function ScreenPage() {
               type="checkbox"
               checked={consent}
               onChange={(e) => setConsent(e.target.checked)}
-              className="mt-1 w-4 h-4 rounded border-stone-700 text-red-600 focus:ring-cyan-500 bg-stone-800"
+              className="mt-1 w-4 h-4 rounded border-[#141414]/30 accent-[#1D63FF]"
             />
-            <span className="text-xs sm:text-sm text-stone-300">
-              <strong className="text-white">Required Consent:</strong> I acknowledge that Synapse-Voice is strictly an investigative screening tool and research demonstration. It does <em>not</em> provide a medical diagnosis, clinical opinion, or disease confirmation.
+            <span className="text-xs sm:text-sm text-[#141414]/80 leading-relaxed font-normal">
+              <strong className="text-[#141414]">Required Research Consent:</strong> I acknowledge that Synapse-Voice is strictly an exploratory screening tool and research demonstration. It does <em>not</em> provide a medical diagnosis, clinical opinion, or disease confirmation.
             </span>
           </label>
 
@@ -524,26 +594,27 @@ export default function ScreenPage() {
               type="checkbox"
               checked={anonymous}
               onChange={(e) => setAnonymous(e.target.checked)}
-              className="mt-1 w-4 h-4 rounded border-stone-700 text-red-600 focus:ring-cyan-500 bg-stone-800"
+              className="mt-1 w-4 h-4 rounded border-[#141414]/30 accent-[#1D63FF]"
             />
-            <span className="text-xs sm:text-sm text-stone-300">
-              <strong className="text-white">Zero-Retention Mode:</strong> Discard raw audio immediately after extracting acoustic features. Do not store voice recordings on cloud servers.
+            <span className="text-xs sm:text-sm text-[#141414]/80 leading-relaxed font-normal">
+              <strong className="text-[#141414]">Zero-Retention Protocol:</strong> Discard raw audio immediately after extracting acoustic features. Do not retain voice recordings on cloud servers.
             </span>
           </label>
         </div>
       </div>
 
-      {/* Error alert */}
+      {/* Error Alert */}
       {apiError && (
-        <div className="mt-6 p-4 bg-red-950/40 border border-red-800/60 rounded-xl text-red-300 text-sm flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+        <div className="p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-xs sm:text-sm flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
           <p>{apiError}</p>
         </div>
       )}
 
-      {/* Submit Button & Progress */}
-      <div className="mt-8 text-center">
-        <button
+      {/* Run Screening Button */}
+      <div className="text-center pt-2">
+        <PillButton
+          variant="primary"
           onClick={handleSubmit}
           disabled={
             isLoading ||
@@ -551,39 +622,20 @@ export default function ScreenPage() {
             (mode === 'upload' && !selectedFile) ||
             !consent
           }
-          className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-red-500 to-rose-600 hover:from-cyan-400 hover:to-rose-500 text-white font-bold rounded-xl shadow-lg shadow-red-950/60 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
+          className="w-full sm:w-auto text-base py-4 px-10"
         >
           {isLoading ? (
             <span className="flex items-center justify-center gap-3">
-              <svg
-                className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8H4z"
-                ></path>
-              </svg>
-              Analyzing Your Voice...
+              <Sparkles className="w-5 h-5 animate-spin" />
+              Voicefying Your Health Check...
             </span>
           ) : (
             "Run Parkinson's Voice Screening"
           )}
-        </button>
+        </PillButton>
 
         {isLoading && (
-          <p className="text-xs text-red-400 font-medium mt-3 animate-pulse">
+          <p className="text-xs sm:text-sm font-semibold text-[#141414] mt-3 animate-pulse">
             {loadingStep}
           </p>
         )}

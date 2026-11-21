@@ -14,6 +14,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
+import PillButton from '@/components/ui/PillButton';
 
 function VerifyEmailForm() {
   const router = useRouter();
@@ -78,7 +79,6 @@ function VerifyEmailForm() {
     const newDigits = [...digits];
 
     if (clean.length > 1) {
-      // User pasted multiple characters into a single input box
       handlePastedCode(clean);
       return;
     }
@@ -172,48 +172,41 @@ function VerifyEmailForm() {
     }
   };
 
-  const fillQuickCode = (code: string) => {
-    handlePastedCode(code);
-  };
-
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12 relative overflow-hidden bg-stone-950 text-stone-100">
-      {/* Background glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[550px] h-[300px] bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="w-full max-w-md relative z-10">
+    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md">
         {/* Header Badge */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-950/60 border border-red-800/60 text-red-400 text-xs font-semibold uppercase tracking-wider mb-3">
-            <KeyRound className="w-3.5 h-3.5 text-red-500" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-ink text-xs font-bold uppercase tracking-wider shadow-sm mb-3">
+            <KeyRound className="w-3.5 h-3.5 text-blue" />
             Two-Factor Verification
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white">
+          <h1 className="text-3xl sm:text-4xl font-display font-medium uppercase tracking-tight text-ink">
             Verify Your Email
           </h1>
-          <p className="text-stone-400 text-sm mt-2">
+          <p className="text-ink/75 text-sm mt-2">
             Enter the 6-digit confirmation code dispatched to{' '}
-            <span className="text-stone-200 font-medium">{email || 'your email'}</span>.
+            <span className="text-ink font-bold">{email || 'your email'}</span>.
           </p>
         </div>
 
         {/* Card */}
-        <div className="bg-stone-900/80 backdrop-blur-xl border border-stone-800/80 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-red-950/20">
+        <div className="banky-card p-6 sm:p-8">
           {errorMessage && (
-            <div className="mb-6 p-4 rounded-xl bg-red-950/60 border border-red-800/80 flex items-start gap-3 text-red-300 text-xs sm:text-sm">
-              <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+            <div className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 flex items-start gap-3 text-rose-800 text-xs sm:text-sm">
+              <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
               <div>
-                <p className="font-semibold text-red-200">Verification Error</p>
+                <p className="font-bold text-rose-900">Verification Error</p>
                 <p>{errorMessage}</p>
               </div>
             </div>
           )}
 
           {successMessage && (
-            <div className="mb-6 p-4 rounded-xl bg-emerald-950/60 border border-emerald-800/80 text-emerald-200 text-xs sm:text-sm flex items-start gap-3">
-              <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+            <div className="mb-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
               <div>
-                <p className="font-semibold text-emerald-300">Verified!</p>
+                <p className="font-bold text-emerald-900">Verified!</p>
                 <p>{successMessage}</p>
               </div>
             </div>
@@ -221,15 +214,15 @@ function VerifyEmailForm() {
 
           {/* Dev/Demo Quick Fill Banner if code preview available */}
           {devCodePreview && (
-            <div className="mb-6 p-3 rounded-xl bg-stone-950 border border-red-900/80 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 text-stone-300">
-                <Sparkles className="w-4 h-4 text-red-400" />
-                <span>Simulated Code: <strong className="font-mono text-red-400">{devCodePreview}</strong></span>
+            <div className="mb-6 p-3 rounded-2xl bg-yellow/30 border border-yellow/60 flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2 text-ink">
+                <Sparkles className="w-4 h-4 text-blue" />
+                <span>Simulated Code: <strong className="font-mono text-blue font-bold">{devCodePreview}</strong></span>
               </div>
               <button
                 type="button"
-                onClick={() => fillQuickCode(devCodePreview)}
-                className="px-2.5 py-1 rounded bg-red-600 hover:bg-red-500 text-white font-medium text-[11px] transition-colors"
+                onClick={() => handlePastedCode(devCodePreview)}
+                className="px-2.5 py-1 rounded-full bg-blue text-white font-medium text-[11px] hover:bg-blue/90 transition-colors"
               >
                 Auto Fill
               </button>
@@ -239,24 +232,24 @@ function VerifyEmailForm() {
           <div className="space-y-5">
             {/* Registered Email confirmation/edit */}
             <div>
-              <label className="block text-xs font-medium text-stone-300 mb-1.5 uppercase tracking-wider">
+              <label className="block text-xs font-bold text-ink uppercase tracking-wider mb-1.5">
                 Target Account Email
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 absolute left-3.5 top-3.5 text-stone-500" />
+                <Mail className="w-4 h-4 absolute left-3.5 top-3.5 text-ink/40" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@institution.edu"
-                  className="w-full pl-10 pr-4 py-2 bg-stone-950 border border-stone-800 rounded-xl text-stone-100 placeholder-stone-600 focus:outline-none focus:border-red-500 text-xs sm:text-sm"
+                  className="w-full pl-10 pr-4 py-2.5 bg-yellow/10 border border-ink/15 rounded-2xl text-ink placeholder-ink/40 focus:outline-none focus:border-blue text-xs sm:text-sm"
                 />
               </div>
             </div>
 
             {/* 6-box OTP entry */}
             <div>
-              <label className="block text-xs font-medium text-stone-300 mb-2 uppercase tracking-wider text-center">
+              <label className="block text-xs font-bold text-ink uppercase tracking-wider mb-2 text-center">
                 Enter 6-Digit Code
               </label>
               <div className="flex justify-between gap-2 sm:gap-3">
@@ -277,10 +270,10 @@ function VerifyEmailForm() {
                       const pasted = e.clipboardData.getData('text');
                       handlePastedCode(pasted);
                     }}
-                    className={`w-11 h-13 sm:w-12 sm:h-14 text-center font-mono font-bold text-xl sm:text-2xl rounded-xl bg-stone-950 border transition-all focus:outline-none ${
+                    className={`w-11 h-14 sm:w-12 sm:h-14 text-center font-mono font-bold text-xl sm:text-2xl rounded-2xl border transition-all focus:outline-none ${
                       digit
-                        ? 'border-red-500 text-red-400 bg-red-950/20 shadow-inner'
-                        : 'border-stone-800 text-stone-100 focus:border-red-500/80 focus:ring-1 focus:ring-red-500'
+                        ? 'border-blue text-blue bg-blue/5'
+                        : 'border-ink/20 text-ink bg-white focus:border-blue focus:ring-1 focus:ring-blue'
                     }`}
                   />
                 ))}
@@ -288,34 +281,27 @@ function VerifyEmailForm() {
             </div>
 
             {/* Manual Submit Button */}
-            <button
-              type="button"
-              onClick={() => performVerification(digits.join(''))}
-              disabled={isVerifying || !!successMessage || digits.join('').length !== 6}
-              className="w-full mt-2 py-3 px-4 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 disabled:opacity-50 text-white font-semibold rounded-xl text-sm shadow-lg shadow-red-950/50 hover:shadow-red-900/60 transition-all flex items-center justify-center gap-2 group"
-            >
-              {isVerifying ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Verifying Code...</span>
-                </>
-              ) : (
-                <>
-                  <ShieldCheck className="w-4 h-4 text-red-200" />
-                  <span>Verify Account</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </>
-              )}
-            </button>
+            <div className="pt-2">
+              <PillButton
+                onClick={() => performVerification(digits.join(''))}
+                disabled={isVerifying || !!successMessage || digits.join('').length !== 6}
+                variant="primary"
+                size="lg"
+                className="w-full justify-center"
+                icon={<ShieldCheck className="w-4 h-4" />}
+              >
+                {isVerifying ? 'Verifying Code...' : 'Verify Account'}
+              </PillButton>
+            </div>
 
             {/* Resend Code Section */}
-            <div className="pt-4 border-t border-stone-800/80 flex items-center justify-between text-xs text-stone-400">
+            <div className="pt-4 border-t border-ink/10 flex items-center justify-between text-xs text-ink/75">
               <span>Didn&apos;t receive the code?</span>
               <button
                 type="button"
                 onClick={handleResend}
                 disabled={resendCooldown > 0 || isResending}
-                className="inline-flex items-center gap-1.5 font-semibold text-red-400 hover:text-red-300 disabled:text-stone-600 transition-colors"
+                className="inline-flex items-center gap-1.5 font-bold text-blue hover:underline disabled:text-ink/40 transition-colors"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${isResending ? 'animate-spin' : ''}`} />
                 {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend Code'}
@@ -325,9 +311,9 @@ function VerifyEmailForm() {
         </div>
 
         {/* Back Link */}
-        <div className="mt-6 text-center text-xs text-stone-500">
+        <div className="mt-6 text-center text-xs text-ink/70">
           Want to use a different account?{' '}
-          <Link href="/login" className="text-red-400 hover:text-red-300 font-medium">
+          <Link href="/login" className="text-blue font-bold hover:underline">
             Back to Sign In
           </Link>
         </div>
@@ -340,7 +326,7 @@ export default function VerifyEmailPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-stone-950 text-stone-400 text-sm">
+        <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center text-ink/70 text-sm">
           Loading verification portal...
         </div>
       }

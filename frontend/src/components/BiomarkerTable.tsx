@@ -8,7 +8,6 @@ export interface BiomarkerTableProps {
   shapValues?: Record<string, number>;
 }
 
-// Healthy Reference Boundaries based on UCI 174 Controls
 const REFERENCE_DATA: Record<string, { min: number; max: number; unit: string; desc: string }> = {
   'MDVP:Fo(Hz)': { min: 140.0, max: 220.0, unit: 'Hz', desc: 'Average vocal fundamental frequency' },
   'MDVP:Fhi(Hz)': { min: 160.0, max: 260.0, unit: 'Hz', desc: 'Maximum vocal pitch peak' },
@@ -41,10 +40,17 @@ export const BiomarkerTable: React.FC<BiomarkerTableProps> = ({ features = {}, s
   const displayedKeys = expanded ? keys : keys.slice(0, 8);
 
   return (
-    <div className="space-y-4">
+    <div className="bg-white rounded-[32px] p-6 sm:p-8 shadow-sm space-y-4">
+      <div className="flex items-center justify-between pb-2 border-b border-[#141414]/10">
+        <h4 className="font-headline text-lg font-medium text-[#141414] uppercase tracking-tight">
+          Extracted Praat Acoustic Biomarkers ({keys.length})
+        </h4>
+        <span className="text-xs text-[#6B6D72]">Normalized Values</span>
+      </div>
+
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs sm:text-sm text-slate-300">
-          <thead className="bg-slate-950/80 text-[11px] uppercase font-mono text-slate-400 border-b border-slate-800">
+        <table className="w-full text-left text-xs sm:text-sm text-[#141414]">
+          <thead className="bg-[#FFCE32]/25 text-[11px] uppercase font-semibold text-[#141414] border-b border-[#141414]/10">
             <tr>
               <th className="py-3 px-3">Biomarker</th>
               <th className="py-3 px-3">Description</th>
@@ -53,36 +59,32 @@ export const BiomarkerTable: React.FC<BiomarkerTableProps> = ({ features = {}, s
               <th className="py-3 px-3 text-center">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60 font-mono text-xs">
+          <tbody className="divide-y divide-[#141414]/5 text-xs">
             {displayedKeys.map((key) => {
               const val = features[key];
               const ref = REFERENCE_DATA[key];
               if (val === undefined || !ref) return null;
 
-              const isNormal = val >= ref.min && val <= ref.max;
+              const isWithinHealthy = val >= ref.min && val <= ref.max;
 
               return (
-                <tr key={key} className="hover:bg-slate-800/30 transition-colors">
-                  <td className="py-2.5 px-3 font-semibold text-white">
-                    {key}
+                <tr key={key} className="hover:bg-[#E8F2FF]/40 transition-colors">
+                  <td className="py-3 px-3 font-semibold text-[#141414]">{key}</td>
+                  <td className="py-3 px-3 text-[#6B6D72]">{ref.desc}</td>
+                  <td className="py-3 px-3 font-mono font-bold text-[#141414]">
+                    {val.toFixed(4)} {ref.unit}
                   </td>
-                  <td className="py-2.5 px-3 font-sans text-slate-400 text-xs">
-                    {ref.desc}
+                  <td className="py-3 px-3 font-mono text-[#6B6D72]">
+                    {ref.min} – {ref.max} {ref.unit}
                   </td>
-                  <td className="py-2.5 px-3 font-bold text-slate-200">
-                    {typeof val === 'number' ? (val < 0.01 && val > -0.01 ? val.toExponential(3) : val.toFixed(4)) : val} {ref.unit}
-                  </td>
-                  <td className="py-2.5 px-3 text-slate-400">
-                    {ref.min} - {ref.max} {ref.unit}
-                  </td>
-                  <td className="py-2.5 px-3 text-center">
-                    {isNormal ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800">
-                        <CheckCircle className="w-3 h-3" /> Within Range
+                  <td className="py-3 px-3 text-center">
+                    {isWithinHealthy ? (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#E8F2FF] text-[#1D63FF]">
+                        <CheckCircle className="w-3 h-3" /> Healthy
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] bg-amber-950 text-amber-400 border border-amber-800">
-                        <AlertCircle className="w-3 h-3" /> Atypical
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                        <AlertCircle className="w-3 h-3" /> Deviated
                       </span>
                     )}
                   </td>
@@ -93,18 +95,18 @@ export const BiomarkerTable: React.FC<BiomarkerTableProps> = ({ features = {}, s
         </table>
       </div>
 
-      <div className="text-center pt-2">
+      <div className="pt-2 text-center">
         <button
           onClick={() => setExpanded(!expanded)}
-          className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold text-cyan-400 hover:text-cyan-300 bg-slate-800/80 hover:bg-slate-800 rounded-lg border border-slate-700 transition-colors"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#141414]/20 text-xs font-semibold text-[#141414] hover:bg-[#141414]/5 transition-colors cursor-pointer"
         >
           {expanded ? (
             <>
-              Show Key Biomarkers Only <ChevronUp className="w-3.5 h-3.5" />
+              Show Fewer Biomarkers <ChevronUp className="w-4 h-4" />
             </>
           ) : (
             <>
-              View All 22 Acoustic Biomarkers <ChevronDown className="w-3.5 h-3.5" />
+              View All 22 Biomarkers <ChevronDown className="w-4 h-4" />
             </>
           )}
         </button>

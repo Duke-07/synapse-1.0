@@ -18,16 +18,30 @@ export const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
   const internalContextRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
     if (!isRecording) {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
       if (internalContextRef.current && internalContextRef.current.state !== 'closed') {
         internalContextRef.current.close().catch(() => {});
         internalContextRef.current = null;
       }
-      if (canvasRef.current) {
-        const ctx = canvasRef.current.getContext('2d');
-        if (ctx) ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      }
+
+      // Draw idle baseline in blue on yellow
+      ctx.fillStyle = '#FFCE32';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = 'rgba(29, 99, 255, 0.4)';
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height / 2);
+      ctx.lineTo(canvas.width, canvas.height / 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
       return;
     }
 
@@ -52,20 +66,18 @@ export const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
 
     const bufferLength = activeAnalyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
 
     const draw = () => {
       animationRef.current = requestAnimationFrame(draw);
       activeAnalyser!.getByteTimeDomainData(dataArray);
 
-      ctx.fillStyle = '#090d16';
+      // Yellow canvas background
+      ctx.fillStyle = '#FFCE32';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.lineWidth = 2.5;
-      ctx.strokeStyle = '#06b6d4'; // Cyan 500
+      // Blue live waveform
+      ctx.lineWidth = 3.5;
+      ctx.strokeStyle = '#1D63FF';
       ctx.beginPath();
 
       const sliceWidth = (canvas.width * 1.0) / bufferLength;
@@ -101,9 +113,9 @@ export const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
   return (
     <canvas
       ref={canvasRef}
-      width={600}
-      height={110}
-      className="w-full h-full rounded-lg bg-slate-950 border border-slate-900"
+      width={700}
+      height={120}
+      className="w-full h-full rounded-2xl bg-[#FFCE32] border border-[#141414]/10"
     />
   );
 };

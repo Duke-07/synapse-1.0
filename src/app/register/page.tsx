@@ -17,6 +17,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
+import { PillButton } from '@/components/ui/PillButton';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -33,7 +34,6 @@ export default function RegisterPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successInfo, setSuccessInfo] = useState<{ message: string; previewCode?: string } | null>(null);
 
-  // Password strength calculation
   const getPasswordStrength = (pwd: string) => {
     let score = 0;
     if (pwd.length >= 8) score += 1;
@@ -47,260 +47,216 @@ export default function RegisterPage() {
   const strengthScore = getPasswordStrength(password);
   const strengthLabels = ['Too Weak', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
   const strengthColors = [
-    'bg-stone-700',
+    'bg-[#F0F0F0]',
     'bg-red-500',
     'bg-amber-500',
-    'bg-yellow-500',
+    'bg-amber-400',
+    'bg-[#1D63FF]',
     'bg-emerald-500',
-    'bg-emerald-400',
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!fullName.trim()) {
-      setErrorMessage('Please enter your full name.');
+    if (!fullName.trim() || !email.trim() || !password || !confirmPassword) {
+      setErrorMessage('Please complete all required fields.');
       return;
     }
-    if (!email.trim() || !email.includes('@')) {
-      setErrorMessage('Please enter a valid academic or professional email address.');
-      return;
-    }
-    if (password.length < 8) {
-      setErrorMessage('Password must be at least 8 characters long.');
-      return;
-    }
+
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match. Please re-enter.');
       return;
     }
-    if (!agreedToTerms) {
-      setErrorMessage('Please acknowledge the pre-clinical research screening disclaimer.');
+
+    if (password.length < 8) {
+      setErrorMessage('Password must contain at least 8 characters.');
       return;
     }
 
-    setIsSubmitting(true);
-    try {
-      const response = await register(email, password, fullName);
-      setSuccessInfo({
-        message: response.message,
-        previewCode: response.verification_code_preview,
-      });
+    if (!agreedToTerms) {
+      setErrorMessage('Please agree to the research screening terms and privacy protocol.');
+      return;
+    }
 
-      // Redirect after brief acknowledgement
-      setTimeout(() => {
-        router.push(`/verify-email?email=${encodeURIComponent(email.trim().toLowerCase())}`);
-      }, 1500);
-    } catch (err: unknown) {
-      const errDetail = err instanceof Error ? err.message : 'Registration failed. Please try again.';
-      setErrorMessage(errDetail);
+    try {
+      setIsSubmitting(true);
+      const res = await register(email, password, fullName);
+      setSuccessInfo({
+        message: res.message || 'Account created successfully! Verification email dispatched.',
+        previewCode: res.verification_code_preview,
+      });
+    } catch (err: any) {
+      setErrorMessage(err.message || 'Registration failed. Please try again.');
+    } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12 relative overflow-hidden bg-stone-950 text-stone-100">
-      {/* Atom Red background glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-[300px] h-[200px] bg-rose-600/10 rounded-full blur-2xl pointer-events-none" />
+    <div className="max-w-md mx-auto my-8 sm:my-14 banky-card p-8 sm:p-10 space-y-6">
+      <div className="text-center space-y-2">
+        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1D63FF]">
+          Researcher Enrollment
+        </span>
+        <h1 className="font-headline text-3xl sm:text-4xl font-medium tracking-tight text-[#141414] uppercase leading-tight">
+          Create Account
+        </h1>
+        <p className="text-xs sm:text-sm text-[#141414]/70">
+          Join the academic cohort to store long-term longitudinal voice analyses.
+        </p>
+      </div>
 
-      <div className="w-full max-w-md relative z-10">
-        {/* Header Badge */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-950/60 border border-red-800/60 text-red-400 text-xs font-semibold uppercase tracking-wider mb-3 shadow-inner">
-            <Activity className="w-3.5 h-3.5 text-red-500 animate-pulse" />
-            Researcher & Participant Access
-          </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white">
-            Create Your Account
-          </h1>
-          <p className="text-stone-400 text-sm mt-2">
-            Sign up to securely record, track, and review longitudinal voice screening biomarker reports.
-          </p>
+      {errorMessage && (
+        <div className="p-3.5 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-xs flex items-start gap-2.5">
+          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+          <span>{errorMessage}</span>
         </div>
+      )}
 
-        {/* Card */}
-        <div className="bg-stone-900/80 backdrop-blur-xl border border-stone-800/80 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-red-950/20">
-          {errorMessage && (
-            <div className="mb-6 p-4 rounded-xl bg-red-950/60 border border-red-800/80 flex items-start gap-3 text-red-300 text-xs sm:text-sm">
-              <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
-              <div>
-                <p className="font-semibold text-red-200">Registration Error</p>
-                <p>{errorMessage}</p>
-              </div>
+      {successInfo ? (
+        <div className="p-6 bg-[#E8F2FF] border border-[#1D63FF]/30 rounded-2xl text-center space-y-4">
+          <CheckCircle className="w-10 h-10 text-[#1D63FF] mx-auto" />
+          <h3 className="font-headline text-xl text-[#141414] uppercase">
+            Account Created
+          </h3>
+          <p className="text-xs text-[#141414]/80">{successInfo.message}</p>
+          {successInfo.previewCode && (
+            <div className="p-3 bg-white rounded-xl border border-[#1D63FF]/20">
+              <span className="text-[11px] text-[#6B6D72] block">Preview Verification Code:</span>
+              <span className="font-mono text-xl font-bold tracking-widest text-[#1D63FF]">
+                {successInfo.previewCode}
+              </span>
             </div>
           )}
+          <Link
+            href={`/verify-email?email=${encodeURIComponent(email)}`}
+            className="block w-full py-3 rounded-full bg-[#1D63FF] text-white font-semibold text-xs text-center"
+          >
+            Proceed to Verification &rarr;
+          </Link>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs font-semibold text-[#141414] uppercase tracking-wider mb-1.5">
+              Full Name
+            </label>
+            <div className="relative">
+              <User className="w-4 h-4 text-[#6B6D72] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Dr. Jane Doe"
+                required
+                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+              />
+            </div>
+          </div>
 
-          {successInfo && (
-            <div className="mb-6 p-4 rounded-xl bg-emerald-950/60 border border-emerald-800/80 text-emerald-200 text-xs sm:text-sm">
-              <div className="flex items-center gap-2 font-semibold text-emerald-300 mb-1">
-                <CheckCircle className="w-4 h-4" /> Account Created Successfully
-              </div>
-              <p>{successInfo.message}</p>
-              {successInfo.previewCode && (
-                <div className="mt-2.5 p-2 bg-stone-900/90 border border-emerald-700/60 rounded-lg text-center font-mono font-bold text-emerald-400 text-sm">
-                  Simulated OTP Code: {successInfo.previewCode}
+          <div>
+            <label className="block text-xs font-semibold text-[#141414] uppercase tracking-wider mb-1.5">
+              Email Address
+            </label>
+            <div className="relative">
+              <Mail className="w-4 h-4 text-[#6B6D72] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="jane@clinic.org"
+                required
+                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-[#141414] uppercase tracking-wider mb-1.5">
+              Password
+            </label>
+            <div className="relative">
+              <Lock className="w-4 h-4 text-[#6B6D72] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                className="w-full pl-10 pr-10 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6B6D72] hover:text-[#141414]"
+                aria-label="Toggle password visibility"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+            {password && (
+              <div className="mt-2 space-y-1">
+                <div className="flex items-center justify-between text-[11px] text-[#6B6D72]">
+                  <span>Strength: {strengthLabels[strengthScore]}</span>
                 </div>
-              )}
-              <p className="mt-2 text-[11px] text-emerald-400/80">Redirecting to email verification...</p>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Full Name */}
-            <div>
-              <label className="block text-xs font-medium text-stone-300 mb-1.5 uppercase tracking-wider">
-                Full Name
-              </label>
-              <div className="relative">
-                <User className="w-4 h-4 absolute left-3.5 top-3.5 text-stone-500" />
-                <input
-                  type="text"
-                  required
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="e.g. Dr. Jane Doe"
-                  className="w-full pl-10 pr-4 py-2.5 bg-stone-950 border border-stone-800 rounded-xl text-stone-100 placeholder-stone-600 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-sm transition-all"
-                />
-              </div>
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-xs font-medium text-stone-300 mb-1.5 uppercase tracking-wider">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 absolute left-3.5 top-3.5 text-stone-500" />
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@institution.edu"
-                  className="w-full pl-10 pr-4 py-2.5 bg-stone-950 border border-stone-800 rounded-xl text-stone-100 placeholder-stone-600 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-sm transition-all"
-                />
-              </div>
-            </div>
-
-            {/* Password */}
-            <div>
-              <label className="block text-xs font-medium text-stone-300 mb-1.5 uppercase tracking-wider">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 absolute left-3.5 top-3.5 text-stone-500" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="At least 8 characters"
-                  className="w-full pl-10 pr-10 py-2.5 bg-stone-950 border border-stone-800 rounded-xl text-stone-100 placeholder-stone-600 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-sm transition-all"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-3 text-stone-500 hover:text-stone-300"
-                  aria-label="Toggle password visibility"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-
-              {/* Password Strength Meter */}
-              {password.length > 0 && (
-                <div className="mt-2 space-y-1">
-                  <div className="flex gap-1 h-1.5">
-                    {[1, 2, 3, 4, 5].map((lvl) => (
-                      <div
-                        key={lvl}
-                        className={`flex-1 rounded-full transition-all duration-300 ${
-                          strengthScore >= lvl ? strengthColors[strengthScore] : 'bg-stone-800'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <div className="flex justify-between text-[11px] text-stone-400">
-                    <span>Strength: {strengthLabels[strengthScore]}</span>
-                    <span>Min 8 chars, mixed case & numbers</span>
-                  </div>
+                <div className="w-full h-1.5 bg-[#F0F0F0] rounded-full overflow-hidden">
+                  <div
+                    className={`h-full transition-all duration-300 ${strengthColors[strengthScore]}`}
+                    style={{ width: `${(strengthScore / 5) * 100}%` }}
+                  />
                 </div>
-              )}
-            </div>
-
-            {/* Confirm Password */}
-            <div>
-              <label className="block text-xs font-medium text-stone-300 mb-1.5 uppercase tracking-wider">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 absolute left-3.5 top-3.5 text-stone-500" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Re-enter password"
-                  className="w-full pl-10 pr-4 py-2.5 bg-stone-950 border border-stone-800 rounded-xl text-stone-100 placeholder-stone-600 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-sm transition-all"
-                />
               </div>
-            </div>
+            )}
+          </div>
 
-            {/* Academic Pre-Clinical Screening Consent Checkbox */}
-            <div className="pt-2">
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <input
-                  type="checkbox"
-                  required
-                  checked={agreedToTerms}
-                  onChange={(e) => setAgreedToTerms(e.target.checked)}
-                  className="mt-1 h-4 w-4 rounded border-stone-700 bg-stone-950 text-red-600 focus:ring-red-500"
-                />
-                <span className="text-xs text-stone-400 group-hover:text-stone-300 leading-relaxed">
-                  I understand Synapse-Voice is strictly an{' '}
-                  <span className="text-red-400 font-medium">academic pre-clinical screening aid</span> and research tool,
-                  not an FDA/CE-cleared diagnostic device.
-                </span>
-              </label>
+          <div>
+            <label className="block text-xs font-semibold text-[#141414] uppercase tracking-wider mb-1.5">
+              Confirm Password
+            </label>
+            <div className="relative">
+              <Lock className="w-4 h-4 text-[#6B6D72] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+              />
             </div>
+          </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isSubmitting || !!successInfo}
-              className="w-full mt-4 py-3 px-4 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 disabled:opacity-50 text-white font-semibold rounded-xl text-sm shadow-lg shadow-red-950/50 hover:shadow-red-900/60 transition-all flex items-center justify-center gap-2 group"
+          <label className="flex items-start gap-2.5 cursor-pointer text-xs text-[#141414]/80 pt-1">
+            <input
+              type="checkbox"
+              checked={agreedToTerms}
+              onChange={(e) => setAgreedToTerms(e.target.checked)}
+              className="mt-0.5 w-4 h-4 rounded border-[#141414]/30 accent-[#1D63FF]"
+            />
+            <span>
+              I understand Synapse-Voice is strictly an exploratory screening tool and not a clinical diagnostic device.
+            </span>
+          </label>
+
+          <div className="pt-2">
+            <PillButton
+              variant="primary"
+              onClick={() => {}}
+              disabled={isSubmitting}
+              className="w-full py-3.5"
             >
-              {isSubmitting ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Creating Account...</span>
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4 text-red-200" />
-                  <span>Create Account & Verify</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Footer Navigation */}
-          <div className="mt-6 pt-6 border-t border-stone-800/80 text-center text-xs text-stone-400">
-            Already have an account?{' '}
-            <Link href="/login" className="font-semibold text-red-400 hover:text-red-300 transition-colors">
-              Sign In
-            </Link>
+              {isSubmitting ? 'Registering...' : 'Complete Enrollment'}
+            </PillButton>
           </div>
-        </div>
+        </form>
+      )}
 
-        {/* Security & Disclaimer Footer */}
-        <div className="mt-6 flex items-center justify-center gap-2 text-[11px] text-stone-500">
-          <Shield className="w-3.5 h-3.5 text-stone-500" />
-          <span>PBKDF2-HMAC-SHA256 • Cryptographic JWT Session • TLS Transmission</span>
-        </div>
+      <div className="text-center pt-2 border-t border-[#141414]/10 text-xs text-[#141414]/70">
+        Already enrolled?{' '}
+        <Link href="/login" className="text-[#1D63FF] font-semibold hover:underline">
+          Sign In here &rarr;
+        </Link>
       </div>
     </div>
   );

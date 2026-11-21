@@ -10,30 +10,30 @@ export interface ProbabilityGaugeProps {
 export const ProbabilityGauge: React.FC<ProbabilityGaugeProps> = ({ probability, confidenceBand }) => {
   const percentage = Math.round(probability * 100);
 
-  // SVG Gauge calculations
-  const radius = 70;
+  const radius = 76;
   const stroke = 12;
   const normalizedRadius = radius - stroke * 2;
   const circumference = normalizedRadius * 2 * Math.PI;
-  // Arc spans 180 degrees (semi-circle)
   const strokeDashoffset = circumference - (percentage / 100) * (circumference / 2);
 
-  // Color selection based on risk band
   const getColor = () => {
-    if (probability < 0.35) return { stroke: '#10b981', bg: 'text-emerald-500', badge: 'bg-emerald-950 text-emerald-400 border-emerald-800' };
-    if (probability <= 0.65) return { stroke: '#f59e0b', bg: 'text-amber-500', badge: 'bg-amber-950 text-amber-400 border-amber-800' };
-    return { stroke: '#ef4444', bg: 'text-rose-500', badge: 'bg-rose-950 text-rose-400 border-rose-800' };
+    if (probability < 0.35) {
+      return { stroke: '#1D63FF', bg: 'text-[#1D63FF]', badge: 'bg-[#E8F2FF] text-[#1D63FF]' };
+    }
+    if (probability <= 0.65) {
+      return { stroke: '#141414', bg: 'text-[#141414]', badge: 'bg-[#FFF4DC] text-[#141414]' };
+    }
+    return { stroke: '#E53E3E', bg: 'text-[#E53E3E]', badge: 'bg-red-50 text-[#E53E3E] border border-red-200' };
   };
 
   const style = getColor();
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 bg-slate-900/60 rounded-2xl border border-slate-800 shadow-sm">
+    <div className="flex flex-col items-center justify-center p-6 bg-white rounded-[32px] shadow-sm">
       <div className="relative flex items-center justify-center">
         <svg height={radius * 2} width={radius * 2} className="transform -rotate-90">
-          {/* Background Track */}
           <circle
-            stroke="#1e293b"
+            stroke="#F0F0F0"
             fill="transparent"
             strokeWidth={stroke}
             r={normalizedRadius}
@@ -42,7 +42,6 @@ export const ProbabilityGauge: React.FC<ProbabilityGaugeProps> = ({ probability,
             strokeDasharray={`${circumference / 2} ${circumference}`}
             strokeLinecap="round"
           />
-          {/* Progress Indicator */}
           <circle
             stroke={style.stroke}
             fill="transparent"
@@ -50,7 +49,7 @@ export const ProbabilityGauge: React.FC<ProbabilityGaugeProps> = ({ probability,
             strokeDasharray={`${circumference} ${circumference}`}
             style={{
               strokeDashoffset,
-              transition: 'stroke-dashoffset 1s ease-in-out',
+              transition: 'stroke-dashoffset 1s cubic-bezier(0.22, 1, 0.36, 1)',
             }}
             r={normalizedRadius}
             cx={radius}
@@ -59,23 +58,22 @@ export const ProbabilityGauge: React.FC<ProbabilityGaugeProps> = ({ probability,
           />
         </svg>
 
-        {/* Center Text */}
         <div className="absolute flex flex-col items-center justify-center">
-          <span className="text-3xl font-extrabold text-white tracking-tight">
+          <span className="font-headline text-4xl font-medium text-[#141414] tracking-tight">
             {percentage}%
           </span>
-          <span className="text-[10px] text-slate-400 uppercase font-mono tracking-wider">
+          <span className="text-[10px] text-[#6B6D72] uppercase font-semibold tracking-wider">
             Risk Score
           </span>
         </div>
       </div>
 
       <div className="mt-4 text-center">
-        <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold border ${style.badge}`}>
+        <span className={`inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${style.badge}`}>
           {confidenceBand}
         </span>
-        <p className="text-[11px] text-slate-400 mt-2 max-w-[200px] leading-tight">
-          Calibrated posterior probability from 5-fold StratifiedGroupKFold model.
+        <p className="text-xs text-[#6B6D72] mt-2 max-w-[210px] leading-relaxed">
+          Posterior probability from 5-fold StratifiedGroupKFold classifier.
         </p>
       </div>
     </div>
