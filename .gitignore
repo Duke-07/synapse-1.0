@@ -48,6 +48,8 @@ node_modules/
 .pnp.js
 coverage/
 .next/
+*users_store.json
+*history_store.json
 out/
 build/
 .turbo/
