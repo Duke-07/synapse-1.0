@@ -121,6 +121,32 @@
       "last_code_sent_at": "2026-11-22T04:15:54.090813+00:00",
       "failed_attempts": 0,
       "created_at": "2026-11-22T04:15:54.051207+00:00"
+    },
+    "843160e8675ac3a03fc3aa6c": {
+      "id": "843160e8675ac3a03fc3aa6c",
+      "email": "user_7cb72613@example.com",
+      "full_name": "Dr. Sarah Connor",
+      "password_hash": "8e6cf2e7852639dc4c426762c6cff84a$100000$7227bd0388d1108ef7fbef5320243b49384fac6c34a62eaac8dd34767f7f2dad",
+      "is_verified": true,
+      "verification_code": null,
+      "verification_token": null,
+      "verification_expires_at": null,
+      "last_code_sent_at": "2026-11-22T04:33:08.437748+00:00",
+      "failed_attempts": 0,
+      "created_at": "2026-11-22T04:33:08.437748+00:00"
+    },
+    "3028e67f8209323de1f50b66": {
+      "id": "3028e67f8209323de1f50b66",
+      "email": "resend_user_f4f30be0@example.com",
+      "full_name": "Alex Mercer",
+      "password_hash": "b5ba4522a61d5be4745730c927eab4a9$100000$5607cb117b59ecf43becbc8af00647be27d417a64c16801c9f4479f5854859bb",
+      "is_verified": false,
+      "verification_code": "480881",
+      "verification_token": "_1A5NQTvnYszW2tQsfkg3XvJOQukpN-_fdapulYkuiY",
+      "verification_expires_at": "2026-11-22T04:48:08.577231+00:00",
+      "last_code_sent_at": "2026-11-22T04:33:08.577231+00:00",
+      "failed_attempts": 0,
+      "created_at": "2026-11-22T04:33:08.547654+00:00"
     }
   }
 }

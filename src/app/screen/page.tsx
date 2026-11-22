@@ -20,6 +20,7 @@ import WaveformVisualizer from '@/components/WaveformVisualizer';
 import { analyzeVoice } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
 import { PillButton } from '@/components/ui/PillButton';
+import { encodeWAV } from '@/lib/wav-encoder';
 
 export default function ScreenPage() {
   const router = useRouter();
@@ -53,6 +54,9 @@ export default function ScreenPage() {
   const streamRef = useRef<MediaStream | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const chunksRef = useRef<Blob[]>([]);
+  const pcmChunksRef = useRef<Float32Array[]>([]);
+  const processorRef = useRef<ScriptProcessorNode | null>(null);
+  const isRecordingRef = useRef(false);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
 
@@ -67,9 +71,16 @@ export default function ScreenPage() {
   }, [audioUrl]);
 
   const stopRecordingCleanup = () => {
+    isRecordingRef.current = false;
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
+    }
+    if (processorRef.current) {
+      try {
+        processorRef.current.disconnect();
+      } catch {}
+      processorRef.current = null;
     }
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => track.stop());
@@ -90,6 +101,7 @@ export default function ScreenPage() {
       setAudioUrl(null);
     }
     chunksRef.current = [];
+    pcmChunksRef.current = [];
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -110,43 +122,51 @@ export default function ScreenPage() {
       source.connect(analyser);
       analyserRef.current = analyser;
 
-      const mimeTypes = [
-        'audio/webm;codecs=opus',
-        'audio/webm',
-        'audio/ogg;codecs=opus',
-        'audio/mp4',
-        'audio/wav',
-      ];
-      let selectedMime = '';
-      for (const mime of mimeTypes) {
-        if (MediaRecorder.isTypeSupported(mime)) {
-          selectedMime = mime;
-          break;
+      // ScriptProcessorNode to capture uncompressed PCM samples
+      const processor = audioCtx.createScriptProcessor(4096, 1, 1);
+      processorRef.current = processor;
+      processor.onaudioprocess = (e) => {
+        if (!isRecordingRef.current) return;
+        const input = e.inputBuffer.getChannelData(0);
+        pcmChunksRef.current.push(new Float32Array(input));
+      };
+      const muteGain = audioCtx.createGain();
+      muteGain.gain.value = 0;
+      source.connect(processor);
+      processor.connect(muteGain);
+      muteGain.connect(audioCtx.destination);
+
+      try {
+        const mimeTypes = [
+          'audio/webm;codecs=opus',
+          'audio/webm',
+          'audio/ogg;codecs=opus',
+          'audio/mp4',
+        ];
+        let selectedMime = '';
+        for (const mime of mimeTypes) {
+          if (MediaRecorder.isTypeSupported(mime)) {
+            selectedMime = mime;
+            break;
+          }
         }
+        const mediaRecorder = new MediaRecorder(
+          stream,
+          selectedMime ? { mimeType: selectedMime } : undefined
+        );
+        mediaRecorderRef.current = mediaRecorder;
+
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data && event.data.size > 0) {
+            chunksRef.current.push(event.data);
+          }
+        };
+        mediaRecorder.start(100);
+      } catch (mrErr) {
+        console.warn('MediaRecorder notice:', mrErr);
       }
 
-      const mediaRecorder = new MediaRecorder(
-        stream,
-        selectedMime ? { mimeType: selectedMime } : undefined
-      );
-      mediaRecorderRef.current = mediaRecorder;
-
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data && event.data.size > 0) {
-          chunksRef.current.push(event.data);
-        }
-      };
-
-      mediaRecorder.onstop = () => {
-        const mime = selectedMime || 'audio/webm';
-        const blob = new Blob(chunksRef.current, { type: mime });
-        setAudioBlob(blob);
-        const url = URL.createObjectURL(blob);
-        setAudioUrl(url);
-        stopRecordingCleanup();
-      };
-
-      mediaRecorder.start(100);
+      isRecordingRef.current = true;
       setIsRecording(true);
       setRecordingTime(0);
 
@@ -170,10 +190,42 @@ export default function ScreenPage() {
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
-      setIsRecording(false);
+    isRecordingRef.current = false;
+    if (processorRef.current) {
+      try {
+        processorRef.current.disconnect();
+      } catch {}
+      processorRef.current = null;
     }
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      try {
+        mediaRecorderRef.current.stop();
+      } catch {}
+    }
+    setIsRecording(false);
+
+    // Encode captured raw PCM samples directly to standard 16-bit linear PCM WAV
+    const chunks = pcmChunksRef.current;
+    if (chunks.length > 0 && audioContextRef.current) {
+      const sampleRate = audioContextRef.current.sampleRate;
+      const totalLen = chunks.reduce((acc, c) => acc + c.length, 0);
+      const fullPCM = new Float32Array(totalLen);
+      let offset = 0;
+      for (const chunk of chunks) {
+        fullPCM.set(chunk, offset);
+        offset += chunk.length;
+      }
+      const wavBlob = encodeWAV(fullPCM, sampleRate);
+      setAudioBlob(wavBlob);
+      const url = URL.createObjectURL(wavBlob);
+      setAudioUrl(url);
+    } else if (chunksRef.current.length > 0) {
+      const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+      setAudioBlob(blob);
+      const url = URL.createObjectURL(blob);
+      setAudioUrl(url);
+    }
+    stopRecordingCleanup();
   };
 
   const resetRecording = () => {
@@ -268,6 +320,8 @@ export default function ScreenPage() {
           JSON.stringify([historyItem, ...storedHistory.slice(0, 49)])
         );
         sessionStorage.setItem(`synapse_result_${result.id}`, JSON.stringify(result));
+        localStorage.setItem(`synapse_result_${result.id}`, JSON.stringify(result));
+        localStorage.setItem('synapse_last_result', JSON.stringify(result));
       } catch (err) {
         console.warn('Failed to save to storage:', err);
       }

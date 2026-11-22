@@ -6,6 +6,12 @@ import {
   TokenResponse,
   UserProfile,
 } from './types';
+import {
+  decodeAudioToPCM,
+  extractAcousticFeatures,
+  classifyAcousticBiomarkers,
+} from './acoustic-engine';
+import { encodeWAV } from './wav-encoder';
 
 // Normalize API base path
 function getApiBase(): string {
@@ -60,8 +66,22 @@ export async function analyzeVoice(
   consent: boolean = true,
   token?: string
 ): Promise<AnalysisResponse> {
+  let fileToSend: File | Blob = file;
+  let pcmData: { samples: Float32Array; sampleRate: number } | null = null;
+
+  // Convert audio input to standard 16-bit linear PCM WAV in browser so soundfile and Praat read natively
+  if (typeof window !== 'undefined') {
+    try {
+      pcmData = await decodeAudioToPCM(file);
+      const wavBlob = encodeWAV(pcmData.samples, pcmData.sampleRate);
+      fileToSend = new File([wavBlob], 'recording.wav', { type: 'audio/wav' });
+    } catch (err) {
+      console.warn('[Synapse-Voice] In-browser WAV encoding notice:', err);
+    }
+  }
+
   const formData = new FormData();
-  formData.append('audio', file, file instanceof File ? file.name : 'recording.wav');
+  formData.append('audio', fileToSend, fileToSend instanceof File ? fileToSend.name : 'recording.wav');
   formData.append('anonymous', anonymous ? 'true' : 'false');
   formData.append('consent', consent ? 'true' : 'false');
 
@@ -82,7 +102,15 @@ export async function analyzeVoice(
     );
 
     if (res.ok) {
-      return await res.json();
+      const result: AnalysisResponse = await res.json();
+      if (typeof window !== 'undefined' && result?.id) {
+        try {
+          sessionStorage.setItem(`synapse_result_${result.id}`, JSON.stringify(result));
+          localStorage.setItem(`synapse_result_${result.id}`, JSON.stringify(result));
+          localStorage.setItem('synapse_last_result', JSON.stringify(result));
+        } catch {}
+      }
+      return result;
     }
 
     const errData = await res.json().catch(() => ({ detail: 'Analysis failed' }));
@@ -90,160 +118,84 @@ export async function analyzeVoice(
       throw new Error(errData.detail || `Analysis rejected: ${res.status}`);
     }
   } catch (err: unknown) {
-    if (err instanceof Error && (err.message.includes('rejected') || err.message.includes('Unvoiced') || err.message.includes('duration'))) {
+    if (err instanceof Error && (err.message.includes('rejected') || err.message.includes('Unvoiced') || err.message.includes('duration') || err.message.includes('Audio Quality Check Failed'))) {
       throw err;
     }
-    console.warn('[Synapse-Voice] Backend unreachable or waking up; engaging resilient client-side screening fallback:', err);
+    console.warn('[Synapse-Voice] Backend unreachable or waking up; running genuine client acoustic engine:', err);
   }
 
-  // Fallback / Demonstration analysis output
-  return generateClientFallbackAnalysis(file);
-}
+  // Resilient In-Browser Acoustic Signal Processing Engine
+  try {
+    if (!pcmData && typeof window !== 'undefined') {
+      pcmData = await decodeAudioToPCM(file);
+    }
+    if (pcmData) {
+      const features = extractAcousticFeatures(pcmData.samples, pcmData.sampleRate);
+      const clientResult = classifyAcousticBiomarkers(features, { anonymous });
+      if (typeof window !== 'undefined') {
+        try {
+          sessionStorage.setItem(`synapse_result_${clientResult.id}`, JSON.stringify(clientResult));
+          localStorage.setItem(`synapse_result_${clientResult.id}`, JSON.stringify(clientResult));
+          localStorage.setItem('synapse_last_result', JSON.stringify(clientResult));
+        } catch {}
+      }
+      return clientResult;
+    }
+  } catch (procErr: any) {
+    throw new Error(procErr.message || 'Could not process audio. Please sustain a steady vowel for at least 3 seconds.');
+  }
 
-function generateClientFallbackAnalysis(file: File | Blob): AnalysisResponse {
-  const mockId = `demo-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 7)}`;
-  const seed = (file.size % 100) / 100;
-  const prob = Number((0.28 + seed * 0.45).toFixed(3));
-  const band = prob < 0.35 ? 'Low Risk' : prob < 0.65 ? 'Moderate Concern' : 'Elevated Risk';
-  const label = prob >= 0.5 ? 1 : 0;
-
-  const mockFeatures: Record<string, number> = {
-    MDVP_Fo_Hz: 154.2,
-    MDVP_Fhi_Hz: 198.4,
-    MDVP_Flo_Hz: 112.6,
-    MDVP_Jitter_pct: 0.0054,
-    MDVP_Jitter_Abs: 0.000035,
-    MDVP_RAP: 0.0031,
-    MDVP_PPQ: 0.0033,
-    Jitter_DDP: 0.0093,
-    MDVP_Shimmer: 0.028,
-    MDVP_Shimmer_dB: 0.25,
-    Shimmer_APQ3: 0.014,
-    Shimmer_APQ5: 0.017,
-    MDVP_APQ: 0.023,
-    Shimmer_DDA: 0.042,
-    NHR: 0.019,
-    HNR: 21.8,
-    RPDE: 0.48,
-    DFA: 0.72,
-    spread1: -5.4,
-    spread2: 0.21,
-    D2: 2.38,
-    PPE: 0.19,
-  };
-
-  const mockShap: Record<string, number> = {
-    PPE: 0.14,
-    RPDE: 0.11,
-    MDVP_Shimmer: 0.08,
-    HNR: -0.06,
-    spread1: 0.05,
-    DFA: 0.03,
-  };
-
-  return {
-    id: mockId,
-    probability: prob,
-    label,
-    confidence_band: band,
-    features: mockFeatures,
-    shap_values: mockShap,
-    top_biomarkers: [
-      {
-        feature: 'PPE',
-        value: 0.19,
-        shap_value: 0.14,
-        ref_min: 0.0,
-        ref_max: 0.15,
-        unit: 'a.u.',
-        label: 'Pitch Period Entropy (PPE)',
-      },
-      {
-        feature: 'RPDE',
-        value: 0.48,
-        shap_value: 0.11,
-        ref_min: 0.0,
-        ref_max: 0.45,
-        unit: 'a.u.',
-        label: 'Recurrence Period Density Entropy',
-      },
-      {
-        feature: 'MDVP_Shimmer',
-        value: 0.028,
-        shap_value: 0.08,
-        ref_min: 0.0,
-        ref_max: 0.038,
-        unit: 'ratio',
-        label: 'Local Amplitude Perturbation (Shimmer)',
-      },
-      {
-        feature: 'HNR',
-        value: 21.8,
-        shap_value: -0.06,
-        ref_min: 20.0,
-        ref_max: 35.0,
-        unit: 'dB',
-        label: 'Harmonics-to-Noise Ratio',
-      },
-    ],
-    explanation: (
-      'In pre-clinical Parkinsonian dysphonia literature (Little et al., Tsanas et al.), subclinical vocal tremor ' +
-      'and phonatory rigidity manifest as elevated Pitch Period Entropy (PPE) and subtle amplitude perturbance (Shimmer). ' +
-      'This screening indicates non-diagnostic acoustic variation consistent with moderate phonatory stability.'
-    ),
-    literature_citations: [
-      {
-        title: 'Suitability of Dysphonia Measurements for Telemonitoring of Parkinson\'s Disease',
-        authors: 'Little, M. A., et al.',
-        year: 2009,
-        doi: '10.1109/TBME.2008.2005954',
-        similarity: 0.94,
-      },
-      {
-        title: 'Novel Speech Signal Processing Algorithms for Parkinson\'s Disease Telemonitoring',
-        authors: 'Tsanas, A., et al.',
-        year: 2012,
-        doi: '10.1109/TBME.2012.2183000',
-        similarity: 0.89,
-      },
-    ],
-    model_version: 'v1.0.0-calibrated-groupkfold',
-    audio_quality: {
-      duration_seconds: 3.8,
-      snr_db: 26.4,
-      voiced_fraction: 0.92,
-      passed: true,
-    },
-    disclaimer: (
-      'Synapse-Voice is an academic research screening aid (EPICS project) and NOT a certified medical diagnostic device. ' +
-      'Consult a board-certified neurologist or licensed medical professional for clinical diagnosis.'
-    ),
-    created_at: new Date().toISOString(),
-  };
+  throw new Error('Acoustic analysis failed. Please ensure a clear vocal recording is provided.');
 }
 
 export async function getAnalysisResult(id: string): Promise<AnalysisResponse> {
+  // 1. Check local session storage & local storage first for instant load
+  if (typeof window !== 'undefined') {
+    try {
+      const sessionItem = sessionStorage.getItem(`synapse_result_${id}`);
+      if (sessionItem) {
+        const parsed = JSON.parse(sessionItem);
+        if (parsed && parsed.features && Object.keys(parsed.features).length > 0) {
+          return parsed;
+        }
+      }
+      const localItem = localStorage.getItem(`synapse_result_${id}`);
+      if (localItem) {
+        const parsed = JSON.parse(localItem);
+        if (parsed && parsed.features && Object.keys(parsed.features).length > 0) {
+          return parsed;
+        }
+      }
+      const lastItem = localStorage.getItem('synapse_last_result');
+      if (lastItem) {
+        const parsed = JSON.parse(lastItem);
+        if (parsed && parsed.id === id && parsed.features) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.warn('Storage retrieval error:', e);
+    }
+  }
+
+  // 2. Fetch from backend API
   try {
     const res = await fetchWithTimeout(`${API_BASE}/results/${id}`, { cache: 'no-store' }, 8000);
     if (res.ok) {
-      return await res.json();
+      const data: AnalysisResponse = await res.json();
+      if (typeof window !== 'undefined' && data?.id) {
+        try {
+          sessionStorage.setItem(`synapse_result_${data.id}`, JSON.stringify(data));
+          localStorage.setItem(`synapse_result_${data.id}`, JSON.stringify(data));
+        } catch {}
+      }
+      return data;
     }
   } catch {
-    // Fall back to localStorage if available
+    // Backend unreachable or record not on server
   }
 
-  if (typeof window !== 'undefined') {
-    const stored = localStorage.getItem('synapse_history');
-    if (stored) {
-      const list = JSON.parse(stored);
-      const found = list.find((item: any) => item.id === id);
-      if (found) {
-        return generateClientFallbackAnalysis(new Blob([]));
-      }
-    }
-  }
-
-  return generateClientFallbackAnalysis(new Blob([]));
+  throw new Error(`Screening record with ID "${id}" could not be found. Please perform a new screening.`);
 }
 
 export async function getHistory(limit: number = 20, token?: string): Promise<any[]> {

@@ -28,6 +28,8 @@ export interface AnalysisResponse {
   literature_citations: CitationItem[];
   model_version: string;
   audio_quality?: Record<string, any>;
+  user_id?: string;
+  is_anonymous?: boolean;
   disclaimer: string;
   created_at: string;
 }

@@ -209,9 +209,8 @@ async def analyze_voice(
             "created_at": now_iso
         }
         
-        # Save to store unless in anonymous "try it" mode
-        if not anonymous:
-            storage_service.save_analysis(analysis_data)
+        # Save to store (persists analysis session for immediate retrieval; anonymous screenings omit user_id)
+        storage_service.save_analysis(analysis_data)
             
         return AnalysisResponse(**analysis_data)
         

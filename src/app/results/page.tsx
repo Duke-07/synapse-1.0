@@ -43,20 +43,35 @@ function ResultsContent() {
     }
 
     const loadData = async () => {
+      // 1. Immediate retrieval from local storage to display instantly without delay
+      try {
+        const cachedSession = sessionStorage.getItem(`synapse_result_${id}`);
+        if (cachedSession) {
+          const parsed = JSON.parse(cachedSession);
+          if (parsed && parsed.features) {
+            setData(parsed);
+            setLoading(false);
+            return;
+          }
+        }
+        const cachedLocal = localStorage.getItem(`synapse_result_${id}`);
+        if (cachedLocal) {
+          const parsed = JSON.parse(cachedLocal);
+          if (parsed && parsed.features) {
+            setData(parsed);
+            setLoading(false);
+            return;
+          }
+        }
+      } catch {
+        // continue to network fetch
+      }
+
       try {
         setLoading(true);
         const res = await getAnalysisResult(id);
         setData(res);
       } catch (err: any) {
-        try {
-          const cached = sessionStorage.getItem(`synapse_result_${id}`);
-          if (cached) {
-            setData(JSON.parse(cached));
-            return;
-          }
-        } catch {
-          // ignore
-        }
         setError(err.message || 'Failed to retrieve screening record.');
       } finally {
         setLoading(false);
