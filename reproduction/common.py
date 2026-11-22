@@ -8,6 +8,7 @@ import pandas as pd
 
 def get_dataset_path() -> str:
     possible_paths = [
+        os.path.join(os.path.dirname(__file__), "..", "data main", "parkinsons.data"),
         os.path.join(os.path.dirname(__file__), "..", "ml", "data", "parkinsons_standardized.csv"),
         os.path.join(os.path.dirname(__file__), "..", "ml", "data", "parkinsons.data"),
         os.path.join(os.path.dirname(__file__), "..", "ml", "data", "parkinsons.csv"),

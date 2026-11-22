@@ -607,23 +607,6 @@ export default function ScreenPage() {
 
       {/* Consent & Settings Card */}
       <div className="banky-card p-6 sm:p-8 space-y-4">
-        {user ? (
-          <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-2xl bg-[#E8F2FF] text-xs font-semibold text-[#141414]">
-            <span>
-              Signed in: <strong>{user.full_name}</strong> ({user.email})
-            </span>
-            <span className="inline-flex items-center gap-1 text-emerald-600 font-bold">
-              <CheckCircle className="w-3.5 h-3.5" /> Result synced to profile history
-            </span>
-          </div>
-        ) : (
-          <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-2xl bg-[#FFF4DC] text-xs font-semibold text-[#141414]">
-            <span>Guest Mode: Result cached in browser session only.</span>
-            <a href="/login" className="text-[#1D63FF] hover:underline font-bold">
-              Sign in to save permanently &rarr;
-            </a>
-          </div>
-        )}
 
         <h4 className="font-headline text-lg sm:text-xl font-medium text-[#141414] flex items-center gap-2 uppercase tracking-tight">
           <Shield className="w-5 h-5 text-[#1D63FF]" />

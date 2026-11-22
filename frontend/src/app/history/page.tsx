@@ -7,10 +7,7 @@ import {
   Trash2,
   Mic,
   ArrowRight,
-  User,
-  LogIn,
 } from 'lucide-react';
-import { useAuth } from '@/lib/auth-context';
 import { getHistory } from '@/lib/api';
 import PillButton from '@/components/ui/PillButton';
 
@@ -23,7 +20,6 @@ interface HistoryRecord {
 }
 
 export default function HistoryPage() {
-  const { user, token, isAuthenticated } = useAuth();
   const [history, setHistory] = useState<HistoryRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [isBackendSource, setIsBackendSource] = useState(false);
@@ -34,29 +30,7 @@ export default function HistoryPage() {
     async function loadHistory() {
       setLoading(true);
 
-      // If authenticated, fetch from backend
-      if (token) {
-        try {
-          const backendRecords = await getHistory(50, token);
-          if (isMounted && backendRecords && backendRecords.length > 0) {
-            const mapped: HistoryRecord[] = backendRecords.map((item: any) => ({
-              id: item.id,
-              probability: item.probability,
-              confidence_band: item.confidence_band,
-              created_at: item.created_at,
-              top_features: item.top_biomarkers?.slice(0, 3).map((b: any) => b.label) || [],
-            }));
-            setHistory(mapped);
-            setIsBackendSource(true);
-            setLoading(false);
-            return;
-          }
-        } catch (e) {
-          console.warn('Backend history retrieval failed, falling back to local storage:', e);
-        }
-      }
-
-      // Fallback: Local Storage
+      // 1. Check local storage first
       try {
         const stored = localStorage.getItem('synapse_history');
         if (stored && isMounted) {
@@ -65,6 +39,24 @@ export default function HistoryPage() {
         }
       } catch (e) {
         console.warn('Failed to parse local history:', e);
+      }
+
+      // 2. Fetch from backend history store
+      try {
+        const backendRecords = await getHistory(50);
+        if (isMounted && backendRecords && backendRecords.length > 0) {
+          const mapped: HistoryRecord[] = backendRecords.map((item: any) => ({
+            id: item.id,
+            probability: item.probability,
+            confidence_band: item.confidence_band,
+            created_at: item.created_at,
+            top_features: item.top_biomarkers?.slice(0, 3).map((b: any) => b.label) || [],
+          }));
+          setHistory(mapped);
+          setIsBackendSource(true);
+        }
+      } catch (e) {
+        // backend offline
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -75,7 +67,7 @@ export default function HistoryPage() {
     return () => {
       isMounted = false;
     };
-  }, [token]);
+  }, []);
 
   const clearHistory = () => {
     if (confirm('Are you sure you want to clear your local screening history?')) {
@@ -126,34 +118,6 @@ export default function HistoryPage() {
         )}
       </div>
 
-      {/* Auth State Banner */}
-      {!isAuthenticated && (
-        <div className="banky-card p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-11 h-11 rounded-2xl bg-yellow/40 flex items-center justify-center text-ink">
-              <User className="w-5 h-5 text-blue" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-ink">Browsing as Guest</p>
-              <p className="text-xs text-ink/70">
-                Sign in to automatically sync screening records to your verified researcher profile.
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link href="/login">
-              <PillButton variant="secondary" size="sm" icon={<LogIn className="w-3 h-3" />}>
-                Sign In
-              </PillButton>
-            </Link>
-            <Link href="/register">
-              <PillButton variant="primary" size="sm">
-                Register
-              </PillButton>
-            </Link>
-          </div>
-        </div>
-      )}
 
       {loading ? (
         <div className="py-24 text-center">
