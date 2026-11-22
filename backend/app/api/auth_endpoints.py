@@ -10,8 +10,6 @@ try:
     from backend.app.models.schemas import (
         AuthMessageResponse,
         EmailVerificationRequest,
-        PasswordResetConfirm,
-        PasswordResetRequest,
         ResendVerificationRequest,
         TokenResponse,
         UserLoginRequest,
@@ -24,8 +22,6 @@ except ModuleNotFoundError:
     from app.models.schemas import (
         AuthMessageResponse,
         EmailVerificationRequest,
-        PasswordResetConfirm,
-        PasswordResetRequest,
         ResendVerificationRequest,
         TokenResponse,
         UserLoginRequest,

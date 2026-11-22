@@ -33,7 +33,6 @@ import warnings
 import joblib
 import matplotlib
 import numpy as np
-import pandas as pd
 
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -69,7 +68,7 @@ warnings.filterwarnings('ignore')
 os.environ['LOKY_MAX_CPU_COUNT'] = '4'
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-from ml.src.features import CANONICAL_FEATURES, REFERENCE_RANGES
+from ml.src.features import REFERENCE_RANGES
 from reproduction.common import load_data
 
 RANDOM_SEED = 42

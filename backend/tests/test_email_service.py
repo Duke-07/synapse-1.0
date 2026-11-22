@@ -4,7 +4,6 @@ Unit tests for the EmailService: template rendering, provider selection, and fal
 
 import pytest
 from backend.app.services.email_service import email_service
-from backend.app.core.config import settings
 
 
 def test_email_template_rendering():
