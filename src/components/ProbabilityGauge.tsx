@@ -18,10 +18,10 @@ export const ProbabilityGauge: React.FC<ProbabilityGaugeProps> = ({ probability,
 
   const getColor = () => {
     if (probability < 0.35) {
-      return { stroke: '#1D63FF', bg: 'text-[#1D63FF]', badge: 'bg-[#E8F2FF] text-[#1D63FF]' };
+      return { stroke: '#0060ca', bg: 'text-[#0060ca]', badge: 'bg-[#91ceff]/30 text-[#090089] border border-[#91ceff]' };
     }
     if (probability <= 0.65) {
-      return { stroke: '#141414', bg: 'text-[#141414]', badge: 'bg-[#FFF4DC] text-[#141414]' };
+      return { stroke: '#fcdc74', bg: 'text-[#090089]', badge: 'bg-[#fcdc74] text-[#090089]' };
     }
     return { stroke: '#E53E3E', bg: 'text-[#E53E3E]', badge: 'bg-red-50 text-[#E53E3E] border border-red-200' };
   };

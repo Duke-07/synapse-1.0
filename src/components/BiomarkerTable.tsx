@@ -50,7 +50,7 @@ export const BiomarkerTable: React.FC<BiomarkerTableProps> = ({ features = {}, s
 
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs sm:text-sm text-[#141414]">
-          <thead className="bg-[#FFCE32]/25 text-[11px] uppercase font-semibold text-[#141414] border-b border-[#141414]/10">
+          <thead className="bg-[#fcdc74]/25 text-[11px] uppercase font-semibold text-[#141414] border-b border-[#141414]/10">
             <tr>
               <th className="py-3 px-3">Biomarker</th>
               <th className="py-3 px-3">Description</th>
@@ -68,7 +68,7 @@ export const BiomarkerTable: React.FC<BiomarkerTableProps> = ({ features = {}, s
               const isWithinHealthy = val >= ref.min && val <= ref.max;
 
               return (
-                <tr key={key} className="hover:bg-[#E8F2FF]/40 transition-colors">
+                <tr key={key} className="hover:bg-[#91ceff]/40 transition-colors">
                   <td className="py-3 px-3 font-semibold text-[#141414]">{key}</td>
                   <td className="py-3 px-3 text-[#6B6D72]">{ref.desc}</td>
                   <td className="py-3 px-3 font-mono font-bold text-[#141414]">
@@ -79,7 +79,7 @@ export const BiomarkerTable: React.FC<BiomarkerTableProps> = ({ features = {}, s
                   </td>
                   <td className="py-3 px-3 text-center">
                     {isWithinHealthy ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#E8F2FF] text-[#1D63FF]">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#91ceff] text-[#0060ca]">
                         <CheckCircle className="w-3 h-3" /> Healthy
                       </span>
                     ) : (

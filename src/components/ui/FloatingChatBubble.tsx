@@ -19,14 +19,14 @@ export const FloatingChatBubble: React.FC = () => {
         transition={{ delay: 0.4, duration: 0.35, ease: [0.2, 1.3, 0.4, 1] }}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
-        className="fixed bottom-6 right-6 sm:right-8 z-50 w-14 h-14 rounded-full bg-[#1D63FF] hover:bg-[#1453E6] text-white shadow-[0_8px_24px_rgba(29,99,255,0.45)] flex items-center justify-center cursor-pointer transition-colors"
+        className="fixed bottom-6 right-6 sm:right-8 z-50 w-14 h-14 rounded-full bg-[#0060ca] hover:bg-[#090089] text-white shadow-[0_8px_24px_rgba(0,96,202,0.45)] flex items-center justify-center cursor-pointer transition-colors"
       >
         {isOpen ? (
           <X className="w-6 h-6 text-white" />
         ) : (
           <div className="relative flex items-center justify-center">
             <MessageSquare className="w-6 h-6 fill-current text-white" />
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#FFCE32] border-2 border-[#1D63FF]" />
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#fcdc74] border-2 border-[#0060ca]" />
           </div>
         )}
       </motion.button>

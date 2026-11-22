@@ -31,7 +31,7 @@ export const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
       }
 
       // Draw idle baseline in blue on yellow
-      ctx.fillStyle = '#FFCE32';
+      ctx.fillStyle = '#fcdc74';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.lineWidth = 3;
@@ -72,12 +72,12 @@ export const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
       activeAnalyser!.getByteTimeDomainData(dataArray);
 
       // Yellow canvas background
-      ctx.fillStyle = '#FFCE32';
+      ctx.fillStyle = '#fcdc74';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Blue live waveform
       ctx.lineWidth = 3.5;
-      ctx.strokeStyle = '#1D63FF';
+      ctx.strokeStyle = '#0060ca';
       ctx.beginPath();
 
       const sliceWidth = (canvas.width * 1.0) / bufferLength;
@@ -115,7 +115,7 @@ export const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
       ref={canvasRef}
       width={700}
       height={120}
-      className="w-full h-full rounded-2xl bg-[#FFCE32] border border-[#141414]/10"
+      className="w-full h-full rounded-2xl bg-[#fcdc74] border border-[#141414]/10"
     />
   );
 };

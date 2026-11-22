@@ -20,8 +20,8 @@ export const Sticker: React.FC<StickerProps> = ({
 }) => {
   const colorStyles = {
     orange: 'bg-[#FF5A1F] text-[#FFF4DC] border-2 border-[#141414]',
-    yellow: 'bg-[#FFCE32] text-[#141414] border-2 border-[#141414]',
-    blue: 'bg-[#1D63FF] text-white border-2 border-white',
+    yellow: 'bg-[#fcdc74] text-[#141414] border-2 border-[#141414]',
+    blue: 'bg-[#0060ca] text-white border-2 border-white',
     cream: 'bg-white text-[#141414] border-2 border-[#141414]',
   };
 

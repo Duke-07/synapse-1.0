@@ -345,7 +345,7 @@ export default function ScreenPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-14 space-y-10">
       {/* Page Header */}
       <div className="text-center space-y-3">
-        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1D63FF]">
+        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#0060ca]">
           Acoustic Voice Screening
         </span>
         <h1 className="font-headline text-4xl sm:text-6xl font-medium tracking-tight text-[#141414] uppercase leading-[0.92]">
@@ -359,13 +359,13 @@ export default function ScreenPage() {
       {/* Protocol Instructions Box */}
       <div className="banky-card p-6 sm:p-8 space-y-3 text-sm">
         <h3 className="font-headline text-lg sm:text-xl font-medium text-[#141414] flex items-center gap-2">
-          <Info className="w-5 h-5 text-[#1D63FF]" />
+          <Info className="w-5 h-5 text-[#0060ca]" />
           Quick Instructions For Accurate Screening
         </h3>
         <ol className="list-decimal list-inside space-y-1.5 text-xs sm:text-sm text-[#141414]/80 font-normal">
           <li>Sit in a quiet room with minimal background noise or echo.</li>
           <li>Hold your microphone approximately 15 cm (6 inches) from your mouth.</li>
-          <li>Take a breath and vocalize a steady <strong className="text-[#1D63FF]">&quot;ahhh&quot;</strong> for at least 5 seconds.</li>
+          <li>Take a breath and vocalize a steady <strong className="text-[#0060ca]">&quot;ahhh&quot;</strong> for at least 5 seconds.</li>
           <li>Maintain a consistent loudness without whispering or straining.</li>
         </ol>
       </div>
@@ -376,7 +376,7 @@ export default function ScreenPage() {
           onClick={() => setMode('mic')}
           className={`px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
             mode === 'mic'
-              ? 'bg-[#1D63FF] text-white shadow-[0_4px_16px_rgba(29,99,255,0.35)] scale-[1.02]'
+              ? 'bg-[#0060ca] text-white shadow-[0_4px_16px_rgba(29,99,255,0.35)] scale-[1.02]'
               : 'bg-white text-[#141414] hover:bg-white/80 shadow-sm'
           }`}
         >
@@ -388,7 +388,7 @@ export default function ScreenPage() {
           onClick={() => setMode('upload')}
           className={`px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
             mode === 'upload'
-              ? 'bg-[#1D63FF] text-white shadow-[0_4px_16px_rgba(29,99,255,0.35)] scale-[1.02]'
+              ? 'bg-[#0060ca] text-white shadow-[0_4px_16px_rgba(29,99,255,0.35)] scale-[1.02]'
               : 'bg-white text-[#141414] hover:bg-white/80 shadow-sm'
           }`}
         >
@@ -411,7 +411,7 @@ export default function ScreenPage() {
             </div>
             <div className="flex justify-between items-center text-xs font-semibold tracking-wider uppercase text-[#141414]/60 px-1">
               <span>{isRecording ? 'Capturing Acoustic Signal...' : 'Microphone Ready'}</span>
-              <span className="font-mono text-[#1D63FF]">
+              <span className="font-mono text-[#0060ca]">
                 {recordingTime}s / 5s minimum
               </span>
             </div>
@@ -422,7 +422,7 @@ export default function ScreenPage() {
             <div className="relative flex items-center justify-center">
               {/* Outer Pulsing Ring when recording */}
               {isRecording && (
-                <div className="absolute inset-0 -m-4 rounded-full border-4 border-[#1D63FF]/30 animate-pulse-ring pointer-events-none" />
+                <div className="absolute inset-0 -m-4 rounded-full border-4 border-[#0060ca]/30 animate-pulse-ring pointer-events-none" />
               )}
 
               {/* 5-Second Circular Progress Ring SVG */}
@@ -443,7 +443,7 @@ export default function ScreenPage() {
                   cx="110"
                   cy="110"
                   r={ringRadius}
-                  stroke={recordingTime >= 5 ? '#22C55E' : '#1D63FF'}
+                  stroke={recordingTime >= 5 ? '#22C55E' : '#0060ca'}
                   strokeWidth="8"
                   fill="transparent"
                   strokeDasharray={ringCircumference}
@@ -459,7 +459,7 @@ export default function ScreenPage() {
                   <button
                     onClick={startRecording}
                     disabled={isLoading}
-                    className="w-40 h-40 rounded-full bg-[#1D63FF] hover:bg-[#1453E6] text-white shadow-[0_12px_32px_rgba(29,99,255,0.4)] hover:scale-105 active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer group"
+                    className="w-40 h-40 rounded-full bg-[#0060ca] hover:bg-[#090089] text-white shadow-[0_12px_32px_rgba(0,96,202,0.4)] hover:scale-105 active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer group"
                     aria-label="Start Voice Recording"
                   >
                     <Mic className="w-10 h-10 group-hover:scale-110 transition-transform" />
@@ -486,7 +486,7 @@ export default function ScreenPage() {
                   <button
                     onClick={resetRecording}
                     disabled={isLoading}
-                    className="w-40 h-40 rounded-full bg-[#FFCE32] hover:bg-[#F2C32B] text-[#141414] shadow-[0_8px_24px_rgba(20,20,20,0.1)] hover:scale-105 active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer"
+                    className="w-40 h-40 rounded-full bg-[#fcdc74] hover:bg-[#f0ce62] text-[#090089] shadow-[0_8px_24px_rgba(9,0,137,0.15)] hover:scale-105 active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer"
                     aria-label="Re-record voice"
                   >
                     <RotateCcw className="w-9 h-9" />
@@ -502,7 +502,7 @@ export default function ScreenPage() {
             <div className="mt-4 text-center">
               {isRecording ? (
                 recordingTime < 5 ? (
-                  <p className="text-xs sm:text-sm font-semibold text-[#1D63FF] uppercase tracking-wider">
+                  <p className="text-xs sm:text-sm font-semibold text-[#0060ca] uppercase tracking-wider">
                     Sustaining vowel... {5 - recordingTime}s remaining for full 22 biomarkers
                   </p>
                 ) : (
@@ -538,7 +538,7 @@ export default function ScreenPage() {
               <div>
                 <p className="font-bold">Microphone Access Error</p>
                 <p className="mt-1">{micError}</p>
-                <p className="mt-1 font-semibold text-[#1D63FF]">
+                <p className="mt-1 font-semibold text-[#0060ca]">
                   Tip: You can switch to the &quot;Drop Audio File&quot; tab above if permissions are restricted.
                 </p>
               </div>
@@ -557,10 +557,10 @@ export default function ScreenPage() {
             onDrop={handleDrop}
             className={`border-2 border-dashed rounded-3xl p-8 sm:p-14 text-center transition-all ${
               dragActive
-                ? 'border-[#1D63FF] bg-[#E8F2FF] scale-[1.01]'
+                ? 'border-[#0060ca] bg-[#91ceff] scale-[1.01]'
                 : selectedFile
                 ? 'border-emerald-500 bg-emerald-50/50'
-                : 'border-[#141414]/20 hover:border-[#1D63FF] bg-white'
+                : 'border-[#141414]/20 hover:border-[#0060ca] bg-white'
             }`}
           >
             <input
@@ -574,11 +574,11 @@ export default function ScreenPage() {
               htmlFor="file-upload"
               className="cursor-pointer flex flex-col items-center justify-center space-y-4"
             >
-              <div className="w-16 h-16 rounded-full bg-[#E8F2FF] text-[#1D63FF] flex items-center justify-center shadow-sm">
+              <div className="w-16 h-16 rounded-full bg-[#91ceff] text-[#0060ca] flex items-center justify-center shadow-sm">
                 {selectedFile ? (
                   <CheckCircle className="w-8 h-8 text-emerald-600" />
                 ) : (
-                  <FileAudio className="w-8 h-8 text-[#1D63FF]" />
+                  <FileAudio className="w-8 h-8 text-[#0060ca]" />
                 )}
               </div>
               {selectedFile ? (
@@ -609,7 +609,7 @@ export default function ScreenPage() {
       <div className="banky-card p-6 sm:p-8 space-y-4">
 
         <h4 className="font-headline text-lg sm:text-xl font-medium text-[#141414] flex items-center gap-2 uppercase tracking-tight">
-          <Shield className="w-5 h-5 text-[#1D63FF]" />
+          <Shield className="w-5 h-5 text-[#0060ca]" />
           Research Consent &amp; Privacy Protocol
         </h4>
 
@@ -619,7 +619,7 @@ export default function ScreenPage() {
               type="checkbox"
               checked={consent}
               onChange={(e) => setConsent(e.target.checked)}
-              className="mt-1 w-4 h-4 rounded border-[#141414]/30 accent-[#1D63FF]"
+              className="mt-1 w-4 h-4 rounded border-[#141414]/30 accent-[#0060ca]"
             />
             <span className="text-xs sm:text-sm text-[#141414]/80 leading-relaxed font-normal">
               <strong className="text-[#141414]">Required Research Consent:</strong> I acknowledge that Synapse-Voice is strictly an exploratory screening tool and research demonstration. It does <em>not</em> provide a medical diagnosis, clinical opinion, or disease confirmation.
@@ -631,7 +631,7 @@ export default function ScreenPage() {
               type="checkbox"
               checked={anonymous}
               onChange={(e) => setAnonymous(e.target.checked)}
-              className="mt-1 w-4 h-4 rounded border-[#141414]/30 accent-[#1D63FF]"
+              className="mt-1 w-4 h-4 rounded border-[#141414]/30 accent-[#0060ca]"
             />
             <span className="text-xs sm:text-sm text-[#141414]/80 leading-relaxed font-normal">
               <strong className="text-[#141414]">Zero-Retention Protocol:</strong> Discard raw audio immediately after extracting acoustic features. Do not retain voice recordings on cloud servers.

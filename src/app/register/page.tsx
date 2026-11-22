@@ -51,7 +51,7 @@ export default function RegisterPage() {
     'bg-red-500',
     'bg-amber-500',
     'bg-amber-400',
-    'bg-[#1D63FF]',
+    'bg-[#0060ca]',
     'bg-emerald-500',
   ];
 
@@ -96,7 +96,7 @@ export default function RegisterPage() {
   return (
     <div className="max-w-md mx-auto my-8 sm:my-14 banky-card p-8 sm:p-10 space-y-6">
       <div className="text-center space-y-2">
-        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1D63FF]">
+        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#0060ca]">
           Researcher Enrollment
         </span>
         <h1 className="font-headline text-3xl sm:text-4xl font-medium tracking-tight text-[#141414] uppercase leading-tight">
@@ -115,23 +115,23 @@ export default function RegisterPage() {
       )}
 
       {successInfo ? (
-        <div className="p-6 bg-[#E8F2FF] border border-[#1D63FF]/30 rounded-2xl text-center space-y-4">
-          <CheckCircle className="w-10 h-10 text-[#1D63FF] mx-auto" />
+        <div className="p-6 bg-[#91ceff] border border-[#0060ca]/30 rounded-2xl text-center space-y-4">
+          <CheckCircle className="w-10 h-10 text-[#0060ca] mx-auto" />
           <h3 className="font-headline text-xl text-[#141414] uppercase">
             Account Created
           </h3>
           <p className="text-xs text-[#141414]/80">{successInfo.message}</p>
           {successInfo.previewCode && (
-            <div className="p-3 bg-white rounded-xl border border-[#1D63FF]/20">
+            <div className="p-3 bg-white rounded-xl border border-[#0060ca]/20">
               <span className="text-[11px] text-[#6B6D72] block">Preview Verification Code:</span>
-              <span className="font-mono text-xl font-bold tracking-widest text-[#1D63FF]">
+              <span className="font-mono text-xl font-bold tracking-widest text-[#0060ca]">
                 {successInfo.previewCode}
               </span>
             </div>
           )}
           <Link
             href={`/verify-email?email=${encodeURIComponent(email)}`}
-            className="block w-full py-3 rounded-full bg-[#1D63FF] text-white font-semibold text-xs text-center"
+            className="block w-full py-3 rounded-full bg-[#0060ca] text-white font-semibold text-xs text-center"
           >
             Proceed to Verification &rarr;
           </Link>
@@ -150,7 +150,7 @@ export default function RegisterPage() {
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Dr. Jane Doe"
                 required
-                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#0060ca] transition-colors"
               />
             </div>
           </div>
@@ -167,7 +167,7 @@ export default function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="jane@clinic.org"
                 required
-                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#0060ca] transition-colors"
               />
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full pl-10 pr-10 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+                className="w-full pl-10 pr-10 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#0060ca] transition-colors"
               />
               <button
                 type="button"
@@ -222,7 +222,7 @@ export default function RegisterPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#0060ca] transition-colors"
               />
             </div>
           </div>
@@ -232,7 +232,7 @@ export default function RegisterPage() {
               type="checkbox"
               checked={agreedToTerms}
               onChange={(e) => setAgreedToTerms(e.target.checked)}
-              className="mt-0.5 w-4 h-4 rounded border-[#141414]/30 accent-[#1D63FF]"
+              className="mt-0.5 w-4 h-4 rounded border-[#141414]/30 accent-[#0060ca]"
             />
             <span>
               I understand Synapse-Voice is strictly an exploratory screening tool and not a clinical diagnostic device.
@@ -254,7 +254,7 @@ export default function RegisterPage() {
 
       <div className="text-center pt-2 border-t border-[#141414]/10 text-xs text-[#141414]/70">
         Already enrolled?{' '}
-        <Link href="/login" className="text-[#1D63FF] font-semibold hover:underline">
+        <Link href="/login" className="text-[#0060ca] font-semibold hover:underline">
           Sign In here &rarr;
         </Link>
       </div>

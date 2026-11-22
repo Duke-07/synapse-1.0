@@ -31,7 +31,7 @@ export const Navbar: React.FC = () => {
     <header
       className={`sticky top-0 z-40 w-full transition-all duration-300 ${
         scrolled
-          ? 'bg-[#FFCE32]/95 backdrop-blur-sm shadow-[0_2px_12px_rgba(20,20,20,0.06)] py-3'
+          ? 'bg-[#fcdc74]/95 backdrop-blur-sm shadow-[0_2px_12px_rgba(20,20,20,0.06)] py-3'
           : 'bg-transparent py-5'
       }`}
     >
@@ -45,7 +45,7 @@ export const Navbar: React.FC = () => {
                 key={link.href}
                 href={link.href}
                 className={`text-xs font-semibold tracking-[0.06em] xl:tracking-[0.08em] transition-colors nav-link-underline ${
-                  isActive ? 'text-[#1D63FF] font-bold' : 'text-[#141414] hover:text-[#1D63FF]'
+                  isActive ? 'text-[#0060ca] font-bold' : 'text-[#141414] hover:text-[#0060ca]'
                 }`}
               >
                 {link.label}
@@ -62,7 +62,7 @@ export const Navbar: React.FC = () => {
             aria-label="Synapse Voice Home"
           >
             <span>synapse</span>
-            <span className="text-[#1D63FF]">.</span>
+            <span className="text-[#0060ca]">.</span>
             <span className="text-[#141414]/75 text-sm font-sans uppercase tracking-wider font-semibold">
               voice
             </span>
@@ -73,7 +73,7 @@ export const Navbar: React.FC = () => {
         <div className="hidden lg:flex items-center gap-3">
           <Link
             href="/screen"
-            className="px-6 py-2.5 rounded-full bg-[#1D63FF] text-white font-semibold text-xs tracking-wide hover:bg-[#1453E6] shadow-[0_4px_14px_rgba(29,99,255,0.3)] transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]"
+            className="px-6 py-2.5 rounded-full bg-[#0060ca] text-white font-semibold text-xs tracking-wide hover:bg-[#090089] shadow-[0_4px_14px_rgba(29,99,255,0.3)] transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]"
           >
             Start Screening
           </Link>
@@ -93,7 +93,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#FFCE32] border-t border-[#141414]/10 px-6 py-6 space-y-4 shadow-lg">
+        <div className="lg:hidden bg-[#fcdc74] border-t border-[#141414]/10 px-6 py-6 space-y-4 shadow-lg">
           <div className="grid grid-cols-2 gap-2">
             {links.map((link) => {
               const isActive = pathname === link.href;
@@ -103,7 +103,7 @@ export const Navbar: React.FC = () => {
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`px-3 py-2.5 rounded-xl text-xs font-semibold tracking-wider ${
-                    isActive ? 'bg-[#1D63FF] text-white' : 'text-[#141414] hover:bg-white/60'
+                    isActive ? 'bg-[#0060ca] text-white' : 'text-[#141414] hover:bg-white/60'
                   }`}
                 >
                   {link.label}
@@ -116,7 +116,7 @@ export const Navbar: React.FC = () => {
             <Link
               href="/screen"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center py-3 rounded-full bg-[#1D63FF] text-white font-semibold text-xs tracking-wider shadow-md"
+              className="w-full text-center py-3 rounded-full bg-[#0060ca] text-white font-semibold text-xs tracking-wider shadow-md"
             >
               Start Voice Screening
             </Link>

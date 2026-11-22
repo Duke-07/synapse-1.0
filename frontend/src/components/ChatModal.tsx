@@ -143,7 +143,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
       }
       if (line.startsWith('#### ')) {
         return (
-          <h5 key={idx} className="font-headline text-xs sm:text-sm font-semibold text-[#1D63FF] uppercase tracking-wider mt-2 mb-0.5">
+          <h5 key={idx} className="font-headline text-xs sm:text-sm font-semibold text-[#0060ca] uppercase tracking-wider mt-2 mb-0.5">
             {line.replace('#### ', '')}
           </h5>
         );
@@ -172,7 +172,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
     return str
       .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-[#141414]">$1</strong>')
       .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
-      .replace(/\$(.*?)\$/g, '<code class="bg-[#141414]/5 px-1 py-0.5 rounded text-[11px] font-mono text-[#1D63FF]">$1</code>');
+      .replace(/\$(.*?)\$/g, '<code class="bg-[#141414]/5 px-1 py-0.5 rounded text-[11px] font-mono text-[#0060ca]">$1</code>');
   };
 
   return (
@@ -185,11 +185,11 @@ export const ChatModal: React.FC<ChatModalProps> = ({
         className="fixed bottom-24 right-4 sm:right-7 z-50 w-[92vw] sm:w-[420px] max-w-[440px] h-[580px] max-h-[82vh] flex flex-col bg-white rounded-[28px] shadow-[0_20px_50px_rgba(20,20,20,0.22)] border border-[#141414]/10 overflow-hidden"
         style={{ pointerEvents: 'auto' }}
       >
-        {/* Header (Banky Vibrant Blue) */}
-        <div className="bg-[#1D63FF] text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-sm">
+        {/* Header (First Color Deep Navy #090089) */}
+        <div className="bg-[#090089] text-white px-5 py-3.5 flex items-center justify-between shrink-0 shadow-sm border-b border-[#0060ca]/40">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-white text-[#1D63FF] flex items-center justify-center font-bold shadow-sm shrink-0">
-              <Sparkles className="w-5 h-5 text-[#1D63FF]" />
+            <div className="w-9 h-9 rounded-full bg-white/10 text-[#fcdc74] border border-[#fcdc74]/30 flex items-center justify-center font-bold shadow-sm shrink-0">
+              <Sparkles className="w-5 h-5 text-[#fcdc74]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -198,7 +198,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
                 </h3>
                 <span className="w-2 h-2 rounded-full bg-[#4ADE80] animate-pulse" title="Ready to answer" />
               </div>
-              <p className="text-[11px] text-white/80 font-normal leading-tight">
+              <p className="text-[11px] text-[#91ceff] font-normal leading-tight">
                 Parkinson&apos;s &amp; Acoustic Voice Intelligence
               </p>
             </div>
@@ -236,7 +236,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
               <div
                 className={`max-w-[90%] rounded-2xl p-3.5 ${
                   m.role === 'user'
-                    ? 'bg-[#1D63FF] text-white rounded-tr-none shadow-sm text-xs sm:text-sm font-medium'
+                    ? 'bg-[#0060ca] text-white rounded-tr-none shadow-sm text-xs sm:text-sm font-medium'
                     : 'bg-white text-[#141414] rounded-tl-none border border-[#141414]/10 shadow-[0_2px_10px_rgba(20,20,20,0.03)]'
                 }`}
               >
@@ -250,7 +250,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
               {/* Citations block for assistant responses */}
               {m.role === 'assistant' && m.citations && m.citations.length > 0 && (
                 <div className="mt-2 space-y-1 max-w-[90%]">
-                  <div className="flex items-center gap-1 text-[10px] font-semibold tracking-wider uppercase text-[#1D63FF]">
+                  <div className="flex items-center gap-1 text-[10px] font-semibold tracking-wider uppercase text-[#0060ca]">
                     <BookOpen className="w-3 h-3" />
                     <span>Verified Clinical Literature ({m.citations.length})</span>
                   </div>
@@ -269,7 +269,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
                             href={c.doi.startsWith('http') ? c.doi : `https://doi.org/${c.doi}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="shrink-0 text-[#1D63FF] hover:underline flex items-center gap-0.5"
+                            className="shrink-0 text-[#0060ca] hover:underline flex items-center gap-0.5"
                           >
                             <span>DOI</span>
                             <ExternalLink className="w-2.5 h-2.5" />
@@ -293,7 +293,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
                         key={sqIdx}
                         onClick={() => handleSendText(sq)}
                         disabled={loading}
-                        className="text-left text-[11px] bg-white hover:bg-[#E8F2FF] text-[#141414] hover:text-[#1D63FF] border border-[#141414]/12 hover:border-[#1D63FF]/30 rounded-full px-3 py-1 transition-all duration-150 active:scale-95 cursor-pointer shadow-xs disabled:opacity-50"
+                        className="text-left text-[11px] bg-white hover:bg-[#91ceff] text-[#141414] hover:text-[#0060ca] border border-[#141414]/12 hover:border-[#0060ca]/30 rounded-full px-3 py-1 transition-all duration-150 active:scale-95 cursor-pointer shadow-xs disabled:opacity-50"
                       >
                         {sq}
                       </button>
@@ -307,7 +307,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
           {loading && (
             <div className="flex items-start">
               <div className="bg-white border border-[#141414]/10 rounded-2xl rounded-tl-none p-3 shadow-xs flex items-center gap-2 text-xs text-[#141414]/70">
-                <span className="w-2 h-2 rounded-full bg-[#1D63FF] animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-[#0060ca] animate-pulse" />
                 <span>Synthesizing clinical literature &amp; neurology evidence...</span>
               </div>
             </div>
@@ -326,13 +326,13 @@ export const ChatModal: React.FC<ChatModalProps> = ({
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask anything about Parkinson's, biomarkers, therapies..."
               disabled={loading}
-              className="flex-1 bg-[#F4F4F5] border border-transparent focus:border-[#1D63FF] focus:bg-white rounded-full px-4 py-2.5 text-xs sm:text-sm text-[#141414] placeholder-[#141414]/50 focus:outline-none transition-all"
+              className="flex-1 bg-[#F4F4F5] border border-transparent focus:border-[#0060ca] focus:bg-white rounded-full px-4 py-2.5 text-xs sm:text-sm text-[#141414] placeholder-[#141414]/50 focus:outline-none transition-all"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
               aria-label="Send message"
-              className="w-10 h-10 rounded-full bg-[#1D63FF] hover:bg-[#1453E6] disabled:opacity-40 text-white flex items-center justify-center shrink-0 transition-transform active:scale-95 shadow-md cursor-pointer"
+              className="w-10 h-10 rounded-full bg-[#0060ca] hover:bg-[#090089] disabled:opacity-40 text-white flex items-center justify-center shrink-0 transition-transform active:scale-95 shadow-md cursor-pointer"
             >
               <Send className="w-4 h-4" />
             </button>

@@ -45,7 +45,7 @@ export const ShapChart: React.FC<ShapChartProps> = ({ topBiomarkers, attribution
                 </span>
                 <span
                   className={`font-mono font-bold text-xs ${
-                    isPositive ? 'text-[#E53E3E]' : 'text-[#1D63FF]'
+                    isPositive ? 'text-[#E53E3E]' : 'text-[#0060ca]'
                   }`}
                 >
                   {isPositive ? '+' : ''}{(b.shap_value || 0).toFixed(3)}
@@ -62,7 +62,7 @@ export const ShapChart: React.FC<ShapChartProps> = ({ topBiomarkers, attribution
                   />
                 ) : (
                   <div
-                    className="h-full bg-[#1D63FF] rounded-l-full transition-all duration-700 ml-auto"
+                    className="h-full bg-[#0060ca] rounded-l-full transition-all duration-700 ml-auto"
                     style={{ marginRight: '50%', width: `${pct / 2}%` }}
                   />
                 )}

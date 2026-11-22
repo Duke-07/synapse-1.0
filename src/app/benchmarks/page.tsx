@@ -140,7 +140,7 @@ export default function BenchmarksPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-10">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-3">
-        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1D63FF]">
+        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#0060ca]">
           Empirical Reproducibility &amp; Leakage Audit
         </span>
         <h1 className="font-headline text-4xl sm:text-6xl font-medium tracking-tight text-[#141414] uppercase leading-[0.92]">
@@ -155,7 +155,7 @@ export default function BenchmarksPage() {
       {/* The Data Leakage Trap Box (White Banky Card) */}
       <div className="banky-card p-8 sm:p-10 space-y-4">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-full bg-[#E8F2FF] text-[#1D63FF] flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-full bg-[#91ceff]/30 text-[#090089] flex items-center justify-center shrink-0">
             <TrendingDown className="w-6 h-6" />
           </div>
           <div className="space-y-2">
@@ -167,7 +167,7 @@ export default function BenchmarksPage() {
               When researchers use naive random train-test splits (70:30 or random 10-fold CV), multiple phonations from the same individual appear in both training and testing partitions.
               Classifiers inadvertently memorize speaker anatomy (e.g. baseline pitch floor) rather than dysphonia pathology, artificially inflating reported accuracy to <strong>92%–99%</strong>.
             </p>
-            <p className="text-xs sm:text-sm text-[#1D63FF] font-semibold">
+            <p className="text-xs sm:text-sm text-[#0060ca] font-semibold">
               Under strict subject-grouped cross-validation (StratifiedGroupKFold), all models experience an honest drop of 10% to 18%,
               revealing that the true generalizable screening benchmark on this cohort is approximately <strong>79.4%</strong>.
             </p>
@@ -181,8 +181,8 @@ export default function BenchmarksPage() {
           onClick={() => setActiveTab('reproduction')}
           className={`px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
             activeTab === 'reproduction'
-              ? 'bg-[#1D63FF] text-white shadow-[0_4px_16px_rgba(29,99,255,0.35)] scale-[1.02]'
-              : 'bg-white text-[#141414] hover:bg-white/80 shadow-sm'
+              ? 'bg-[#0060ca] text-white shadow-[0_4px_16px_rgba(0,96,202,0.35)] scale-[1.02]'
+              : 'bg-white text-[#090089] hover:bg-[#91ceff]/25 shadow-sm'
           }`}
         >
           <span className="flex items-center gap-2">
@@ -193,8 +193,8 @@ export default function BenchmarksPage() {
           onClick={() => setActiveTab('papers')}
           className={`px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
             activeTab === 'papers'
-              ? 'bg-[#1D63FF] text-white shadow-[0_4px_16px_rgba(29,99,255,0.35)] scale-[1.02]'
-              : 'bg-white text-[#141414] hover:bg-white/80 shadow-sm'
+              ? 'bg-[#0060ca] text-white shadow-[0_4px_16px_rgba(0,96,202,0.35)] scale-[1.02]'
+              : 'bg-white text-[#090089] hover:bg-[#91ceff]/25 shadow-sm'
           }`}
         >
           <span className="flex items-center gap-2">
@@ -208,19 +208,19 @@ export default function BenchmarksPage() {
         <div className="banky-card p-6 sm:p-8 space-y-4">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm text-[#141414]">
-              <thead className="bg-[#FFCE32]/25 text-[11px] uppercase font-semibold text-[#141414] border-b border-[#141414]/10">
+              <thead className="bg-[#fcdc74]/25 text-[11px] uppercase font-semibold text-[#141414] border-b border-[#141414]/10">
                 <tr>
                   <th className="py-3.5 px-3">Prior Work / Repo</th>
                   <th className="py-3.5 px-3">Reported Metric</th>
                   <th className="py-3.5 px-3">Our Reproduction (Naive)</th>
-                  <th className="py-3.5 px-3 text-[#1D63FF]">Our Reproduction (Grouped CV)</th>
+                  <th className="py-3.5 px-3 text-[#0060ca]">Our Reproduction (Grouped CV)</th>
                   <th className="py-3.5 px-3 text-[#E53E3E]">Leakage Drop</th>
                   <th className="py-3.5 px-3">Risk Assessment</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#141414]/5 text-xs">
                 {benchmarks.map((b, idx) => (
-                  <tr key={idx} className="hover:bg-[#E8F2FF]/40 transition-colors">
+                  <tr key={idx} className="hover:bg-[#91ceff]/40 transition-colors">
                     <td className="py-3.5 px-3 font-semibold text-[#141414] whitespace-nowrap">
                       {b.work}
                     </td>
@@ -230,7 +230,7 @@ export default function BenchmarksPage() {
                     <td className="py-3.5 px-3 font-mono font-medium text-[#141414]">
                       {b.reproduced_own}
                     </td>
-                    <td className="py-3.5 px-3 font-mono font-bold text-[#1D63FF] bg-[#E8F2FF]/50">
+                    <td className="py-3.5 px-3 font-mono font-bold text-[#0060ca] bg-[#91ceff]/50">
                       {b.reproduced_grouped}
                     </td>
                     <td className="py-3.5 px-3 font-mono font-bold text-[#E53E3E]">
@@ -244,14 +244,14 @@ export default function BenchmarksPage() {
                   </tr>
                 ))}
                 {/* Synapse-Voice Champion Row */}
-                <tr className="bg-[#E8F2FF] font-medium border-t-2 border-[#1D63FF]">
-                  <td className="py-4 px-3 font-bold text-[#1D63FF] flex items-center gap-1.5">
-                    <Award className="w-4 h-4 text-[#1D63FF]" />
+                <tr className="bg-[#91ceff] font-medium border-t-2 border-[#0060ca]">
+                  <td className="py-4 px-3 font-bold text-[#0060ca] flex items-center gap-1.5">
+                    <Award className="w-4 h-4 text-[#0060ca]" />
                     Synapse-Voice (Our Model)
                   </td>
                   <td className="py-4 px-3 text-[#6B6D72]">Honest screening</td>
                   <td className="py-4 px-3 font-mono text-[#6B6D72]">&mdash;</td>
-                  <td className="py-4 px-3 font-mono font-bold text-[#1D63FF]">
+                  <td className="py-4 px-3 font-mono font-bold text-[#0060ca]">
                     79.41% ± 7.77% (AUC 0.941)
                   </td>
                   <td className="py-4 px-3 font-mono font-bold text-emerald-600">0.0% (Zero Leakage)</td>
@@ -273,7 +273,7 @@ export default function BenchmarksPage() {
           {papers.map((p, idx) => (
             <div key={idx} className="banky-card p-6 space-y-3">
               <div className="flex items-start justify-between gap-2">
-                <span className="font-mono text-xs font-bold text-[#1D63FF]">
+                <span className="font-mono text-xs font-bold text-[#0060ca]">
                   {p.year} &middot; {p.venue}
                 </span>
                 {p.doi && (
@@ -281,7 +281,7 @@ export default function BenchmarksPage() {
                     href={`https://doi.org/${p.doi}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-[#1D63FF] hover:underline"
+                    className="text-[#0060ca] hover:underline"
                   >
                     <ExternalLink className="w-4 h-4" />
                   </a>

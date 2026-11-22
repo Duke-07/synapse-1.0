@@ -23,8 +23,8 @@ def test_email_template_rendering():
     assert "Dr. Jane Doe" in html_content
     assert "verify-email?email=researcher@purdue.edu" in html_content
     assert "15 minutes" in html_content
-    assert "#FFCE32" in html_content # Canary yellow header
-    assert "#1D63FF" in html_content # Royal blue code accent
+    assert "#fcdc74" in html_content # Warm golden yellow header
+    assert "#0060ca" in html_content # Royal cobalt blue code accent
 
     # Verify Plain text content
     assert "839201" in text_content
