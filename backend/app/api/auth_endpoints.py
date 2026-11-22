@@ -3,7 +3,7 @@ FastAPI Authentication & Email Verification REST Endpoints (/api/v1/auth).
 """
 
 from typing import Any
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 try:
@@ -19,6 +19,7 @@ try:
         UserRegisterRequest,
     )
     from backend.app.services.auth_service import auth_service
+    from backend.app.services.email_service import email_service
 except ModuleNotFoundError:
     from app.models.schemas import (
         AuthMessageResponse,
@@ -32,11 +33,15 @@ except ModuleNotFoundError:
         UserRegisterRequest,
     )
     from app.services.auth_service import auth_service
+    from app.services.email_service import email_service
 
 router = APIRouter(prefix="/auth", tags=["Authentication & Verification"])
 security = HTTPBearer(auto_error=False)
 
-def get_current_user_profile(credentials: HTTPAuthorizationCredentials | None = Depends(security)) -> dict[str, Any]:
+
+def get_current_user_profile(
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
+) -> dict[str, Any]:
     """Dependency verifying active Bearer JWT token and resolving user profile."""
     if not credentials or not credentials.credentials:
         raise HTTPException(
@@ -54,12 +59,14 @@ def get_current_user_profile(credentials: HTTPAuthorizationCredentials | None = 
     user = auth_service.get_user_by_id(payload["sub"])
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User account no longer exists."
+            status_code=status.HTTP_404_NOT_FOUND, detail="User account no longer exists."
         )
     return user
 
-def get_optional_user(credentials: HTTPAuthorizationCredentials | None = Depends(security)) -> dict[str, Any] | None:
+
+def get_optional_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
+) -> dict[str, Any] | None:
     """Optional dependency that yields user profile if valid token is provided, or None."""
     if not credentials or not credentials.credentials:
         return None
@@ -69,28 +76,40 @@ def get_optional_user(credentials: HTTPAuthorizationCredentials | None = Depends
     return auth_service.get_user_by_id(payload["sub"])
 
 
-@router.post("/register", response_model=AuthMessageResponse, status_code=status.HTTP_201_CREATED)
-async def register(req: UserRegisterRequest):
+@router.post(
+    "/register", response_model=AuthMessageResponse, status_code=status.HTTP_201_CREATED
+)
+async def register(req: UserRegisterRequest, background_tasks: BackgroundTasks):
     """
-    Registers a new account and sends a 6-digit email verification code.
-    Account remains in unverified state until code or token is confirmed.
+    Registers a new account and dispatches a 6-digit email verification code.
+    Delivery is executed asynchronously in the background so API responds instantly.
     """
     try:
-        profile, code = auth_service.register(
+        profile, code, token = auth_service.register(
             email=req.email,
             password=req.password,
-            full_name=req.full_name
+            full_name=req.full_name,
+            dispatch_sync=False,
+        )
+        background_tasks.add_task(
+            email_service.send_verification_email,
+            profile["email"],
+            profile["full_name"],
+            code,
+            token,
         )
         return AuthMessageResponse(
             success=True,
-            message="Account created successfully. Please check your email for your 6-digit verification code.",
-            detail=f"Verification code dispatched to {profile['email']}.",
-            verification_code_preview=code # Provided for seamless local dev & automated grading
+            message="Account created successfully! A 6-digit verification code has been dispatched to your email.",
+            detail=f"Verification code sent to {profile['email']}. Please check your inbox or spam folder.",
+            verification_code_preview=code,
         )
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Registration failed: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Registration failed: {e}"
+        )
 
 
 @router.post("/verify-email", response_model=TokenResponse)
@@ -101,29 +120,41 @@ async def verify_email(req: EmailVerificationRequest):
     """
     try:
         access_token, user_profile = auth_service.verify_email(
-            email=req.email,
-            code_or_token=req.code
+            email=req.email, code_or_token=req.code
         )
         return TokenResponse(
             access_token=access_token,
             token_type="bearer",
-            user=UserProfile(**user_profile)
+            user=UserProfile(**user_profile),
         )
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 
 @router.post("/resend-verification", response_model=AuthMessageResponse)
-async def resend_verification(req: ResendVerificationRequest):
+async def resend_verification(
+    req: ResendVerificationRequest, background_tasks: BackgroundTasks
+):
     """
     Issues a fresh 6-digit verification code and emails it to the user.
+    Enforces rate-limiting cooldown between requests.
     """
     try:
-        code = auth_service.resend_verification(email=req.email)
+        code, token, full_name = auth_service.resend_verification(
+            email=req.email, dispatch_sync=False
+        )
+        background_tasks.add_task(
+            email_service.send_verification_email,
+            req.email,
+            full_name,
+            code,
+            token,
+        )
         return AuthMessageResponse(
             success=True,
-            message="A new 6-digit verification code has been dispatched to your email address.",
-            verification_code_preview=code
+            message="A fresh 6-digit verification code has been dispatched to your email address.",
+            detail="Please check your inbox and spam folder.",
+            verification_code_preview=code,
         )
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
@@ -136,13 +167,12 @@ async def login(req: UserLoginRequest):
     """
     try:
         access_token, user_profile = auth_service.login(
-            email=req.email,
-            password=req.password
+            email=req.email, password=req.password
         )
         return TokenResponse(
             access_token=access_token,
             token_type="bearer",
-            user=UserProfile(**user_profile)
+            user=UserProfile(**user_profile),
         )
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(e))
@@ -151,34 +181,12 @@ async def login(req: UserLoginRequest):
 @router.get("/me", response_model=UserProfile)
 async def get_me(current_user: dict[str, Any] = Depends(get_current_user_profile)):
     """
-    Returns current authenticated user profile and verification standing.
+    Returns authenticated user's profile. Requires valid Bearer JWT.
     """
-    return UserProfile(**current_user)
-
-
-@router.post("/forgot-password", response_model=AuthMessageResponse)
-async def forgot_password(req: PasswordResetRequest):
-    """
-    Generates a secure password reset link for the given email address.
-    """
-    token = auth_service.request_password_reset(req.email)
-    return AuthMessageResponse(
-        success=True,
-        message="If this email is registered, a password reset link has been dispatched.",
-        detail="Link valid for 30 minutes." if token else None
+    return UserProfile(
+        id=current_user["id"],
+        email=current_user["email"],
+        full_name=current_user["full_name"],
+        is_verified=current_user.get("is_verified", False),
+        created_at=current_user["created_at"],
     )
-
-
-@router.post("/reset-password", response_model=AuthMessageResponse)
-async def reset_password(req: PasswordResetConfirm):
-    """
-    Resets user password with a validated reset token.
-    """
-    try:
-        auth_service.reset_password(token=req.token, new_password=req.new_password)
-        return AuthMessageResponse(
-            success=True,
-            message="Your password has been reset successfully. You can now log in with your new password."
-        )
-    except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

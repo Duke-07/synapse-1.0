@@ -9,9 +9,9 @@ import {
   RefreshCw,
   CheckCircle,
   AlertCircle,
-  ArrowRight,
   KeyRound,
   Sparkles,
+  Info,
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import PillButton from '@/components/ui/PillButton';
@@ -161,7 +161,7 @@ function VerifyEmailForm() {
     try {
       const res = await resendCode(email.trim().toLowerCase());
       setResendCooldown(60);
-      setSuccessMessage('A fresh verification code has been dispatched to your inbox.');
+      setSuccessMessage('A fresh verification code has been dispatched to your email inbox.');
       if (res.verification_code_preview) {
         setDevCodePreview(res.verification_code_preview);
       }
@@ -191,9 +191,20 @@ function VerifyEmailForm() {
         </div>
 
         {/* Card */}
-        <div className="banky-card p-6 sm:p-8">
+        <div className="banky-card p-6 sm:p-8 space-y-6">
+          {/* Email dispatch notice */}
+          <div className="p-3.5 rounded-2xl bg-blue/10 border border-blue/20 flex items-start gap-2.5 text-ink text-xs">
+            <Info className="w-4 h-4 text-blue shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-blue">Check Your Inbox & Spam Folder</p>
+              <p className="text-ink/75 mt-0.5">
+                We sent a 6-digit OTP code to <strong className="text-ink">{email || 'your email'}</strong>. Code expires in 15 minutes.
+              </p>
+            </div>
+          </div>
+
           {errorMessage && (
-            <div className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 flex items-start gap-3 text-rose-800 text-xs sm:text-sm">
+            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 flex items-start gap-3 text-rose-800 text-xs sm:text-sm">
               <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
               <div>
                 <p className="font-bold text-rose-900">Verification Error</p>
@@ -203,7 +214,7 @@ function VerifyEmailForm() {
           )}
 
           {successMessage && (
-            <div className="mb-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm flex items-start gap-3">
+            <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm flex items-start gap-3">
               <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
               <div>
                 <p className="font-bold text-emerald-900">Verified!</p>
@@ -214,7 +225,7 @@ function VerifyEmailForm() {
 
           {/* Dev/Demo Quick Fill Banner if code preview available */}
           {devCodePreview && (
-            <div className="mb-6 p-3 rounded-2xl bg-yellow/30 border border-yellow/60 flex items-center justify-between text-xs">
+            <div className="p-3 rounded-2xl bg-yellow/30 border border-yellow/60 flex items-center justify-between text-xs">
               <div className="flex items-center gap-2 text-ink">
                 <Sparkles className="w-4 h-4 text-blue" />
                 <span>Simulated Code: <strong className="font-mono text-blue font-bold">{devCodePreview}</strong></span>
