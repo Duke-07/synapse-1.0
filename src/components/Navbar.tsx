@@ -37,14 +37,14 @@ export const Navbar: React.FC = () => {
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Left Links (Desktop) */}
-        <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+        <div className="hidden lg:flex items-center gap-5 xl:gap-7">
           {links.map((link) => {
             const isActive = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-xs font-semibold tracking-[0.08em] transition-colors nav-link-underline ${
+                className={`text-xs font-semibold tracking-[0.06em] xl:tracking-[0.08em] transition-colors nav-link-underline ${
                   isActive ? 'text-[#1D63FF] font-bold' : 'text-[#141414] hover:text-[#1D63FF]'
                 }`}
               >

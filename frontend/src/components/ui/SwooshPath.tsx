@@ -10,8 +10,8 @@ interface SwooshPathProps {
 export const SwooshPath: React.FC<SwooshPathProps> = ({ className = '' }) => {
   const { scrollYProgress } = useScroll();
 
-  // Animate path drawing with scroll progress from 0.4 up to 1.0
-  const pathLength = useTransform(scrollYProgress, [0, 0.4], [0.35, 1]);
+  // Draw stroke smoothly as user scrolls past hero (from 0 to 0.2 scroll progress)
+  const pathLength = useTransform(scrollYProgress, [0, 0.2], [0.55, 1]);
 
   return (
     <div
@@ -19,22 +19,23 @@ export const SwooshPath: React.FC<SwooshPathProps> = ({ className = '' }) => {
       className={`absolute inset-0 pointer-events-none overflow-hidden select-none z-0 ${className}`}
     >
       <svg
-        viewBox="0 0 1440 600"
+        viewBox="0 0 1440 450"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="none"
         className="w-full h-full"
       >
-        {/* Main Thick White Swoosh Line */}
+        {/* Main Thick White Swoosh Line behind Hero CTA */}
         <motion.path
-          d="M -50 480 L 460 480 L 590 480 L 1150 480 L 1320 180 L 1500 120"
+          d="M -60 320 L 620 320 L 1100 130 L 1500 100"
           stroke="#FFFFFF"
-          strokeWidth="11"
+          strokeWidth="12"
           strokeLinecap="round"
           strokeLinejoin="round"
+          vectorEffect="non-scaling-stroke"
           style={{ pathLength }}
-          initial={{ pathLength: 0.35 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ pathLength: 0.55 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         />
       </svg>
     </div>

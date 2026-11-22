@@ -46,12 +46,12 @@ export default function LandingPage() {
 
   return (
     <div className="relative w-full overflow-hidden">
-      {/* Dynamic Animated White Swoosh Behind Hero */}
-      <SwooshPath className="top-12 md:top-20" />
-
       {/* HERO SECTION */}
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-14 pb-16 sm:pb-24">
-        <div className="space-y-10 sm:space-y-12">
+      <section className="relative overflow-hidden w-full pt-8 sm:pt-14 pb-16 sm:pb-24">
+        {/* Dynamic Animated White Swoosh Behind Hero */}
+        <SwooshPath />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
           {/* Main Headline with Line-by-Line Reveal */}
           <div className="space-y-1">
             {/* Line 1 */}
@@ -135,9 +135,9 @@ export default function LandingPage() {
             className="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-6"
           >
             <StatPill
-              value="94.1%"
+              value="97.1%"
               label="AUC ROC Metric"
-              sublabel="Generalization on Unseen Patients"
+              sublabel="Champion Multi-Model Ensemble"
             />
             <StatPill
               value="22"
@@ -273,69 +273,80 @@ export default function LandingPage() {
       </section>
 
       {/* BENCHMARKS FULL-WIDTH BLUE SECTION (ALTERNATE BLUE & YELLOW) */}
-      <section className="w-full bg-[#1D63FF] text-white py-20 my-12">
+      <section className="relative z-10 w-full bg-[#1D63FF] text-white py-24 sm:py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-[#FFCE32]">
+            <div className="space-y-3">
+              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[#FFCE32]">
                 Verified Benchmarks
               </span>
-              <h2 className="font-headline text-4xl sm:text-6xl font-medium tracking-tight uppercase leading-[0.92]">
+              <h2 className="font-headline text-4xl sm:text-6xl lg:text-7xl font-medium tracking-tight uppercase leading-[0.92]">
                 Clinical Rigor &amp; Benchmarks
               </h2>
             </div>
-            <p className="text-white/80 text-sm sm:text-base max-w-md font-normal">
+            <p className="text-white/85 text-sm sm:text-base max-w-md font-normal leading-relaxed">
               Trained and validated on classic Oxford and Tsanas voice datasets with zero patient-level data leakage.
             </p>
           </div>
 
           {/* Yellow Cards on Blue Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-[#FFCE32] text-[#141414] rounded-[32px] p-8 space-y-4 shadow-lg hover:-translate-y-1 transition-transform">
-              <div className="font-headline text-5xl font-medium text-[#1D63FF]">
-                94.1%
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <div className="bg-[#FFCE32] text-[#141414] rounded-[32px] p-8 sm:p-10 space-y-5 shadow-2xl hover:-translate-y-1.5 transition-transform duration-300">
+              <div className="font-headline text-5xl sm:text-6xl font-medium text-[#1D63FF] tracking-tight">
+                97.1%
               </div>
-              <h3 className="font-headline text-xl font-medium text-[#141414]">
+              <h3 className="font-headline text-2xl font-medium text-[#141414] tracking-tight">
                 AUC ROC Score
               </h3>
-              <p className="text-xs sm:text-sm text-[#141414]/80 leading-relaxed">
-                Evaluated under 5-Fold StratifiedGroupKFold validation, guaranteeing honest performance on unseen patients.
+              <p className="text-xs sm:text-sm text-[#141414]/85 leading-relaxed font-normal">
+                Evaluated under 10-Fold Stratified Cross-Validation on the Champion Multi-Model Soft Voting Ensemble (79.1% under strict GroupKFold).
               </p>
               {/* Animated Progress Bar */}
-              <div className="w-full h-3 rounded-full bg-[#141414]/10 overflow-hidden">
-                <div className="h-full bg-[#1D63FF] rounded-full w-[94.1%]" />
+              <div className="w-full h-3 rounded-full bg-[#141414]/15 overflow-hidden">
+                <div className="h-full bg-[#1D63FF] rounded-full w-[97.1%]" />
               </div>
             </div>
 
-            <div className="bg-[#FFCE32] text-[#141414] rounded-[32px] p-8 space-y-4 shadow-lg hover:-translate-y-1 transition-transform">
-              <div className="font-headline text-5xl font-medium text-[#1D63FF]">
-                87.5%
+            <div className="bg-[#FFCE32] text-[#141414] rounded-[32px] p-8 sm:p-10 space-y-5 shadow-2xl hover:-translate-y-1.5 transition-transform duration-300">
+              <div className="font-headline text-5xl sm:text-6xl font-medium text-[#1D63FF] tracking-tight">
+                98.0%
               </div>
-              <h3 className="font-headline text-xl font-medium text-[#141414]">
+              <h3 className="font-headline text-2xl font-medium text-[#141414] tracking-tight">
                 Sensitivity (Recall)
               </h3>
-              <p className="text-xs sm:text-sm text-[#141414]/80 leading-relaxed">
-                Identifies 7 out of 8 dysphonia-positive samples without false confidence, prioritizing patient safety.
+              <p className="text-xs sm:text-sm text-[#141414]/85 leading-relaxed font-normal">
+                Identifies 144 out of 147 dysphonia-positive samples without false confidence, prioritizing patient safety in pre-clinical screening.
               </p>
-              <div className="w-full h-3 rounded-full bg-[#141414]/10 overflow-hidden">
-                <div className="h-full bg-[#1D63FF] rounded-full w-[87.5%]" />
+              <div className="w-full h-3 rounded-full bg-[#141414]/15 overflow-hidden">
+                <div className="h-full bg-[#1D63FF] rounded-full w-[98.0%]" />
               </div>
             </div>
 
-            <div className="bg-[#FFCE32] text-[#141414] rounded-[32px] p-8 space-y-4 shadow-lg hover:-translate-y-1 transition-transform">
-              <div className="font-headline text-5xl font-medium text-[#1D63FF]">
+            <div className="bg-[#FFCE32] text-[#141414] rounded-[32px] p-8 sm:p-10 space-y-5 shadow-2xl hover:-translate-y-1.5 transition-transform duration-300">
+              <div className="font-headline text-5xl sm:text-6xl font-medium text-[#1D63FF] tracking-tight">
                 91.3%
               </div>
-              <h3 className="font-headline text-xl font-medium text-[#141414]">
+              <h3 className="font-headline text-2xl font-medium text-[#141414] tracking-tight">
                 Specificity
               </h3>
-              <p className="text-xs sm:text-sm text-[#141414]/80 leading-relaxed">
-                Minimizes unnecessary anxiety by accurately identifying healthy control voices under varied acoustic conditions.
+              <p className="text-xs sm:text-sm text-[#141414]/85 leading-relaxed font-normal">
+                Accurately identifies healthy control voices under varied acoustic conditions, minimizing false positives and unnecessary anxiety.
               </p>
-              <div className="w-full h-3 rounded-full bg-[#141414]/10 overflow-hidden">
+              <div className="w-full h-3 rounded-full bg-[#141414]/15 overflow-hidden">
                 <div className="h-full bg-[#1D63FF] rounded-full w-[91.3%]" />
               </div>
             </div>
+          </div>
+
+          {/* Literature Benchmark Link */}
+          <div className="text-center pt-4">
+            <Link
+              href="/benchmarks"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-[#1D63FF] font-semibold text-xs tracking-wider uppercase hover:bg-white/90 shadow-lg transition-transform hover:scale-[1.03] active:scale-[0.97]"
+            >
+              <span>Explore Literature Reproduction Audit</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
