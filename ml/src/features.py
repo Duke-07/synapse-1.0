@@ -11,10 +11,32 @@ Extracts the canonical 22 MDVP and nonlinear features from raw audio (.wav):
 Also performs audio pre-validation: duration, silence/RMS, clipping, and SNR.
 """
 
+import importlib.util
 import os
 from typing import Any
 
-import nolds
+# Resilient nolds import: nolds.__init__ imports nolds.datasets, which can fail if
+# package resource data (brown72.npy / financial CSVs) is missing in some environments.
+# If top-level nolds import fails, load nolds.measures directly as a fallback.
+try:
+    import nolds
+except Exception:
+    try:
+        spec = importlib.util.find_spec('nolds.measures')
+        if spec and spec.loader:
+            _measures = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(_measures)
+
+            class _NoldsShim:
+                dfa = staticmethod(_measures.dfa)
+                corr_dim = staticmethod(_measures.corr_dim)
+
+            nolds = _NoldsShim()  # type: ignore[assignment]
+        else:
+            nolds = None  # type: ignore[assignment]
+    except Exception:
+        nolds = None  # type: ignore[assignment]
+
 import numpy as np
 import parselmouth
 import soundfile as sf
@@ -178,17 +200,23 @@ def extract_features_from_audio(file_path: str) -> dict[str, float]:
     subsampled = samples[::step]
     
     try:
-        dfa = float(nolds.dfa(subsampled))
-        dfa = max(0.2, min(1.2, dfa))
+        if nolds is not None and hasattr(nolds, 'dfa'):
+            dfa = float(nolds.dfa(subsampled))
+            dfa = max(0.2, min(1.2, dfa))
+        else:
+            dfa = 0.65
     except Exception:
-        dfa = 0.65 # Fallback to population mean
-        
+        dfa = 0.65  # Fallback to population mean
+
     try:
         # Correlation dimension D2 (phase space embedding)
-        d2 = float(nolds.corr_dim(subsampled, emb_dim=3))
-        d2 = max(1.2, min(3.8, d2))
+        if nolds is not None and hasattr(nolds, 'corr_dim'):
+            d2 = float(nolds.corr_dim(subsampled, emb_dim=3))
+            d2 = max(1.2, min(3.8, d2))
+        else:
+            d2 = 2.2
     except Exception:
-        d2 = 2.2 # Fallback to population mean
+        d2 = 2.2  # Fallback to population mean
         
     # Recurrence Period Density Entropy (RPDE) estimation per Little et al.
     # Quantifies periodicity regularity from autocorrelogram peaks
