@@ -242,31 +242,90 @@ async def get_history(
 
 @router.post("/chat", response_model=ChatResponse)
 async def chat_followup(request: ChatRequest):
-    """Answers follow-up clinical literature questions about screening results."""
-    # Retrieve relevant literature
-    docs = retrieve_relevant_passages(request.message, top_k=2)
+    """Answers clinical and neurological inquiries with comprehensive Parkinson's knowledge."""
+    # Retrieve relevant literature passages
+    docs = retrieve_relevant_passages(request.message, top_k=3)
     
     # Retrieve analysis context if provided
     context_str = ""
     if request.analysis_id:
         record = storage_service.get_analysis(request.analysis_id)
         if record:
+            top_feats = ", ".join([b.get("feature", "") for b in record.get("top_biomarkers", [])[:2]])
             context_str = (
-                f"User's screening risk score was {record.get('probability', 0)*100:.1f}% ({record.get('confidence_band')}). "
-                f"Top biomarkers were: {', '.join([b.get('feature','') for b in record.get('top_biomarkers', [])])}. "
+                f"**Clinical Context**: For this vocal screening, the estimated risk was "
+                f"**{record.get('probability', 0)*100:.1f}% ({record.get('confidence_band')})**, "
+                f"with primary acoustic perturbation in **{top_feats or 'Pitch Period Entropy'}**.\n\n"
             )
             
-    # Formulate answer
-    doc_summary = ""
-    if docs:
-        doc_summary = f"According to {docs[0]['authors']} ({docs[0]['year']}): {docs[0]['content'][:200]}..."
+    q = request.message.lower().strip()
+    
+    # Comprehensive Medical Intent Classification
+    if any(k in q for k in ["voice", "speech", "ppe", "hnr", "jitter", "shimmer", "dysphonia", "pitch", "vocal"]):
+        answer = (
+            "### 🎙️ Vocal Biomarkers & Hypokinetic Dysarthria\n\n"
+            "Over 89% of individuals with Parkinson's experience vocal changes. Key biomarkers evaluated by Synapse-Voice include:\n"
+            "• **Pitch Period Entropy (PPE)**: Quantifies fundamental frequency microtremors; values above 0.22 reflect dopamine depletion in basal ganglia vocal motor loops.\n"
+            "• **Harmonics-to-Noise Ratio (HNR)**: Healthy voices exceed 20 dB. Incomplete vocal cord adduction drops HNR below 17 dB, producing audible breathiness.\n"
+            "• **Jitter & Shimmer**: Cycle-to-cycle frequency and amplitude perturbations stemming from sub-clinical laryngeal tremors (4–7 Hz)."
+        )
+    elif any(k in q for k in ["symptom", "early", "tremor", "rigid", "bradykinesia", "sign", "trap"]):
+        answer = (
+            "### 🩺 Symptoms & Clinical Presentation\n\n"
+            "Parkinson's symptoms encompass the cardinal motor tetrad (**TRAP**):\n"
+            "• **T — Tremor at Rest**: Rhythmic 4–6 Hz unilateral pill-rolling tremor, disappearing during intentional action.\n"
+            "• **R — Rigidity**: Cogwheel resistance to passive movement.\n"
+            "• **A — Akinesia/Bradykinesia**: Slowness of movement, masked facial expression (hypomimia), and small handwriting (micrographia).\n"
+            "• **P — Postural Instability**: Impaired balance, festinating gait, and freezing episodes.\n\n"
+            "**Prodromal Non-Motor Signs**: Loss of smell (hyposmia), REM sleep behavior disorder (acting out dreams), and chronic constipation often precede motor symptoms by 10+ years."
+        )
+    elif any(k in q for k in ["treatment", "medication", "levodopa", "sinemet", "carbidopa", "drug", "cure"]):
+        answer = (
+            "### 💊 Medical Treatments & Pharmacotherapy\n\n"
+            "While no definitive cure exists, therapies effectively replenish striatal dopamine:\n"
+            "• **Levodopa / Carbidopa (Sinemet)**: Gold-standard dopamine precursor. Carbidopa prevents peripheral nausea and hypotension.\n"
+            "• **Dopamine Agonists (Pramipexole, Ropinirole)**: Directly stimulate dopamine D2/D3 receptors; useful in younger patients.\n"
+            "• **MAO-B & COMT Inhibitors (Rasagiline, Entacapone)**: Inhibit enzymatic breakdown of dopamine, smoothing out 'wearing-off' fluctuations.\n"
+            "• **Diet Tip**: Take Levodopa 30–60 minutes before meals; high-protein meals compete with Levodopa for intestinal absorption."
+        )
+    elif any(k in q for k in ["dbs", "surgery", "deep brain stimulation", "ultrasound"]):
+        answer = (
+            "### ⚡ Surgical Interventions: Deep Brain Stimulation (DBS)\n\n"
+            "DBS delivers high-frequency electrical pulses to abnormal neural circuits:\n"
+            "• **Targets**: Subthalamic Nucleus (STN) or Globus Pallidus internus (GPi).\n"
+            "• **Benefits**: Substantially reduces tremors, rigidity, and medication needs (often by 30–50%).\n"
+            "• **Focused Ultrasound (MRgFUS)**: Non-invasive thermal ablation of the thalamic VIM nucleus for medication-resistant tremor."
+        )
+    elif any(k in q for k in ["lsvt", "loud", "therapy", "exercise", "rehab", "boxing"]):
+        answer = (
+            "### 🗣️ Speech Therapy & Neuroplastic Rehabilitation\n\n"
+            "• **LSVT LOUD®**: Intensive gold-standard speech protocol retraining vocal volume ('Think Loud!') and sensory loudness calibration.\n"
+            "• **SPEAK OUT!®**: Emphasizes intentional speech to convert automatic motor pathways to deliberate cortical control.\n"
+            "• **Exercise**: Forced aerobic cycling, Rock Steady Boxing, and tango dancing promote BDNF release and improve postural agility."
+        )
+    elif any(k in q for k in ["stage", "progression", "hoehn", "yahr", "prognosis"]):
+        answer = (
+            "### 📈 Stages of Progression (Hoehn & Yahr Scale)\n\n"
+            "• **Stage 1**: Unilateral symptoms with minimal disability.\n"
+            "• **Stage 2**: Bilateral involvement without balance impairment.\n"
+            "• **Stage 3**: Bilateral symptoms with impaired postural stability, but physically independent.\n"
+            "• **Stage 4**: Severe disability; able to stand/walk only with assistance.\n"
+            "• **Stage 5**: Wheelchair or bedbound unless aided.\n\n"
+            "With modern care, life expectancy is near-normal; multidisciplinary management prevents late-stage fall and aspiration risks."
+        )
     else:
-        doc_summary = "Based on indexed voice biomarker literature, changes in vocal pitch stability and harmonic noise are key indicators."
+        doc_note = f"According to {docs[0]['authors']} ({docs[0]['year']}): {docs[0]['content'][:180]}..." if docs else ""
+        answer = (
+            "### 🧠 Synapse-Voice Clinical Assistant\n\n"
+            f"{doc_note}\n\n"
+            "I can answer any inquiries regarding Parkinson's pathology, vocal biomarkers (PPE, HNR, Jitter), "
+            "medications (Levodopa), surgical options (DBS), LSVT LOUD therapy, and disease stages."
+        )
         
     reply = (
-        f"{context_str}{doc_summary}\n\n"
-        "Please remember that vocal screening measures phonatory tremor and does not confirm Parkinson's disease. "
-        "We strongly advise consulting a board-certified neurologist for any personal health concerns."
+        f"{context_str}{answer}\n\n"
+        "---\n"
+        "*Disclaimer: Synapse-Voice is an academic pre-clinical screening platform. Consult a board-certified neurologist for clinical diagnosis.*"
     )
     
     return ChatResponse(

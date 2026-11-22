@@ -12,6 +12,7 @@ import {
   classifyAcousticBiomarkers,
 } from './acoustic-engine';
 import { encodeWAV } from './wav-encoder';
+import { generateParkinsonsAssistantReply } from './parkinsons-knowledge';
 
 // Normalize API base path
 function getApiBase(): string {
@@ -295,7 +296,7 @@ export async function sendChatMessage(
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message, analysis_id: analysisId }),
       },
-      10000
+      8000
     );
 
     if (res.ok) {
@@ -305,22 +306,30 @@ export async function sendChatMessage(
     // Client fallback
   }
 
+  // Robust Client-Side Medical Knowledge Engine
+  let contextData = undefined;
+  if (analysisId && typeof window !== 'undefined') {
+    try {
+      const stored = sessionStorage.getItem(`synapse_result_${analysisId}`) || localStorage.getItem(`synapse_result_${analysisId}`);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        contextData = {
+          probability: parsed.probability,
+          confidenceBand: parsed.confidence_band,
+          topBiomarkers: parsed.top_biomarkers?.map((b: any) => ({
+            label: b.label || b.feature,
+            value: b.value,
+          })),
+        };
+      }
+    } catch {}
+  }
+
+  const { reply, citations } = generateParkinsonsAssistantReply(message, contextData);
   return {
-    reply: (
-      `Regarding your inquiry ("${message.slice(0, 50)}..."): In voice biomarker analysis for Parkinson's disease, ` +
-      `acoustic perturbations such as Pitch Period Entropy (PPE) and amplitude shimmer reflect micro-tremors in laryngeal ` +
-      `musculature. Note that acute upper respiratory infections, vocal fatigue, and ambient microphone noise can also alter ` +
-      `these acoustic parameters. Synapse-Voice serves exclusively as an academic screening aid; diagnostic decisions must be ` +
-      `referred to specialized clinical neurologists.`
-    ),
-    citations: [
-      {
-        authors: 'Little, M. A., et al.',
-        year: 2009,
-        title: 'Suitability of Dysphonia Measurements for Telemonitoring of Parkinson\'s Disease',
-        journal: 'IEEE TBME',
-      },
-    ],
+    reply,
+    citations,
+    analysis_id: analysisId,
   };
 }
 
