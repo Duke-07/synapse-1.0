@@ -119,9 +119,9 @@ class MLService:
             z_jitter = (jitter - 0.0053) / 0.003
             z_rpde = (rpde - 0.48) / 0.08
             
-            logit = -0.60 + 1.25 * z_ppe + 0.95 * z_spread1 + 0.80 * z_hnr + 0.70 * z_shimmer + 0.60 * z_jitter + 0.40 * z_rpde
+            logit = -0.50 + 0.85 * z_ppe + 0.65 * z_spread1 + 0.55 * z_hnr + 0.50 * z_shimmer + 0.45 * z_jitter + 0.35 * z_rpde
             raw_prob = 1.0 / (1.0 + np.exp(-logit))
-            prob = float(round(max(0.052, min(0.978, raw_prob)), 4))
+            prob = float(round(max(0.015, min(0.985, raw_prob)), 4))
             label = int(prob >= 0.5)
             shap_dict = {f: 0.01 for f in self.feature_names}
             shap_dict['PPE'] = round(float(z_ppe * 0.14), 3)

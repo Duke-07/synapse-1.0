@@ -474,9 +474,9 @@ export async function analyzeAudioBuffer(
   const zRpde = (rpde - 0.48) / 0.08;
 
   // Calibrated logistic regression margin with high-precision continuous probability
-  const logit = -0.60 + 1.25 * zPpe + 0.95 * zSpread1 + 0.80 * zHnr + 0.70 * zShimmer + 0.60 * zJitter + 0.40 * zRpde;
+  const logit = -0.50 + 0.85 * zPpe + 0.65 * zSpread1 + 0.55 * zHnr + 0.50 * zShimmer + 0.45 * zJitter + 0.35 * zRpde;
   const rawProb = 1.0 / (1.0 + Math.exp(-logit));
-  const probability = Number(Math.max(0.052, Math.min(0.978, rawProb)).toFixed(4));
+  const probability = Number(Math.max(0.015, Math.min(0.985, rawProb)).toFixed(4));
   const label = probability >= 0.5 ? 1 : 0;
 
   let confidenceBand: 'Low Risk' | 'Moderate Concern' | 'Elevated Risk';
