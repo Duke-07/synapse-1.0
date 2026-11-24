@@ -8,13 +8,14 @@ export interface ProbabilityGaugeProps {
 }
 
 export const ProbabilityGauge: React.FC<ProbabilityGaugeProps> = ({ probability, confidenceBand }) => {
-  const percentage = Math.round(probability * 100);
+  const percentNumeric = probability * 100;
+  const percentFormatted = percentNumeric.toFixed(1);
 
   const radius = 76;
   const stroke = 10;
   const normalizedRadius = radius - stroke * 2;
   const circumference = normalizedRadius * 2 * Math.PI;
-  const strokeDashoffset = circumference - (percentage / 100) * (circumference / 2);
+  const strokeDashoffset = circumference - (percentNumeric / 100) * (circumference / 2);
 
   const getColor = () => {
     if (probability < 0.35) {
@@ -60,8 +61,8 @@ export const ProbabilityGauge: React.FC<ProbabilityGaugeProps> = ({ probability,
         </svg>
 
         <div className="absolute flex flex-col items-center justify-center">
-          <span className="font-serif text-4xl font-normal text-[#2C3531] tracking-tight">
-            {percentage}%
+          <span className="font-serif text-3xl sm:text-4xl font-normal text-[#2C3531] tracking-tight">
+            {percentFormatted}%
           </span>
           <span className="text-[10px] text-[#2C3531]/60 uppercase font-display font-semibold tracking-wider">
             Risk Score

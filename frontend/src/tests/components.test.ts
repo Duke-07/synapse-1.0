@@ -52,6 +52,9 @@ describe('Frontend Core Constants and Contracts', () => {
     expect(classification.probability).toBeLessThan(0.35);
     expect(classification.probability).not.toBe(0.94);
     expect(classification.probability).not.toBe(0.96);
+    // Verifies score can be represented with points (e.g. 14.2%)
+    const pctPoints = (classification.probability * 100).toFixed(1);
+    expect(pctPoints).toMatch(/^\d+\.\d$/);
   });
 
   it('correctly classifies dysphonic / Parkinsonian tremor vowels as Elevated Risk', () => {

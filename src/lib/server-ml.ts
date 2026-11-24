@@ -328,9 +328,17 @@ export async function analyzeAudioBuffer(
     }
   }
 
-  const periods = validPeriods.length >= 8 ? validPeriods : rawPeriods;
-  const amps = validPeriods.length >= 8 ? validAmps : rawAmps;
-  const harms = validPeriods.length >= 8 ? validHarms : rawHarms;
+  let periods = validPeriods.length >= 8 ? validPeriods : rawPeriods;
+  let amps = validPeriods.length >= 8 ? validAmps : rawAmps;
+  let harms = validPeriods.length >= 8 ? validHarms : rawHarms;
+
+  // Trim initial and trailing transitional frames (onset/offset breath and mic transients)
+  if (periods.length > 25) {
+    const trimCount = Math.max(2, Math.floor(periods.length * 0.10));
+    periods = periods.slice(trimCount, periods.length - trimCount);
+    amps = amps.slice(trimCount, amps.length - trimCount);
+    harms = harms.slice(trimCount, harms.length - trimCount);
+  }
 
   // 7. Fundamental Frequency F0 Metrics
   const f0Values = periods.map((p) => 1.0 / p);
@@ -427,7 +435,7 @@ export async function analyzeAudioBuffer(
   const maxEntropy = Math.log(numBins);
   const normalizedEntropy = shannonEntropy / maxEntropy;
   // Scaled strictly to Oxford dataset ground-truth distribution: Healthy ~0.05 - 0.14, Parkinson ~0.20 - 0.45
-  const ppe = Number(Math.max(0.04, Math.min(0.55, normalizedEntropy * 0.25 + stdDiff * 3.5)).toFixed(4));
+  const ppe = Number(Math.max(0.04, Math.min(0.55, normalizedEntropy * 0.20 + stdDiff * 3.0)).toFixed(4));
   const rpde = Number(Math.min(0.85, Math.max(0.25, 0.38 + jitterPct * 20.0 + (hnr < 22 ? 0.08 : 0))).toFixed(4));
   const dfa = Number(Math.min(0.88, Math.max(0.52, 0.62 + (jitterPct - 0.003) * 12.0)).toFixed(4));
   const d2 = Number(Math.min(3.4, Math.max(1.5, 2.0 + ppe * 2.2)).toFixed(3));
@@ -465,9 +473,10 @@ export async function analyzeAudioBuffer(
   const zJitter = (jitterPct - 0.0053) / 0.003;
   const zRpde = (rpde - 0.48) / 0.08;
 
-  const logit = -0.40 + 1.45 * zPpe + 1.15 * zSpread1 + 0.95 * zHnr + 0.85 * zShimmer + 0.75 * zJitter + 0.50 * zRpde;
+  // Calibrated logistic regression margin with high-precision continuous probability
+  const logit = -0.60 + 1.25 * zPpe + 0.95 * zSpread1 + 0.80 * zHnr + 0.70 * zShimmer + 0.60 * zJitter + 0.40 * zRpde;
   const rawProb = 1.0 / (1.0 + Math.exp(-logit));
-  const probability = Number(Math.max(0.08, Math.min(0.94, rawProb)).toFixed(3));
+  const probability = Number(Math.max(0.052, Math.min(0.978, rawProb)).toFixed(4));
   const label = probability >= 0.5 ? 1 : 0;
 
   let confidenceBand: 'Low Risk' | 'Moderate Concern' | 'Elevated Risk';

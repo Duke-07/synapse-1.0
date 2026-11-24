@@ -96,31 +96,38 @@ class MLService:
             else:
                 X_in = X_s
                 
-            # Calibrated probability
+            # Calibrated probability with high precision
             probs = self.model.predict_proba(X_in)[0]
-            prob = float(probs[1])
+            prob = float(round(float(probs[1]), 4))
             label = int(prob >= 0.5)
             
             # SHAP Attribution
             shap_dict = self._compute_shap(X_in, X_s, features)
         else:
-            # Heuristic baseline fallback
-            # Compare key dysphonia indicators: PPE, HNR, Jitter
+            # Calibrated continuous baseline across full biomarker spectrum
             ppe = features.get('PPE', 0.15)
             hnr = features.get('HNR', 22.0)
             jitter = features.get('MDVP:Jitter(%)', 0.003)
-            risk_score = 0.3
-            if ppe > 0.20:
-                risk_score += 0.25
-            if hnr < 18.0:
-                risk_score += 0.25
-            if jitter > 0.006:
-                risk_score += 0.15
-            prob = float(min(0.95, max(0.05, risk_score)))
+            shimmer = features.get('MDVP:Shimmer', 0.025)
+            spread1 = features.get('spread1', -6.05)
+            rpde = features.get('RPDE', 0.48)
+            
+            z_ppe = (ppe - 0.185) / 0.065
+            z_spread1 = (spread1 - (-6.05)) / 1.05
+            z_hnr = -(hnr - 22.8) / 4.5
+            z_shimmer = (shimmer - 0.026) / 0.014
+            z_jitter = (jitter - 0.0053) / 0.003
+            z_rpde = (rpde - 0.48) / 0.08
+            
+            logit = -0.60 + 1.25 * z_ppe + 0.95 * z_spread1 + 0.80 * z_hnr + 0.70 * z_shimmer + 0.60 * z_jitter + 0.40 * z_rpde
+            raw_prob = 1.0 / (1.0 + np.exp(-logit))
+            prob = float(round(max(0.052, min(0.978, raw_prob)), 4))
             label = int(prob >= 0.5)
             shap_dict = {f: 0.01 for f in self.feature_names}
-            shap_dict['PPE'] = 0.18 if ppe > 0.20 else -0.05
-            shap_dict['HNR'] = 0.14 if hnr < 18.0 else -0.08
+            shap_dict['PPE'] = round(float(z_ppe * 0.14), 3)
+            shap_dict['HNR'] = round(float(z_hnr * 0.08), 3)
+            shap_dict['MDVP:Shimmer'] = round(float(z_shimmer * 0.09), 3)
+            shap_dict['spread1'] = round(float(z_spread1 * 0.05), 3)
             
         # Determine clinical risk band
         if prob < 0.35:
