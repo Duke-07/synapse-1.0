@@ -343,7 +343,7 @@ def generate_evaluation_figures(best_metrics: dict, out_dir: str):
     roc_auc = auc(fpr, tpr)
 
     plt.figure(figsize=(7, 6))
-    plt.plot(fpr, tpr, color='#0060ca', lw=2.5, label=f'Ensemble ROC (AUC = {roc_auc:.3f})')
+    plt.plot(fpr, tpr, color='#1D63FF', lw=2.5, label=f'Ensemble ROC (AUC = {roc_auc:.3f})')
     plt.plot([0, 1], [0, 1], color='#94a3b8', lw=1.5, linestyle='--', label='Random Chance')
     plt.xlim([-0.02, 1.02])
     plt.ylim([-0.02, 1.02])

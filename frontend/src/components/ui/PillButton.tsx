@@ -37,11 +37,11 @@ export const PillButton: React.FC<PillButtonProps> = ({
 
   const variantClasses = {
     primary:
-      'bg-[#0060ca] text-white hover:bg-[#090089] shadow-[0_8px_20px_rgba(0,96,202,0.3)] hover:scale-[1.03] active:scale-[0.97]',
+      'bg-[#1D63FF] text-white hover:bg-[#1453E6] shadow-[0_8px_20px_rgba(29,99,255,0.3)] hover:scale-[1.03] active:scale-[0.97]',
     secondary:
-      'border-2 border-[#0060ca] text-[#0060ca] bg-transparent hover:bg-[#0060ca] hover:text-white hover:scale-[1.03] active:scale-[0.97]',
+      'border-2 border-[#1D63FF] text-[#1D63FF] bg-transparent hover:bg-[#1D63FF] hover:text-white hover:scale-[1.03] active:scale-[0.97]',
     yellow:
-      'bg-[#fcdc74] text-[#090089] hover:bg-[#f0ce62] shadow-sm hover:scale-[1.03] active:scale-[0.97]',
+      'bg-[#FFCE32] text-[#141414] hover:bg-[#F2C32B] shadow-sm hover:scale-[1.03] active:scale-[0.97]',
     ghost:
       'text-[#141414] hover:bg-[#141414]/5',
   };

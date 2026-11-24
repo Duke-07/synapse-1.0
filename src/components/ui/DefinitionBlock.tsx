@@ -38,8 +38,8 @@ export const DefinitionBlock: React.FC<DefinitionBlockProps> = ({ className = ''
         <button
           onClick={handlePronounce}
           aria-label="Pronounce voice-fy"
-          className={`p-1 rounded-full text-[#141414] hover:text-[#0060ca] hover:bg-[#141414]/5 transition-transform duration-200 active:scale-90 ${
-            isPlaying ? 'scale-125 text-[#0060ca]' : ''
+          className={`p-1 rounded-full text-[#141414] hover:text-[#1D63FF] hover:bg-[#141414]/5 transition-transform duration-200 active:scale-90 ${
+            isPlaying ? 'scale-125 text-[#1D63FF]' : ''
           }`}
         >
           <Volume2 className="w-4 h-4" />

@@ -106,7 +106,7 @@ class EmailService:
       box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     }}
     .header {{
-      background-color: #fcdc74;
+      background-color: #FFCE32;
       padding: 28px 32px;
       text-align: left;
     }}
@@ -114,7 +114,7 @@ class EmailService:
       font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.5px;
-      color: #090089;
+      color: #141414;
       text-transform: uppercase;
       margin: 0;
     }}
@@ -124,7 +124,7 @@ class EmailService:
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      background-color: #0060ca;
+      background-color: #1D63FF;
       color: #FFFFFF;
       padding: 4px 10px;
       border-radius: 9999px;
@@ -137,7 +137,7 @@ class EmailService:
       font-size: 22px;
       font-weight: 700;
       margin: 0 0 16px 0;
-      color: #090089;
+      color: #141414;
     }}
     p {{
       font-size: 15px;
@@ -148,7 +148,7 @@ class EmailService:
       margin: 28px 0;
       padding: 22px 16px;
       background-color: #F0F4FF;
-      border: 2px dashed #0060ca;
+      border: 2px dashed #1D63FF;
       border-radius: 16px;
       text-align: center;
     }}
@@ -157,7 +157,7 @@ class EmailService:
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: #0060ca;
+      color: #1D63FF;
       margin-bottom: 8px;
     }}
     .code {{
@@ -165,12 +165,12 @@ class EmailService:
       font-size: 38px;
       font-weight: 800;
       letter-spacing: 10px;
-      color: #0060ca;
+      color: #1D63FF;
       padding-left: 10px;
     }}
     .btn {{
       display: inline-block;
-      background-color: #0060ca;
+      background-color: #1D63FF;
       color: #FFFFFF !important;
       text-decoration: none;
       font-size: 14px;

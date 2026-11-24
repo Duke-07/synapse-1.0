@@ -61,7 +61,7 @@ export default function LandingPage() {
                 variants={lineVariants}
                 initial="hidden"
                 animate="visible"
-                className="font-headline text-5xl sm:text-7xl md:text-8xl lg:text-[7.6rem] font-medium tracking-tight text-[#0060ca] uppercase leading-[0.90]"
+                className="font-headline text-5xl sm:text-7xl md:text-8xl lg:text-[7.6rem] font-medium tracking-tight text-[#1D63FF] uppercase leading-[0.90]"
               >
                 VOICEFY*
               </motion.h1>
@@ -109,7 +109,7 @@ export default function LandingPage() {
               <a
                 href="#how-it-works"
                 onClick={scrollToSteps}
-                className="group flex items-center justify-between gap-4 sm:gap-6 rounded-full bg-[#0060ca] hover:bg-[#090089] text-white px-7 py-3.5 sm:py-4 shadow-[0_12px_28px_rgba(29,99,255,0.38)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] animate-float-gentle cursor-pointer"
+                className="group flex items-center justify-between gap-4 sm:gap-6 rounded-full bg-[#1D63FF] hover:bg-[#1453E6] text-white px-7 py-3.5 sm:py-4 shadow-[0_12px_28px_rgba(29,99,255,0.38)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] animate-float-gentle cursor-pointer"
               >
                 <div className="text-left">
                   <div className="font-headline text-base sm:text-lg font-medium tracking-tight leading-tight">
@@ -120,7 +120,7 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                <div className="w-10 h-10 rounded-full bg-white text-[#0060ca] flex items-center justify-center shrink-0 shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
+                <div className="w-10 h-10 rounded-full bg-white text-[#1D63FF] flex items-center justify-center shrink-0 shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
                   <Eye className="w-5 h-5" />
                 </div>
               </a>
@@ -157,7 +157,7 @@ export default function LandingPage() {
       <section id="how-it-works" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#0060ca]">
+            <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1D63FF]">
               Step-by-step screening
             </span>
             <h2 className="font-headline text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight uppercase text-[#141414] mt-1">
@@ -210,7 +210,7 @@ export default function LandingPage() {
       {/* OUTCOME TIERS ("WHAT DOES IT TELL YOU?") */}
       <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
         <div className="text-center max-w-xl mx-auto space-y-2">
-          <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#0060ca]">
+          <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1D63FF]">
             Outcome Stratification
           </span>
           <h2 className="font-headline text-4xl sm:text-5xl font-medium tracking-tight uppercase text-[#141414]">
@@ -225,10 +225,10 @@ export default function LandingPage() {
           {/* Low Risk */}
           <div className="banky-card p-8 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="px-3.5 py-1 rounded-full bg-[#91ceff] text-[#0060ca] text-xs font-bold uppercase tracking-wider">
+              <span className="px-3.5 py-1 rounded-full bg-[#E8F2FF] text-[#1D63FF] text-xs font-bold uppercase tracking-wider">
                 Low Risk
               </span>
-              <span className="font-headline text-2xl font-medium text-[#0060ca]">&lt; 35%</span>
+              <span className="font-headline text-2xl font-medium text-[#1D63FF]">&lt; 35%</span>
             </div>
             <h3 className="font-headline text-xl text-[#141414] tracking-tight">
               Healthy Phonation Range
@@ -272,12 +272,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* BENCHMARKS FULL-WIDTH DEEP NAVY SECTION (FIRST COLOR #090089) */}
-      <section className="relative z-10 w-full bg-[#090089] text-white py-24 sm:py-32 overflow-hidden">
+      {/* BENCHMARKS FULL-WIDTH BLUE SECTION (ALTERNATE BLUE & YELLOW) */}
+      <section className="relative z-10 w-full bg-[#1D63FF] text-white py-24 sm:py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-3">
-              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[#fcdc74]">
+              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[#FFCE32]">
                 Verified Benchmarks
               </span>
               <h2 className="font-headline text-4xl sm:text-6xl lg:text-7xl font-medium tracking-tight uppercase leading-[0.92]">
@@ -289,51 +289,51 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* Golden Yellow Cards on Deep Navy Section */}
+          {/* Yellow Cards on Blue Section */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            <div className="bg-[#fcdc74] text-[#090089] rounded-[32px] p-8 sm:p-10 space-y-5 shadow-2xl hover:-translate-y-1.5 transition-transform duration-300">
-              <div className="font-headline text-5xl sm:text-6xl font-medium text-[#090089] tracking-tight">
+            <div className="bg-[#FFCE32] text-[#141414] rounded-[32px] p-8 sm:p-10 space-y-5 shadow-2xl hover:-translate-y-1.5 transition-transform duration-300">
+              <div className="font-headline text-5xl sm:text-6xl font-medium text-[#1D63FF] tracking-tight">
                 97.1%
               </div>
-              <h3 className="font-headline text-2xl font-medium text-[#090089] tracking-tight">
+              <h3 className="font-headline text-2xl font-medium text-[#141414] tracking-tight">
                 AUC ROC Score
               </h3>
-              <p className="text-xs sm:text-sm text-[#090089]/85 leading-relaxed font-normal">
+              <p className="text-xs sm:text-sm text-[#141414]/85 leading-relaxed font-normal">
                 Evaluated under 10-Fold Stratified Cross-Validation on the Champion Multi-Model Soft Voting Ensemble (79.1% under strict GroupKFold).
               </p>
               {/* Animated Progress Bar */}
-              <div className="w-full h-3 rounded-full bg-[#090089]/15 overflow-hidden">
-                <div className="h-full bg-[#0060ca] rounded-full w-[97.1%]" />
+              <div className="w-full h-3 rounded-full bg-[#141414]/15 overflow-hidden">
+                <div className="h-full bg-[#1D63FF] rounded-full w-[97.1%]" />
               </div>
             </div>
 
-            <div className="bg-[#fcdc74] text-[#090089] rounded-[32px] p-8 sm:p-10 space-y-5 shadow-2xl hover:-translate-y-1.5 transition-transform duration-300">
-              <div className="font-headline text-5xl sm:text-6xl font-medium text-[#090089] tracking-tight">
+            <div className="bg-[#FFCE32] text-[#141414] rounded-[32px] p-8 sm:p-10 space-y-5 shadow-2xl hover:-translate-y-1.5 transition-transform duration-300">
+              <div className="font-headline text-5xl sm:text-6xl font-medium text-[#1D63FF] tracking-tight">
                 98.0%
               </div>
-              <h3 className="font-headline text-2xl font-medium text-[#090089] tracking-tight">
+              <h3 className="font-headline text-2xl font-medium text-[#141414] tracking-tight">
                 Sensitivity (Recall)
               </h3>
-              <p className="text-xs sm:text-sm text-[#090089]/85 leading-relaxed font-normal">
+              <p className="text-xs sm:text-sm text-[#141414]/85 leading-relaxed font-normal">
                 Identifies 144 out of 147 dysphonia-positive samples without false confidence, prioritizing patient safety in pre-clinical screening.
               </p>
-              <div className="w-full h-3 rounded-full bg-[#090089]/15 overflow-hidden">
-                <div className="h-full bg-[#0060ca] rounded-full w-[98.0%]" />
+              <div className="w-full h-3 rounded-full bg-[#141414]/15 overflow-hidden">
+                <div className="h-full bg-[#1D63FF] rounded-full w-[98.0%]" />
               </div>
             </div>
 
-            <div className="bg-[#fcdc74] text-[#090089] rounded-[32px] p-8 sm:p-10 space-y-5 shadow-2xl hover:-translate-y-1.5 transition-transform duration-300">
-              <div className="font-headline text-5xl sm:text-6xl font-medium text-[#090089] tracking-tight">
+            <div className="bg-[#FFCE32] text-[#141414] rounded-[32px] p-8 sm:p-10 space-y-5 shadow-2xl hover:-translate-y-1.5 transition-transform duration-300">
+              <div className="font-headline text-5xl sm:text-6xl font-medium text-[#1D63FF] tracking-tight">
                 91.3%
               </div>
-              <h3 className="font-headline text-2xl font-medium text-[#090089] tracking-tight">
+              <h3 className="font-headline text-2xl font-medium text-[#141414] tracking-tight">
                 Specificity
               </h3>
-              <p className="text-xs sm:text-sm text-[#090089]/85 leading-relaxed font-normal">
+              <p className="text-xs sm:text-sm text-[#141414]/85 leading-relaxed font-normal">
                 Accurately identifies healthy control voices under varied acoustic conditions, minimizing false positives and unnecessary anxiety.
               </p>
-              <div className="w-full h-3 rounded-full bg-[#090089]/15 overflow-hidden">
-                <div className="h-full bg-[#0060ca] rounded-full w-[91.3%]" />
+              <div className="w-full h-3 rounded-full bg-[#141414]/15 overflow-hidden">
+                <div className="h-full bg-[#1D63FF] rounded-full w-[91.3%]" />
               </div>
             </div>
           </div>
@@ -342,7 +342,7 @@ export default function LandingPage() {
           <div className="text-center pt-4">
             <Link
               href="/benchmarks"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-[#0060ca] hover:text-[#090089] font-semibold text-xs tracking-wider uppercase hover:bg-[#91ceff]/30 shadow-lg transition-all hover:scale-[1.03] active:scale-[0.97]"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-[#1D63FF] font-semibold text-xs tracking-wider uppercase hover:bg-white/90 shadow-lg transition-transform hover:scale-[1.03] active:scale-[0.97]"
             >
               <span>Explore Literature Reproduction Audit</span>
               <ArrowRight className="w-4 h-4" />

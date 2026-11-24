@@ -83,7 +83,7 @@ function LoginForm() {
   return (
     <div className="max-w-md mx-auto my-8 sm:my-14 banky-card p-8 sm:p-10 space-y-6">
       <div className="text-center space-y-2">
-        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#0060ca]">
+        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1D63FF]">
           Researcher Sign In
         </span>
         <h1 className="font-headline text-3xl sm:text-4xl font-medium tracking-tight text-[#141414] uppercase leading-tight">
@@ -108,7 +108,7 @@ function LoginForm() {
             <p>{unverifiedWarning}</p>
             <Link
               href={`/verify-email?email=${encodeURIComponent(email)}`}
-              className="text-[#0060ca] font-bold underline"
+              className="text-[#1D63FF] font-bold underline"
             >
               Click here to verify your email &rarr;
             </Link>
@@ -129,7 +129,7 @@ function LoginForm() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="researcher@university.edu"
               required
-              className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#0060ca] transition-colors"
+              className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
             />
           </div>
         </div>
@@ -145,7 +145,7 @@ function LoginForm() {
                 setForgotEmail(email);
                 setShowForgotModal(true);
               }}
-              className="text-xs text-[#0060ca] hover:underline font-medium"
+              className="text-xs text-[#1D63FF] hover:underline font-medium"
             >
               Forgot?
             </button>
@@ -158,7 +158,7 @@ function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full pl-10 pr-10 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#0060ca] transition-colors"
+              className="w-full pl-10 pr-10 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
             />
             <button
               type="button"
@@ -177,7 +177,7 @@ function LoginForm() {
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-4 h-4 rounded border-[#141414]/30 accent-[#0060ca]"
+              className="w-4 h-4 rounded border-[#141414]/30 accent-[#1D63FF]"
             />
             Remember this session
           </label>
@@ -197,7 +197,7 @@ function LoginForm() {
 
       <div className="text-center pt-2 border-t border-[#141414]/10 text-xs text-[#141414]/70">
         Don&apos;t have an account?{' '}
-        <Link href="/register" className="text-[#0060ca] font-semibold hover:underline">
+        <Link href="/register" className="text-[#1D63FF] font-semibold hover:underline">
           Create free researcher account &rarr;
         </Link>
       </div>
@@ -221,7 +221,7 @@ function LoginForm() {
                 className="w-full px-4 py-2.5 rounded-2xl border border-[#141414]/20 text-xs"
               />
               {forgotMessage && (
-                <p className="text-xs text-[#0060ca] font-semibold">{forgotMessage}</p>
+                <p className="text-xs text-[#1D63FF] font-semibold">{forgotMessage}</p>
               )}
               <div className="flex items-center justify-end gap-2 pt-2">
                 <button
@@ -234,7 +234,7 @@ function LoginForm() {
                 <button
                   type="submit"
                   disabled={forgotSending}
-                  className="px-4 py-2 rounded-full bg-[#0060ca] text-white text-xs font-semibold"
+                  className="px-4 py-2 rounded-full bg-[#1D63FF] text-white text-xs font-semibold"
                 >
                   {forgotSending ? 'Sending...' : 'Send Link'}
                 </button>
@@ -252,7 +252,7 @@ export default function LoginPage() {
     <Suspense
       fallback={
         <div className="min-h-[50vh] flex items-center justify-center">
-          <div className="w-10 h-10 border-4 border-[#0060ca] border-t-transparent rounded-full animate-spin" />
+          <div className="w-10 h-10 border-4 border-[#1D63FF] border-t-transparent rounded-full animate-spin" />
         </div>
       }
     >

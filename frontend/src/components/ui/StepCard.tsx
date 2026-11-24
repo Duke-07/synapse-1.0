@@ -25,11 +25,11 @@ export const StepCard: React.FC<StepCardProps> = ({
     >
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <span className="font-headline text-5xl sm:text-6xl font-medium text-[#0060ca] tracking-tight">
+          <span className="font-headline text-5xl sm:text-6xl font-medium text-[#1D63FF] tracking-tight">
             {number}
           </span>
           {icon && (
-            <div className="w-12 h-12 rounded-full bg-[#91ceff]/30 text-[#090089] flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-[#E8F2FF] text-[#1D63FF] flex items-center justify-center">
               {icon}
             </div>
           )}
@@ -47,7 +47,7 @@ export const StepCard: React.FC<StepCardProps> = ({
 
       {badge && (
         <div className="pt-6 border-t border-[#141414]/10 mt-6">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[#0060ca]">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#1D63FF]">
             {badge}
           </span>
         </div>
