@@ -30,16 +30,16 @@ export const DefinitionBlock: React.FC<DefinitionBlockProps> = ({ className = ''
   };
 
   return (
-    <div className={`space-y-3 text-left ${className}`}>
+    <div className={`p-5 sm:p-6 rounded-2xl bg-[#2C3531] text-[#EBF4F1] border border-[#D9B08C]/30 shadow-sm space-y-3.5 text-left ${className}`}>
       {/* Pronunciation Head */}
-      <div className="flex items-center gap-2 text-sm sm:text-base font-semibold text-[#141414]">
-        <span>*</span>
-        <span className="font-headline tracking-wide">[ voice-fy ]</span>
+      <div className="flex items-center gap-2.5 text-sm sm:text-base font-medium">
+        <span className="text-[#FFCB9A] font-serif">*</span>
+        <span className="font-serif tracking-wide text-[#FFCB9A] text-lg">[ voice-fy ]</span>
         <button
           onClick={handlePronounce}
           aria-label="Pronounce voice-fy"
-          className={`p-1 rounded-full text-[#141414] hover:text-[#1D63FF] hover:bg-[#141414]/5 transition-transform duration-200 active:scale-90 ${
-            isPlaying ? 'scale-125 text-[#1D63FF]' : ''
+          className={`p-1.5 rounded-full text-[#D1E8E2] hover:text-[#FFCB9A] hover:bg-white/10 transition-transform duration-200 active:scale-90 ${
+            isPlaying ? 'scale-115 text-[#FFCB9A]' : ''
           }`}
         >
           <Volume2 className="w-4 h-4" />
@@ -47,18 +47,18 @@ export const DefinitionBlock: React.FC<DefinitionBlockProps> = ({ className = ''
       </div>
 
       {/* Short Rule */}
-      <div className="w-10 h-0.5 bg-[#141414]" />
+      <div className="w-10 h-0.5 bg-[#D9B08C]" />
 
       {/* Part of Speech & Definition */}
-      <div className="space-y-1.5 max-w-md text-xs sm:text-sm text-[#141414] leading-relaxed">
-        <p className="font-medium text-[#141414]/90">
-          <span className="italic font-normal">verb</span> (voicefies, voicefying)
+      <div className="space-y-1.5 text-xs sm:text-sm leading-relaxed">
+        <p className="font-medium text-[#D1E8E2]">
+          <span className="italic font-normal text-[#D9B08C]">verb</span> (voicefies, voicefying)
         </p>
-        <p className="text-[#141414]/85">
-          Screen for Parkinson&apos;s-linked acoustic patterns using a 5-second sustained vowel.
+        <p className="text-[#D1E8E2]/90 font-sans">
+          Screen for Parkinson&apos;s-linked acoustic patterns using a 5-second sustained vowel phonation.
         </p>
-        <p className="italic text-[#141414]/75">
-          &ldquo;My voice just got checked!&rdquo;
+        <p className="italic text-[#FFCB9A]/80 font-serif text-xs">
+          &ldquo;Early acoustic screening enables timely clinical neurology consultation.&rdquo;
         </p>
       </div>
     </div>

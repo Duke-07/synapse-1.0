@@ -21,33 +21,33 @@ export const StepCard: React.FC<StepCardProps> = ({
 }) => {
   return (
     <div
-      className={`banky-card p-8 sm:p-10 flex flex-col justify-between relative group ${className}`}
+      className={`craft-card p-8 sm:p-9 flex flex-col justify-between relative group hover:border-[#116466]/40 transition-colors ${className}`}
     >
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <span className="font-headline text-5xl sm:text-6xl font-medium text-[#1D63FF] tracking-tight">
+          <span className="font-serif text-5xl sm:text-6xl font-normal text-[#116466] tracking-tight">
             {number}
           </span>
           {icon && (
-            <div className="w-12 h-12 rounded-full bg-[#E8F2FF] text-[#1D63FF] flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl bg-[#D1E8E2] text-[#116466] flex items-center justify-center shadow-xs">
               {icon}
             </div>
           )}
         </div>
 
-        <div className="space-y-2">
-          <h3 className="font-headline text-2xl sm:text-3xl font-medium text-[#141414] tracking-tight">
+        <div className="space-y-2.5">
+          <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#2C3531] tracking-tight">
             {title}
           </h3>
-          <p className="text-sm sm:text-base text-[#141414]/80 leading-relaxed font-normal">
+          <p className="text-sm sm:text-base text-[#2C3531]/80 leading-relaxed font-sans font-normal">
             {description}
           </p>
         </div>
       </div>
 
       {badge && (
-        <div className="pt-6 border-t border-[#141414]/10 mt-6">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[#1D63FF]">
+        <div className="pt-6 border-t border-[#D9B08C]/30 mt-6">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#116466]">
             {badge}
           </span>
         </div>

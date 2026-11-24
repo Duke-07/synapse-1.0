@@ -35,14 +35,12 @@ function VerifyEmailForm() {
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  // Update email if query param changes
   useEffect(() => {
     if (emailParam) {
       setEmail(emailParam);
     }
   }, [emailParam]);
 
-  // Handle direct URL token verification (?email=...&token=...)
   useEffect(() => {
     if (emailParam && tokenParam) {
       setIsVerifying(true);
@@ -59,14 +57,12 @@ function VerifyEmailForm() {
     }
   }, [emailParam, tokenParam, verify, router]);
 
-  // Focus first input box on mount
   useEffect(() => {
     if (!tokenParam && inputRefs.current[0]) {
       inputRefs.current[0].focus();
     }
   }, [tokenParam]);
 
-  // Resend cooldown timer
   useEffect(() => {
     if (resendCooldown > 0) {
       const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
@@ -87,12 +83,10 @@ function VerifyEmailForm() {
     setDigits(newDigits);
     setErrorMessage(null);
 
-    // Auto-advance
     if (clean && index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
 
-    // Auto-submit when all 6 digits filled
     if (clean && index === 5) {
       const fullCode = newDigits.join('');
       if (fullCode.length === 6) {
@@ -176,38 +170,38 @@ function VerifyEmailForm() {
     <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Header Badge */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-ink text-xs font-bold uppercase tracking-wider shadow-sm mb-3">
-            <KeyRound className="w-3.5 h-3.5 text-blue" />
+        <div className="text-center mb-8 space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#D1E8E2] text-[#116466] border border-[#116466]/20 text-xs font-semibold uppercase tracking-wider mb-2">
+            <KeyRound className="w-3.5 h-3.5 text-[#116466]" />
             Two-Factor Verification
           </div>
-          <h1 className="text-3xl sm:text-4xl font-display font-medium uppercase tracking-tight text-ink">
+          <h1 className="text-3xl sm:text-4xl font-serif font-normal uppercase tracking-tight text-[#2C3531]">
             Verify Your Email
           </h1>
-          <p className="text-ink/75 text-sm mt-2">
+          <p className="text-[#2C3531]/75 text-sm font-sans">
             Enter the 6-digit confirmation code dispatched to{' '}
-            <span className="text-ink font-bold">{email || 'your email'}</span>.
+            <span className="text-[#2C3531] font-semibold">{email || 'your email'}</span>.
           </p>
         </div>
 
         {/* Card */}
-        <div className="banky-card p-6 sm:p-8 space-y-6">
+        <div className="craft-card p-6 sm:p-8 space-y-6">
           {/* Email dispatch notice */}
-          <div className="p-3.5 rounded-2xl bg-blue/10 border border-blue/20 flex items-start gap-2.5 text-ink text-xs">
-            <Info className="w-4 h-4 text-blue shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-2xl bg-[#D1E8E2]/40 border border-[#116466]/20 flex items-start gap-2.5 text-[#2C3531] text-xs">
+            <Info className="w-4 h-4 text-[#116466] shrink-0 mt-0.5" />
             <div>
-              <p className="font-semibold text-blue">Check Your Inbox & Spam Folder</p>
-              <p className="text-ink/75 mt-0.5">
-                We sent a 6-digit OTP code to <strong className="text-ink">{email || 'your email'}</strong>. Code expires in 15 minutes.
+              <p className="font-semibold text-[#116466]">Check Your Inbox &amp; Spam Folder</p>
+              <p className="text-[#2C3531]/75 mt-0.5 font-sans">
+                We sent a 6-digit OTP code to <strong className="text-[#2C3531]">{email || 'your email'}</strong>. Code expires in 15 minutes.
               </p>
             </div>
           </div>
 
           {errorMessage && (
-            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 flex items-start gap-3 text-rose-800 text-xs sm:text-sm">
-              <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+            <div className="p-4 rounded-2xl bg-red-50 border border-red-200 flex items-start gap-3 text-red-800 text-xs sm:text-sm">
+              <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold text-rose-900">Verification Error</p>
+                <p className="font-bold text-red-900">Verification Error</p>
                 <p>{errorMessage}</p>
               </div>
             </div>
@@ -223,17 +217,16 @@ function VerifyEmailForm() {
             </div>
           )}
 
-          {/* Dev/Demo Quick Fill Banner if code preview available */}
           {devCodePreview && (
-            <div className="p-3 rounded-2xl bg-yellow/30 border border-yellow/60 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 text-ink">
-                <Sparkles className="w-4 h-4 text-blue" />
-                <span>Simulated Code: <strong className="font-mono text-blue font-bold">{devCodePreview}</strong></span>
+            <div className="p-3 rounded-2xl bg-[#D1E8E2]/35 border border-[#116466]/20 flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2 text-[#2C3531]">
+                <Sparkles className="w-4 h-4 text-[#116466]" />
+                <span>Simulated Code: <strong className="font-mono text-[#116466] font-bold">{devCodePreview}</strong></span>
               </div>
               <button
                 type="button"
                 onClick={() => handlePastedCode(devCodePreview)}
-                className="px-2.5 py-1 rounded-full bg-blue text-white font-medium text-[11px] hover:bg-blue/90 transition-colors"
+                className="px-2.5 py-1 rounded-full bg-[#116466] text-white font-medium text-[11px] hover:bg-[#0c4b4d] transition-colors"
               >
                 Auto Fill
               </button>
@@ -241,26 +234,24 @@ function VerifyEmailForm() {
           )}
 
           <div className="space-y-5">
-            {/* Registered Email confirmation/edit */}
             <div>
-              <label className="block text-xs font-bold text-ink uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-[#2C3531] uppercase tracking-wider mb-1.5 font-display">
                 Target Account Email
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 absolute left-3.5 top-3.5 text-ink/40" />
+                <Mail className="w-4 h-4 absolute left-3.5 top-3.5 text-[#2C3531]/40" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@institution.edu"
-                  className="w-full pl-10 pr-4 py-2.5 bg-yellow/10 border border-ink/15 rounded-2xl text-ink placeholder-ink/40 focus:outline-none focus:border-blue text-xs sm:text-sm"
+                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#D9B08C]/40 rounded-2xl text-[#2C3531] placeholder-[#2C3531]/40 focus:outline-none focus:border-[#116466] text-xs sm:text-sm"
                 />
               </div>
             </div>
 
-            {/* 6-box OTP entry */}
             <div>
-              <label className="block text-xs font-bold text-ink uppercase tracking-wider mb-2 text-center">
+              <label className="block text-xs font-semibold text-[#2C3531] uppercase tracking-wider mb-2 text-center font-display">
                 Enter 6-Digit Code
               </label>
               <div className="flex justify-between gap-2 sm:gap-3">
@@ -283,15 +274,14 @@ function VerifyEmailForm() {
                     }}
                     className={`w-11 h-14 sm:w-12 sm:h-14 text-center font-mono font-bold text-xl sm:text-2xl rounded-2xl border transition-all focus:outline-none ${
                       digit
-                        ? 'border-blue text-blue bg-blue/5'
-                        : 'border-ink/20 text-ink bg-white focus:border-blue focus:ring-1 focus:ring-blue'
+                        ? 'border-[#116466] text-[#116466] bg-[#D1E8E2]/30'
+                        : 'border-[#D9B08C]/40 text-[#2C3531] bg-white focus:border-[#116466]'
                     }`}
                   />
                 ))}
               </div>
             </div>
 
-            {/* Manual Submit Button */}
             <div className="pt-2">
               <PillButton
                 onClick={() => performVerification(digits.join(''))}
@@ -305,14 +295,13 @@ function VerifyEmailForm() {
               </PillButton>
             </div>
 
-            {/* Resend Code Section */}
-            <div className="pt-4 border-t border-ink/10 flex items-center justify-between text-xs text-ink/75">
+            <div className="pt-4 border-t border-[#D9B08C]/30 flex items-center justify-between text-xs text-[#2C3531]/75">
               <span>Didn&apos;t receive the code?</span>
               <button
                 type="button"
                 onClick={handleResend}
                 disabled={resendCooldown > 0 || isResending}
-                className="inline-flex items-center gap-1.5 font-bold text-blue hover:underline disabled:text-ink/40 transition-colors"
+                className="inline-flex items-center gap-1.5 font-semibold text-[#116466] hover:underline disabled:text-[#2C3531]/40 transition-colors"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${isResending ? 'animate-spin' : ''}`} />
                 {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend Code'}
@@ -321,10 +310,9 @@ function VerifyEmailForm() {
           </div>
         </div>
 
-        {/* Back Link */}
-        <div className="mt-6 text-center text-xs text-ink/70">
+        <div className="mt-6 text-center text-xs text-[#2C3531]/70 font-sans">
           Want to use a different account?{' '}
-          <Link href="/login" className="text-blue font-bold hover:underline">
+          <Link href="/login" className="text-[#116466] font-semibold hover:underline">
             Back to Sign In
           </Link>
         </div>
@@ -337,7 +325,7 @@ export default function VerifyEmailPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center text-ink/70 text-sm">
+        <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center text-[#2C3531]/70 text-sm font-sans">
           Loading verification portal...
         </div>
       }

@@ -7,15 +7,9 @@ import {
   AlertCircle,
   ArrowLeft,
   BookOpen,
-  CheckCircle2,
-  Download,
   ExternalLink,
   MessageSquare,
-  RefreshCw,
-  Sparkles,
-  Volume2,
   Mic,
-  Share2,
 } from 'lucide-react';
 import ProbabilityGauge from '@/components/ProbabilityGauge';
 import ShapChart from '@/components/ShapChart';
@@ -43,7 +37,6 @@ function ResultsContent() {
     }
 
     const loadData = async () => {
-      // 1. Immediate retrieval from local storage to display instantly without delay
       try {
         const cachedSession = sessionStorage.getItem(`synapse_result_${id}`);
         if (cachedSession) {
@@ -63,9 +56,7 @@ function ResultsContent() {
             return;
           }
         }
-      } catch {
-        // continue to network fetch
-      }
+      } catch {}
 
       try {
         setLoading(true);
@@ -84,11 +75,11 @@ function ResultsContent() {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4 space-y-4">
-        <div className="w-12 h-12 border-4 border-[#1D63FF] border-t-transparent rounded-full animate-spin" />
-        <h2 className="font-headline text-3xl font-medium text-[#141414] uppercase tracking-tight">
+        <div className="w-12 h-12 border-4 border-[#116466] border-t-transparent rounded-full animate-spin" />
+        <h2 className="font-serif text-3xl font-normal text-[#2C3531] uppercase tracking-tight">
           Analyzing Your Vocal Biomarkers...
         </h2>
-        <p className="text-sm text-[#141414]/70 max-w-md">
+        <p className="text-sm text-[#2C3531]/70 max-w-md font-sans">
           Extracting 22 Praat acoustic parameters, computing StratifiedGroupKFold classifier, and retrieving literature citations.
         </p>
       </div>
@@ -97,12 +88,12 @@ function ResultsContent() {
 
   if (error || !data) {
     return (
-      <div className="max-w-xl mx-auto my-12 p-8 sm:p-10 banky-card text-center space-y-4">
-        <AlertCircle className="w-12 h-12 text-[#E53E3E] mx-auto" />
-        <h2 className="font-headline text-3xl font-medium text-[#141414] uppercase tracking-tight">
+      <div className="max-w-xl mx-auto my-12 p-8 sm:p-10 craft-card text-center space-y-4">
+        <AlertCircle className="w-12 h-12 text-[#B84A39] mx-auto" />
+        <h2 className="font-serif text-3xl font-normal text-[#2C3531] uppercase tracking-tight">
           Screening Result Not Found
         </h2>
-        <p className="text-sm text-[#141414]/75">{error || 'Unable to locate this analysis record.'}</p>
+        <p className="text-sm text-[#2C3531]/75 font-sans">{error || 'Unable to locate this analysis record.'}</p>
         <div className="pt-2">
           <PillButton variant="primary" href="/screen" showArrow>
             Perform New Screening
@@ -117,20 +108,20 @@ function ResultsContent() {
   const getRiskPill = () => {
     if (confidenceBand === 'Low Risk') {
       return (
-        <span className="px-4 py-1.5 rounded-full bg-[#E8F2FF] text-[#1D63FF] text-xs font-bold uppercase tracking-wider">
+        <span className="px-4 py-1.5 rounded-full bg-[#D1E8E2] text-[#116466] text-xs font-semibold uppercase tracking-wider border border-[#116466]/20">
           Low Risk (&lt; 35%)
         </span>
       );
     }
     if (confidenceBand === 'Moderate Concern') {
       return (
-        <span className="px-4 py-1.5 rounded-full bg-[#FFF4DC] text-[#141414] text-xs font-bold uppercase tracking-wider">
+        <span className="px-4 py-1.5 rounded-full bg-[#FFCB9A]/40 text-[#2C3531] text-xs font-semibold uppercase tracking-wider border border-[#D9B08C]">
           Moderate Concern (35% – 65%)
         </span>
       );
     }
     return (
-      <span className="px-4 py-1.5 rounded-full bg-red-50 text-[#E53E3E] text-xs font-bold uppercase tracking-wider border border-red-200">
+      <span className="px-4 py-1.5 rounded-full bg-[#FFCB9A] text-[#2C3531] text-xs font-semibold uppercase tracking-wider border border-[#D9B08C]">
         Elevated Risk (&gt; 65%)
       </span>
     );
@@ -142,7 +133,7 @@ function ResultsContent() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <Link
           href="/screen"
-          className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#141414] hover:text-[#1D63FF] transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-display font-semibold uppercase tracking-wider text-[#2C3531] hover:text-[#116466] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Recording
         </Link>
@@ -150,30 +141,30 @@ function ResultsContent() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsChatOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-xs font-semibold text-[#141414] shadow-sm hover:bg-white/80 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#D9B08C]/40 text-xs font-semibold text-[#2C3531] shadow-xs hover:bg-[#D1E8E2]/30 transition-colors cursor-pointer"
           >
-            <MessageSquare className="w-4 h-4 text-[#1D63FF]" /> Ask AI Assistant
+            <MessageSquare className="w-4 h-4 text-[#116466]" /> Ask AI Assistant
           </button>
           <Link
             href="/screen"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1D63FF] text-white text-xs font-semibold hover:bg-[#1453E6] shadow-sm transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#116466] text-white text-xs font-semibold hover:bg-[#0c4b4d] shadow-xs transition-all"
           >
             <Mic className="w-4 h-4" /> New Test
           </Link>
         </div>
       </div>
 
-      {/* Hero Result Banner (Big White Card) */}
-      <div className="banky-card p-8 sm:p-12 space-y-8">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-[#141414]/10">
+      {/* Hero Result Banner */}
+      <div className="craft-card p-8 sm:p-12 space-y-8">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-[#D9B08C]/30">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               {getRiskPill()}
-              <span className="text-xs text-[#6B6D72] font-mono">
+              <span className="text-xs text-[#2C3531]/60 font-mono">
                 ID: {data.id.slice(0, 8)} &middot; {new Date(data.created_at).toLocaleDateString()}
               </span>
             </div>
-            <h1 className="font-headline text-4xl sm:text-6xl font-medium tracking-tight text-[#141414] uppercase leading-[0.92]">
+            <h1 className="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-[#2C3531] uppercase leading-[0.92]">
               Acoustic Screening Report
             </h1>
           </div>
@@ -188,10 +179,10 @@ function ResultsContent() {
 
         {/* Plain Language Interpretation */}
         <div className="space-y-2">
-          <h3 className="font-headline text-xl font-medium text-[#141414] uppercase tracking-tight">
+          <h3 className="font-serif text-xl font-normal text-[#2C3531] uppercase tracking-tight">
             Plain-Language Analysis
           </h3>
-          <p className="text-sm sm:text-base text-[#141414]/85 leading-relaxed font-normal">
+          <p className="text-sm sm:text-base text-[#2C3531]/85 leading-relaxed font-sans font-normal">
             {data.explanation ||
               'Your sustained vowel phonation was evaluated using 22 calibrated MDVP parameters. The classifier evaluates pitch microtremors and nonlinear recurrence patterns associated with hypokinetic dysarthria.'}
           </p>
@@ -206,13 +197,13 @@ function ResultsContent() {
         />
 
         {/* Citations "Receipts" Panel */}
-        <div className="banky-card p-6 sm:p-8 space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-[#141414]/10">
-            <h4 className="font-headline text-lg font-medium text-[#141414] uppercase tracking-tight flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-[#1D63FF]" />
+        <div className="craft-card p-6 sm:p-8 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#D9B08C]/30">
+            <h4 className="font-serif text-lg font-normal text-[#2C3531] uppercase tracking-tight flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-[#116466]" />
               Peer-Reviewed Literature Receipts
             </h4>
-            <span className="text-xs text-[#6B6D72]">DOI Verified</span>
+            <span className="text-xs text-[#2C3531]/60 font-mono">DOI Verified</span>
           </div>
 
           <div className="space-y-3">
@@ -220,10 +211,10 @@ function ResultsContent() {
               data.literature_citations.map((cite: CitationItem, idx: number) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-2xl bg-[#FFCE32]/20 border border-[#141414]/10 space-y-2"
+                  className="p-4 rounded-2xl bg-[#D1E8E2]/35 border border-[#116466]/20 space-y-2"
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <p className="text-xs font-bold text-[#141414]">
+                    <p className="text-xs font-semibold text-[#2C3531]">
                       {cite.title || cite.authors}
                     </p>
                     {cite.doi && (
@@ -231,35 +222,36 @@ function ResultsContent() {
                         href={`https://doi.org/${cite.doi}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-[#1D63FF] hover:underline shrink-0"
+                        className="text-[#116466] hover:underline shrink-0 font-mono text-xs flex items-center gap-0.5"
                       >
+                        <span>DOI</span>
                         <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                     )}
                   </div>
-                  <p className="text-xs text-[#141414]/80">
+                  <p className="text-xs text-[#2C3531]/80 font-sans">
                     {cite.authors} ({cite.year})
                   </p>
-                  <p className="text-[11px] text-[#6B6D72]">
+                  <p className="text-[11px] text-[#2C3531]/60 font-mono">
                     Semantic literature relevance score: {(cite.similarity * 100).toFixed(0)}%
                   </p>
                 </div>
               ))
             ) : (
               <div className="space-y-3">
-                <div className="p-4 rounded-2xl bg-[#FFCE32]/20 border border-[#141414]/10 space-y-1.5 text-xs text-[#141414]">
-                  <p className="font-bold">Little, M. A. et al. (2009)</p>
-                  <p className="italic text-[#141414]/80">
+                <div className="p-4 rounded-2xl bg-[#D1E8E2]/35 border border-[#116466]/20 space-y-1.5 text-xs text-[#2C3531]">
+                  <p className="font-semibold text-[#2C3531]">Little, M. A. et al. (2009)</p>
+                  <p className="italic text-[#2C3531]/80 font-sans">
                     &ldquo;Suitability of dysphonia measurements for telemonitoring of Parkinson&apos;s disease.&rdquo;
                   </p>
-                  <p className="text-[11px] text-[#6B6D72]">IEEE Trans. Biomed. Eng. &middot; Pitch Period Entropy (PPE)</p>
+                  <p className="text-[11px] text-[#2C3531]/60 font-mono">IEEE Trans. Biomed. Eng. &middot; Pitch Period Entropy (PPE)</p>
                 </div>
-                <div className="p-4 rounded-2xl bg-[#FFCE32]/20 border border-[#141414]/10 space-y-1.5 text-xs text-[#141414]">
-                  <p className="font-bold">Tsanas, A. et al. (2012)</p>
-                  <p className="italic text-[#141414]/80">
+                <div className="p-4 rounded-2xl bg-[#D1E8E2]/35 border border-[#116466]/20 space-y-1.5 text-xs text-[#2C3531]">
+                  <p className="font-semibold text-[#2C3531]">Tsanas, A. et al. (2012)</p>
+                  <p className="italic text-[#2C3531]/80 font-sans">
                     &ldquo;Novel speech signal processing algorithms for high-accuracy classification of Parkinson&apos;s disease.&rdquo;
                   </p>
-                  <p className="text-[11px] text-[#6B6D72]">IEEE TBME &middot; Detrended Fluctuation Analysis (DFA)</p>
+                  <p className="text-[11px] text-[#2C3531]/60 font-mono">IEEE TBME &middot; Detrended Fluctuation Analysis (DFA)</p>
                 </div>
               </div>
             )}
@@ -270,17 +262,17 @@ function ResultsContent() {
       {/* 22 Biomarkers Table Card */}
       <BiomarkerTable features={data.features} />
 
-      {/* Medical Safety Disclaimer Card (White card with red accent border) */}
-      <div className="banky-card border-2 border-[#E53E3E] p-8 sm:p-10 space-y-3">
-        <div className="flex items-center gap-2 text-[#E53E3E]">
-          <AlertCircle className="w-5 h-5 shrink-0" />
-          <h4 className="font-headline text-xl font-medium uppercase tracking-tight">
+      {/* Medical Safety Disclaimer Card */}
+      <div className="craft-card border-l-4 border-[#D9B08C] p-8 sm:p-9 space-y-3">
+        <div className="flex items-center gap-2 text-[#2C3531]">
+          <AlertCircle className="w-5 h-5 text-[#B84A39] shrink-0" />
+          <h4 className="font-serif text-xl sm:text-2xl font-normal tracking-tight">
             Academic Screening Notice &mdash; Not a Clinical Diagnosis
           </h4>
         </div>
-        <p className="text-xs sm:text-sm text-[#141414]/85 leading-relaxed font-normal">
+        <p className="text-xs sm:text-sm text-[#2C3531]/85 leading-relaxed font-sans font-normal">
           Synapse-Voice is strictly an exploratory screening tool developed as part of an EPICS academic engineering project.
-          It measures phonatory dysphonia patterns and <strong className="text-[#141414]">cannot confirm or diagnose Parkinson&apos;s disease</strong>.
+          It measures phonatory dysphonia patterns and <strong className="text-[#2C3531]">cannot confirm or diagnose Parkinson&apos;s disease</strong>.
           Vocal microtremors can also occur from acute respiratory infection, vocal cord nodules, stress, fatigue, or ambient microphone noise. Please consult a licensed neurologist for any health diagnosis.
         </p>
       </div>
@@ -302,7 +294,7 @@ export default function ResultsPage() {
     <Suspense
       fallback={
         <div className="min-h-[50vh] flex items-center justify-center">
-          <div className="w-10 h-10 border-4 border-[#1D63FF] border-t-transparent rounded-full animate-spin" />
+          <div className="w-10 h-10 border-4 border-[#116466] border-t-transparent rounded-full animate-spin" />
         </div>
       }
     >

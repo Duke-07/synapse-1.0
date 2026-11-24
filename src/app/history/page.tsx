@@ -81,14 +81,14 @@ export default function HistoryPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-ink text-xs font-bold uppercase tracking-wider shadow-sm mb-3">
-            <Clock className="w-3.5 h-3.5 text-blue" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#D1E8E2] text-[#116466] border border-[#116466]/20 text-xs font-semibold uppercase tracking-wider mb-3">
+            <Clock className="w-3.5 h-3.5 text-[#116466]" />
             {isBackendSource ? 'Cloud Account Records' : 'Local Session Records'}
           </div>
-          <h1 className="text-4xl sm:text-5xl font-display font-medium uppercase text-ink tracking-tight">
+          <h1 className="text-4xl sm:text-5xl font-serif font-normal uppercase text-[#2C3531] tracking-tight">
             Screening History
           </h1>
-          <p className="text-ink/75 text-base mt-2 max-w-xl">
+          <p className="text-[#2C3531]/75 text-base mt-2 max-w-xl font-sans leading-relaxed">
             Review your past acoustic phonation screening sessions, probability scores, and biomarker attributions.
           </p>
         </div>
@@ -118,19 +118,18 @@ export default function HistoryPage() {
         )}
       </div>
 
-
       {loading ? (
         <div className="py-24 text-center">
-          <div className="w-9 h-9 border-3 border-blue border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-ink/70 font-medium text-sm">Loading screening history...</p>
+          <div className="w-9 h-9 border-3 border-[#116466] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-[#2C3531]/70 font-sans text-sm">Loading screening history...</p>
         </div>
       ) : history.length === 0 ? (
-        <div className="banky-card p-12 text-center max-w-lg mx-auto">
-          <div className="w-16 h-16 rounded-full bg-yellow/30 flex items-center justify-center mx-auto mb-4 text-blue">
+        <div className="craft-card p-12 text-center max-w-lg mx-auto">
+          <div className="w-16 h-16 rounded-2xl bg-[#D1E8E2] flex items-center justify-center mx-auto mb-4 text-[#116466]">
             <Clock className="w-8 h-8" />
           </div>
-          <h3 className="text-2xl font-display font-medium uppercase text-ink mb-2">No Screenings Recorded</h3>
-          <p className="text-ink/75 text-sm mb-6 leading-relaxed">
+          <h3 className="text-2xl font-serif font-normal uppercase text-[#2C3531] mb-2">No Screenings Recorded</h3>
+          <p className="text-[#2C3531]/75 text-sm mb-6 leading-relaxed font-sans">
             You haven’t completed any voice screenings yet. Perform a 5-second sustained vowel phonation to generate an acoustic profile.
           </p>
           <Link href="/screen">
@@ -140,12 +139,12 @@ export default function HistoryPage() {
           </Link>
         </div>
       ) : (
-        <div className="banky-card overflow-hidden">
+        <div className="craft-card overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-ink">
-              <thead className="bg-ink/5 text-xs uppercase font-mono text-ink/70 border-b border-ink/10">
+            <table className="w-full text-left text-sm text-[#2C3531]">
+              <thead className="bg-[#D1E8E2]/60 text-xs uppercase font-mono text-[#116466] border-b border-[#D9B08C]/30">
                 <tr>
-                  <th className="py-4 px-5">Date & Time</th>
+                  <th className="py-4 px-5">Date &amp; Time</th>
                   <th className="py-4 px-5">Screening ID</th>
                   <th className="py-4 px-5">Anomaly Probability</th>
                   <th className="py-4 px-5">Confidence Band</th>
@@ -153,35 +152,35 @@ export default function HistoryPage() {
                   <th className="py-4 px-5 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-ink/10">
+              <tbody className="divide-y divide-[#D9B08C]/20">
                 {history.map((item) => (
                   <tr
                     key={item.id}
-                    className="hover:bg-yellow/20 transition-colors"
+                    className="hover:bg-[#D1E8E2]/25 transition-colors"
                   >
-                    <td className="py-4 px-5 font-mono text-xs text-ink/70 whitespace-nowrap">
+                    <td className="py-4 px-5 font-mono text-xs text-[#2C3531]/70 whitespace-nowrap">
                       {new Date(item.created_at).toLocaleDateString()} {new Date(item.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </td>
-                    <td className="py-4 px-5 font-mono text-xs text-ink/80">
+                    <td className="py-4 px-5 font-mono text-xs text-[#2C3531]/80">
                       {item.id.slice(0, 8)}...
                     </td>
-                    <td className="py-4 px-5 font-mono font-bold text-ink">
+                    <td className="py-4 px-5 font-mono font-bold text-[#116466]">
                       {(item.probability * 100).toFixed(1)}%
                     </td>
                     <td className="py-4 px-5">
                       <span
-                        className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase ${
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase ${
                           item.confidence_band === 'Low Risk'
-                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                            ? 'bg-[#D1E8E2] text-[#116466] border border-[#116466]/20'
                             : item.confidence_band === 'Moderate Concern'
-                            ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                            : 'bg-rose-100 text-rose-800 border border-rose-300'
+                            ? 'bg-[#FFCB9A]/40 text-[#2C3531] border border-[#D9B08C]'
+                            : 'bg-[#FFCB9A] text-[#2C3531] border border-[#D9B08C]'
                         }`}
                       >
                         {item.confidence_band}
                       </span>
                     </td>
-                    <td className="py-4 px-5 text-xs text-ink/75">
+                    <td className="py-4 px-5 text-xs text-[#2C3531]/75 font-sans">
                       {item.top_features && item.top_features.length > 0
                         ? item.top_features.join(', ')
                         : 'Acoustic indices'}
@@ -189,7 +188,7 @@ export default function HistoryPage() {
                     <td className="py-4 px-5 text-right">
                       <Link
                         href={`/results?id=${item.id}`}
-                        className="inline-flex items-center gap-1.5 text-blue hover:underline font-bold text-xs"
+                        className="inline-flex items-center gap-1.5 text-[#116466] hover:underline font-semibold text-xs font-display"
                       >
                         View Report <ArrowRight className="w-3.5 h-3.5" />
                       </Link>

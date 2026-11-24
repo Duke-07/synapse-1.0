@@ -475,7 +475,7 @@ export function generateParkinsonsAssistantReply(
         `### 🥗 Nutrition & Lifestyle Management in Parkinson's\n\n` +
         `#### 1. The Levodopa-Protein Interaction (Crucial Rule):\n` +
         `* **The Mechanism**: Dietary amino acids from protein-rich foods (meat, poultry, fish, eggs, dairy, beans) utilize the exact same carrier transport system (large neutral amino acid transporter - LAT1) across the intestinal wall and blood-brain barrier as Levodopa.\n` +
-        `* **Best Practice**: Take Levodopa **30 to 60 minutes before meals**, or 1–2 hours after meals with a carbohydrate snack (crackers, appleauce) or water. In advanced disease, protein redistribution diet (shifting protein intake primarily to dinner) helps maximize daytime motor mobility.\n\n` +
+        `* **Best Practice**: Take Levodopa **30 to 60 minutes before meals**, or 1–2 hours after meals with a carbohydrate snack (crackers, applesauce) or water. In advanced disease, protein redistribution diet (shifting protein intake primarily to dinner) helps maximize daytime motor mobility.\n\n` +
         `#### 2. Managing Chronic Constipation:\n` +
         `* Slowed colonic transit occurs early due to enteric nervous system alpha-synuclein pathology.\n` +
         `* Increase soluble and insoluble fiber intake gradually.\n` +

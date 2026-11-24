@@ -40,17 +40,17 @@ export const BiomarkerTable: React.FC<BiomarkerTableProps> = ({ features = {}, s
   const displayedKeys = expanded ? keys : keys.slice(0, 8);
 
   return (
-    <div className="bg-white rounded-[32px] p-6 sm:p-8 shadow-sm space-y-4">
-      <div className="flex items-center justify-between pb-2 border-b border-[#141414]/10">
-        <h4 className="font-headline text-lg font-medium text-[#141414] uppercase tracking-tight">
+    <div className="craft-card p-6 sm:p-8 space-y-5">
+      <div className="flex items-center justify-between pb-3 border-b border-[#D9B08C]/30">
+        <h4 className="font-serif text-lg font-normal text-[#2C3531] tracking-tight">
           Extracted Praat Acoustic Biomarkers ({keys.length})
         </h4>
-        <span className="text-xs text-[#6B6D72]">Normalized Values</span>
+        <span className="text-xs text-[#2C3531]/60 font-mono">Calibrated Metrics</span>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs sm:text-sm text-[#141414]">
-          <thead className="bg-[#FFCE32]/25 text-[11px] uppercase font-semibold text-[#141414] border-b border-[#141414]/10">
+        <table className="w-full text-left text-xs sm:text-sm text-[#2C3531]">
+          <thead className="bg-[#D1E8E2]/60 text-[11px] uppercase font-semibold text-[#116466] border-b border-[#D9B08C]/30">
             <tr>
               <th className="py-3 px-3">Biomarker</th>
               <th className="py-3 px-3">Description</th>
@@ -59,7 +59,7 @@ export const BiomarkerTable: React.FC<BiomarkerTableProps> = ({ features = {}, s
               <th className="py-3 px-3 text-center">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#141414]/5 text-xs">
+          <tbody className="divide-y divide-[#D9B08C]/20 text-xs">
             {displayedKeys.map((key) => {
               const val = features[key];
               const ref = REFERENCE_DATA[key];
@@ -68,23 +68,23 @@ export const BiomarkerTable: React.FC<BiomarkerTableProps> = ({ features = {}, s
               const isWithinHealthy = val >= ref.min && val <= ref.max;
 
               return (
-                <tr key={key} className="hover:bg-[#E8F2FF]/40 transition-colors">
-                  <td className="py-3 px-3 font-semibold text-[#141414]">{key}</td>
-                  <td className="py-3 px-3 text-[#6B6D72]">{ref.desc}</td>
-                  <td className="py-3 px-3 font-mono font-bold text-[#141414]">
+                <tr key={key} className="hover:bg-[#D1E8E2]/25 transition-colors">
+                  <td className="py-3 px-3 font-semibold text-[#2C3531]">{key}</td>
+                  <td className="py-3 px-3 text-[#2C3531]/70">{ref.desc}</td>
+                  <td className="py-3 px-3 font-mono font-bold text-[#116466]">
                     {val.toFixed(4)} {ref.unit}
                   </td>
-                  <td className="py-3 px-3 font-mono text-[#6B6D72]">
+                  <td className="py-3 px-3 font-mono text-[#2C3531]/60">
                     {ref.min} – {ref.max} {ref.unit}
                   </td>
                   <td className="py-3 px-3 text-center">
                     {isWithinHealthy ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#E8F2FF] text-[#1D63FF]">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#D1E8E2] text-[#116466] border border-[#116466]/20">
                         <CheckCircle className="w-3 h-3" /> Healthy
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                        <AlertCircle className="w-3 h-3" /> Deviated
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#FFCB9A]/40 text-[#2C3531] border border-[#D9B08C]">
+                        <AlertCircle className="w-3 h-3 text-[#B84A39]" /> Deviated
                       </span>
                     )}
                   </td>
@@ -98,7 +98,7 @@ export const BiomarkerTable: React.FC<BiomarkerTableProps> = ({ features = {}, s
       <div className="pt-2 text-center">
         <button
           onClick={() => setExpanded(!expanded)}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#141414]/20 text-xs font-semibold text-[#141414] hover:bg-[#141414]/5 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#D9B08C]/60 text-xs font-medium text-[#2C3531] hover:bg-[#D1E8E2]/30 transition-colors cursor-pointer"
         >
           {expanded ? (
             <>

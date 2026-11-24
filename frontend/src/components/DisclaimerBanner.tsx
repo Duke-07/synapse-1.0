@@ -5,16 +5,18 @@ export const DisclaimerBanner: React.FC = () => {
   return (
     <aside
       aria-label="Pre-clinical screening aid notice"
-      className="w-full bg-[#1D63FF] text-white py-2 px-4 select-none relative z-50 text-xs font-semibold tracking-wider uppercase text-center"
+      className="w-full bg-[#2C3531] text-[#D1E8E2] py-2.5 px-4 select-none relative z-50 text-xs font-mono border-b border-[#2C3531]"
     >
       <div className="flex items-center justify-center gap-2 max-w-7xl mx-auto">
-        <AlertCircle className="w-4 h-4 shrink-0 text-white fill-white/20" />
-        <span className="font-bold">PRE-CLINICAL SCREENING AID ONLY:</span>
-        <span className="opacity-90 normal-case font-medium hidden sm:inline">
-          Synapse-Voice does not diagnose Parkinson&apos;s disease. Results must be interpreted in consultation with a board-certified neurologist.
+        <AlertCircle className="w-3.5 h-3.5 shrink-0 text-[#FFCB9A]" />
+        <span className="font-semibold text-[#FFCB9A] tracking-wider uppercase">
+          Investigational Research Platform:
         </span>
-        <span className="opacity-90 normal-case font-medium sm:hidden">
-          Academic research aid only. Does not diagnose PD.
+        <span className="text-[#D1E8E2]/85 hidden sm:inline font-sans">
+          Synapse-Voice evaluates phonatory acoustic biomarkers and does not provide a clinical diagnosis of Parkinson&apos;s disease.
+        </span>
+        <span className="text-[#D1E8E2]/85 sm:hidden font-sans">
+          Academic screening only. Does not diagnose PD.
         </span>
       </div>
     </aside>

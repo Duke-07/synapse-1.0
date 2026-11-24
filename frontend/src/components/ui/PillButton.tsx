@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react';
 
 export interface PillButtonProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'yellow' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'yellow' | 'charcoal' | 'mint' | 'tan' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   href?: string;
   onClick?: () => void;
@@ -28,22 +28,28 @@ export const PillButton: React.FC<PillButtonProps> = ({
   showArrow = false,
 }) => {
   const sizeClasses = {
-    sm: 'px-4 py-1.5 text-xs',
-    md: 'px-6 py-3 text-sm',
-    lg: 'px-8 py-3.5 text-base',
+    sm: 'px-4 py-1.5 text-xs font-medium',
+    md: 'px-6 py-2.5 text-sm font-medium',
+    lg: 'px-8 py-3.5 text-base font-semibold',
   };
 
-  const baseClasses = `inline-flex items-center justify-center gap-2.5 rounded-full font-semibold tracking-wide transition-all duration-200 cursor-pointer select-none group ${sizeClasses[size]}`;
+  const baseClasses = `inline-flex items-center justify-center gap-2.5 rounded-full tracking-wide transition-all duration-200 cursor-pointer select-none group ${sizeClasses[size]}`;
 
   const variantClasses = {
     primary:
-      'bg-[#1D63FF] text-white hover:bg-[#1453E6] shadow-[0_8px_20px_rgba(29,99,255,0.3)] hover:scale-[1.03] active:scale-[0.97]',
+      'bg-[#116466] text-white hover:bg-[#0c4b4d] shadow-[0_4px_16px_rgba(17,100,102,0.25)] hover:scale-[1.02] active:scale-[0.98]',
     secondary:
-      'border-2 border-[#1D63FF] text-[#1D63FF] bg-transparent hover:bg-[#1D63FF] hover:text-white hover:scale-[1.03] active:scale-[0.97]',
+      'border-1.5 border-[#116466] text-[#116466] bg-transparent hover:bg-[#116466] hover:text-white hover:scale-[1.02] active:scale-[0.98]',
+    charcoal:
+      'bg-[#2C3531] text-[#EBF4F1] hover:bg-[#1f2623] shadow-[0_4px_16px_rgba(44,53,49,0.25)] hover:scale-[1.02] active:scale-[0.98]',
+    mint:
+      'bg-[#D1E8E2] text-[#116466] hover:bg-[#bee1d9] border border-[#116466]/20 hover:scale-[1.02] active:scale-[0.98]',
+    tan:
+      'bg-[#D9B08C] text-[#2C3531] hover:bg-[#cb9f77] shadow-sm hover:scale-[1.02] active:scale-[0.98]',
     yellow:
-      'bg-[#FFCE32] text-[#141414] hover:bg-[#F2C32B] shadow-sm hover:scale-[1.03] active:scale-[0.97]',
+      'bg-[#FFCB9A] text-[#2C3531] hover:bg-[#f6b87d] shadow-sm hover:scale-[1.02] active:scale-[0.98]',
     ghost:
-      'text-[#141414] hover:bg-[#141414]/5',
+      'text-[#2C3531] hover:bg-[#2C3531]/5',
   };
 
   const disabledClasses = disabled ? 'opacity-40 cursor-not-allowed pointer-events-none' : '';

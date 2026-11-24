@@ -13,19 +13,19 @@ export const StepSquiggle: React.FC<StepSquiggleProps> = ({ className = '' }) =>
         viewBox="0 0 140 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full max-w-[120px] text-[#FF5A1F]"
+        className="w-full max-w-[120px] text-[#D9B08C]"
       >
         <path
           d="M 5 20 Q 35 2 70 20 T 135 20"
           stroke="currentColor"
-          strokeWidth="3"
+          strokeWidth="2.5"
           strokeLinecap="round"
-          strokeDasharray="6 6"
+          strokeDasharray="5 5"
         />
         <path
           d="M 125 13 L 135 20 L 125 27"
           stroke="currentColor"
-          strokeWidth="3"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         />

@@ -10,8 +10,7 @@ interface SwooshPathProps {
 export const SwooshPath: React.FC<SwooshPathProps> = ({ className = '' }) => {
   const { scrollYProgress } = useScroll();
 
-  // Draw stroke smoothly as user scrolls past hero (from 0 to 0.2 scroll progress)
-  const pathLength = useTransform(scrollYProgress, [0, 0.2], [0.55, 1]);
+  const pathLength = useTransform(scrollYProgress, [0, 0.25], [0.45, 1]);
 
   return (
     <div
@@ -25,17 +24,17 @@ export const SwooshPath: React.FC<SwooshPathProps> = ({ className = '' }) => {
         preserveAspectRatio="none"
         className="w-full h-full"
       >
-        {/* Main Thick White Swoosh Line behind Hero CTA */}
         <motion.path
           d="M -60 320 L 620 320 L 1100 130 L 1500 100"
-          stroke="#FFFFFF"
-          strokeWidth="12"
+          stroke="#D1E8E2"
+          strokeWidth="8"
           strokeLinecap="round"
           strokeLinejoin="round"
+          strokeOpacity="0.4"
           vectorEffect="non-scaling-stroke"
           style={{ pathLength }}
-          initial={{ pathLength: 0.55 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ pathLength: 0.45 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
         />
       </svg>
     </div>

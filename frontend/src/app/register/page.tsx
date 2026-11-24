@@ -47,12 +47,12 @@ export default function RegisterPage() {
   const strengthScore = getPasswordStrength(password);
   const strengthLabels = ['Too Weak', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
   const strengthColors = [
-    'bg-[#F0F0F0]',
-    'bg-red-500',
-    'bg-amber-500',
-    'bg-amber-400',
-    'bg-[#1D63FF]',
-    'bg-emerald-500',
+    'bg-[#D1E8E2]/50',
+    'bg-[#B84A39]',
+    'bg-[#D9B08C]',
+    'bg-[#FFCB9A]',
+    'bg-[#116466]',
+    'bg-[#116466]',
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -94,44 +94,44 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto my-8 sm:my-14 banky-card p-8 sm:p-10 space-y-6">
+    <div className="max-w-md mx-auto my-8 sm:my-14 craft-card p-8 sm:p-10 space-y-6">
       <div className="text-center space-y-2">
-        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1D63FF]">
+        <span className="inline-block px-3.5 py-1 rounded-full bg-[#D1E8E2] text-[#116466] border border-[#116466]/20 text-xs font-semibold uppercase tracking-wider">
           Researcher Enrollment
         </span>
-        <h1 className="font-headline text-3xl sm:text-4xl font-medium tracking-tight text-[#141414] uppercase leading-tight">
+        <h1 className="font-serif text-3xl sm:text-4xl font-normal tracking-tight text-[#2C3531] uppercase leading-tight">
           Create Account
         </h1>
-        <p className="text-xs sm:text-sm text-[#141414]/70">
+        <p className="text-xs sm:text-sm text-[#2C3531]/70 font-sans">
           Join the academic cohort to store long-term longitudinal voice analyses.
         </p>
       </div>
 
       {errorMessage && (
-        <div className="p-3.5 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-xs flex items-start gap-2.5">
-          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+        <div className="p-3.5 bg-red-50 border border-red-200 rounded-2xl text-red-800 text-xs flex items-start gap-2.5">
+          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-600" />
           <span>{errorMessage}</span>
         </div>
       )}
 
       {successInfo ? (
-        <div className="p-6 bg-[#E8F2FF] border border-[#1D63FF]/30 rounded-2xl text-center space-y-4">
-          <CheckCircle className="w-10 h-10 text-[#1D63FF] mx-auto" />
-          <h3 className="font-headline text-xl text-[#141414] uppercase">
+        <div className="p-6 bg-[#D1E8E2]/40 border border-[#116466]/30 rounded-2xl text-center space-y-4">
+          <CheckCircle className="w-10 h-10 text-[#116466] mx-auto" />
+          <h3 className="font-serif text-xl text-[#2C3531] uppercase">
             Account Created
           </h3>
-          <p className="text-xs text-[#141414]/80">{successInfo.message}</p>
+          <p className="text-xs text-[#2C3531]/80 font-sans">{successInfo.message}</p>
           {successInfo.previewCode && (
-            <div className="p-3 bg-white rounded-xl border border-[#1D63FF]/20">
-              <span className="text-[11px] text-[#6B6D72] block">Preview Verification Code:</span>
-              <span className="font-mono text-xl font-bold tracking-widest text-[#1D63FF]">
+            <div className="p-3 bg-white rounded-xl border border-[#116466]/20">
+              <span className="text-[11px] text-[#2C3531]/60 block font-sans">Preview Verification Code:</span>
+              <span className="font-mono text-xl font-bold tracking-widest text-[#116466]">
                 {successInfo.previewCode}
               </span>
             </div>
           )}
           <Link
             href={`/verify-email?email=${encodeURIComponent(email)}`}
-            className="block w-full py-3 rounded-full bg-[#1D63FF] text-white font-semibold text-xs text-center"
+            className="block w-full py-3 rounded-full bg-[#116466] text-white font-semibold text-xs text-center hover:bg-[#0c4b4d]"
           >
             Proceed to Verification &rarr;
           </Link>
@@ -139,57 +139,57 @@ export default function RegisterPage() {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-[#141414] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#2C3531] uppercase tracking-wider mb-1.5 font-display">
               Full Name
             </label>
             <div className="relative">
-              <User className="w-4 h-4 text-[#6B6D72] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <User className="w-4 h-4 text-[#2C3531]/40 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Dr. Jane Doe"
                 required
-                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#D9B08C]/40 bg-white text-[#2C3531] text-sm focus:outline-none focus:border-[#116466] transition-colors"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#141414] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#2C3531] uppercase tracking-wider mb-1.5 font-display">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-[#6B6D72] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Mail className="w-4 h-4 text-[#2C3531]/40 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="jane@clinic.org"
                 required
-                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#D9B08C]/40 bg-white text-[#2C3531] text-sm focus:outline-none focus:border-[#116466] transition-colors"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#141414] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#2C3531] uppercase tracking-wider mb-1.5 font-display">
               Password
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-[#6B6D72] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Lock className="w-4 h-4 text-[#2C3531]/40 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full pl-10 pr-10 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+                className="w-full pl-10 pr-10 py-3 rounded-2xl border border-[#D9B08C]/40 bg-white text-[#2C3531] text-sm focus:outline-none focus:border-[#116466] transition-colors"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6B6D72] hover:text-[#141414]"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#2C3531]/50 hover:text-[#2C3531]"
                 aria-label="Toggle password visibility"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -197,10 +197,10 @@ export default function RegisterPage() {
             </div>
             {password && (
               <div className="mt-2 space-y-1">
-                <div className="flex items-center justify-between text-[11px] text-[#6B6D72]">
+                <div className="flex items-center justify-between text-[11px] text-[#2C3531]/60">
                   <span>Strength: {strengthLabels[strengthScore]}</span>
                 </div>
-                <div className="w-full h-1.5 bg-[#F0F0F0] rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-[#D1E8E2]/50 rounded-full overflow-hidden">
                   <div
                     className={`h-full transition-all duration-300 ${strengthColors[strengthScore]}`}
                     style={{ width: `${(strengthScore / 5) * 100}%` }}
@@ -211,28 +211,28 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#141414] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-[#2C3531] uppercase tracking-wider mb-1.5 font-display">
               Confirm Password
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-[#6B6D72] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Lock className="w-4 h-4 text-[#2C3531]/40 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#D9B08C]/40 bg-white text-[#2C3531] text-sm focus:outline-none focus:border-[#116466] transition-colors"
               />
             </div>
           </div>
 
-          <label className="flex items-start gap-2.5 cursor-pointer text-xs text-[#141414]/80 pt-1">
+          <label className="flex items-start gap-2.5 cursor-pointer text-xs text-[#2C3531]/80 pt-1 font-sans">
             <input
               type="checkbox"
               checked={agreedToTerms}
               onChange={(e) => setAgreedToTerms(e.target.checked)}
-              className="mt-0.5 w-4 h-4 rounded border-[#141414]/30 accent-[#1D63FF]"
+              className="mt-0.5 w-4 h-4 rounded border-[#D9B08C] accent-[#116466]"
             />
             <span>
               I understand Synapse-Voice is strictly an exploratory screening tool and not a clinical diagnostic device.
@@ -252,9 +252,9 @@ export default function RegisterPage() {
         </form>
       )}
 
-      <div className="text-center pt-2 border-t border-[#141414]/10 text-xs text-[#141414]/70">
+      <div className="text-center pt-2 border-t border-[#D9B08C]/30 text-xs text-[#2C3531]/70 font-sans">
         Already enrolled?{' '}
-        <Link href="/login" className="text-[#1D63FF] font-semibold hover:underline">
+        <Link href="/login" className="text-[#116466] font-semibold hover:underline">
           Sign In here &rarr;
         </Link>
       </div>

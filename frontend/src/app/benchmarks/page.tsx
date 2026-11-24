@@ -140,34 +140,34 @@ export default function BenchmarksPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-10">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-3">
-        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1D63FF]">
+        <span className="text-xs font-display font-semibold uppercase tracking-wider text-[#116466]">
           Empirical Reproducibility &amp; Leakage Audit
         </span>
-        <h1 className="font-headline text-4xl sm:text-6xl font-medium tracking-tight text-[#141414] uppercase leading-[0.92]">
+        <h1 className="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-[#2C3531] uppercase leading-[0.92]">
           Literature Benchmarks
         </h1>
-        <p className="text-sm sm:text-base text-[#141414]/75 leading-relaxed font-normal">
+        <p className="text-sm sm:text-base text-[#2C3531]/75 leading-relaxed font-sans font-normal">
           Rigorous re-implementations of published Parkinson&apos;s voice detection models on the Oxford UCI benchmark,
           exposing recording-level data leakage and establishing honest subject-isolated baselines.
         </p>
       </div>
 
-      {/* The Data Leakage Trap Box (White Banky Card) */}
-      <div className="banky-card p-8 sm:p-10 space-y-4">
+      {/* The Data Leakage Trap Box */}
+      <div className="craft-card p-8 sm:p-10 space-y-4">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-full bg-[#E8F2FF] text-[#1D63FF] flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-[#D1E8E2] text-[#116466] flex items-center justify-center shrink-0">
             <TrendingDown className="w-6 h-6" />
           </div>
           <div className="space-y-2">
-            <h3 className="font-headline text-2xl font-medium text-[#141414] uppercase tracking-tight">
+            <h3 className="font-serif text-2xl font-normal text-[#2C3531] uppercase tracking-tight">
               The &ldquo;Data Leakage Trap&rdquo; in Voice Biomarker Literature
             </h3>
-            <p className="text-xs sm:text-sm text-[#141414]/80 leading-relaxed font-normal">
+            <p className="text-xs sm:text-sm text-[#2C3531]/80 leading-relaxed font-sans">
               The Oxford Parkinson&apos;s Voice Dataset (UCI 174) contains 195 recordings from 31 individuals (~6 recordings per subject).
               When researchers use naive random train-test splits (70:30 or random 10-fold CV), multiple phonations from the same individual appear in both training and testing partitions.
               Classifiers inadvertently memorize speaker anatomy (e.g. baseline pitch floor) rather than dysphonia pathology, artificially inflating reported accuracy to <strong>92%–99%</strong>.
             </p>
-            <p className="text-xs sm:text-sm text-[#1D63FF] font-semibold">
+            <p className="text-xs sm:text-sm text-[#116466] font-semibold font-sans">
               Under strict subject-grouped cross-validation (StratifiedGroupKFold), all models experience an honest drop of 10% to 18%,
               revealing that the true generalizable screening benchmark on this cohort is approximately <strong>79.4%</strong>.
             </p>
@@ -181,8 +181,8 @@ export default function BenchmarksPage() {
           onClick={() => setActiveTab('reproduction')}
           className={`px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
             activeTab === 'reproduction'
-              ? 'bg-[#1D63FF] text-white shadow-[0_4px_16px_rgba(29,99,255,0.35)] scale-[1.02]'
-              : 'bg-white text-[#141414] hover:bg-white/80 shadow-sm'
+              ? 'bg-[#116466] text-white shadow-sm scale-[1.02]'
+              : 'bg-white text-[#2C3531] border border-[#D9B08C]/40 hover:bg-[#D1E8E2]/30 shadow-xs'
           }`}
         >
           <span className="flex items-center gap-2">
@@ -193,8 +193,8 @@ export default function BenchmarksPage() {
           onClick={() => setActiveTab('papers')}
           className={`px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
             activeTab === 'papers'
-              ? 'bg-[#1D63FF] text-white shadow-[0_4px_16px_rgba(29,99,255,0.35)] scale-[1.02]'
-              : 'bg-white text-[#141414] hover:bg-white/80 shadow-sm'
+              ? 'bg-[#116466] text-white shadow-sm scale-[1.02]'
+              : 'bg-white text-[#2C3531] border border-[#D9B08C]/40 hover:bg-[#D1E8E2]/30 shadow-xs'
           }`}
         >
           <span className="flex items-center gap-2">
@@ -205,58 +205,58 @@ export default function BenchmarksPage() {
 
       {/* Tab 1: 5 Reproduced Works Table */}
       {activeTab === 'reproduction' && (
-        <div className="banky-card p-6 sm:p-8 space-y-4">
+        <div className="craft-card p-6 sm:p-8 space-y-4">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs sm:text-sm text-[#141414]">
-              <thead className="bg-[#FFCE32]/25 text-[11px] uppercase font-semibold text-[#141414] border-b border-[#141414]/10">
+            <table className="w-full text-left text-xs sm:text-sm text-[#2C3531]">
+              <thead className="bg-[#D1E8E2]/60 text-[11px] uppercase font-semibold text-[#116466] border-b border-[#D9B08C]/30">
                 <tr>
                   <th className="py-3.5 px-3">Prior Work / Repo</th>
                   <th className="py-3.5 px-3">Reported Metric</th>
                   <th className="py-3.5 px-3">Our Reproduction (Naive)</th>
-                  <th className="py-3.5 px-3 text-[#1D63FF]">Our Reproduction (Grouped CV)</th>
-                  <th className="py-3.5 px-3 text-[#E53E3E]">Leakage Drop</th>
+                  <th className="py-3.5 px-3 text-[#116466]">Our Reproduction (Grouped CV)</th>
+                  <th className="py-3.5 px-3 text-[#B84A39]">Leakage Drop</th>
                   <th className="py-3.5 px-3">Risk Assessment</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#141414]/5 text-xs">
+              <tbody className="divide-y divide-[#D9B08C]/20 text-xs">
                 {benchmarks.map((b, idx) => (
-                  <tr key={idx} className="hover:bg-[#E8F2FF]/40 transition-colors">
-                    <td className="py-3.5 px-3 font-semibold text-[#141414] whitespace-nowrap">
+                  <tr key={idx} className="hover:bg-[#D1E8E2]/25 transition-colors">
+                    <td className="py-3.5 px-3 font-semibold text-[#2C3531] whitespace-nowrap">
                       {b.work}
                     </td>
-                    <td className="py-3.5 px-3 text-[#6B6D72] font-mono">
+                    <td className="py-3.5 px-3 text-[#2C3531]/60 font-mono">
                       {b.reported_metric}
                     </td>
-                    <td className="py-3.5 px-3 font-mono font-medium text-[#141414]">
+                    <td className="py-3.5 px-3 font-mono font-medium text-[#2C3531]">
                       {b.reproduced_own}
                     </td>
-                    <td className="py-3.5 px-3 font-mono font-bold text-[#1D63FF] bg-[#E8F2FF]/50">
+                    <td className="py-3.5 px-3 font-mono font-bold text-[#116466] bg-[#D1E8E2]/30">
                       {b.reproduced_grouped}
                     </td>
-                    <td className="py-3.5 px-3 font-mono font-bold text-[#E53E3E]">
+                    <td className="py-3.5 px-3 font-mono font-bold text-[#B84A39]">
                       {b.diff_pct > 0 ? `-${b.diff_pct.toFixed(1)}%` : `+${Math.abs(b.diff_pct).toFixed(1)}%`}
                     </td>
                     <td className="py-3.5 px-3 text-xs">
-                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200">
+                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-[#FFCB9A]/40 text-[#2C3531] border border-[#D9B08C]">
                         {b.leakage_risk.split('(')[0].trim()}
                       </span>
                     </td>
                   </tr>
                 ))}
                 {/* Synapse-Voice Champion Row */}
-                <tr className="bg-[#E8F2FF] font-medium border-t-2 border-[#1D63FF]">
-                  <td className="py-4 px-3 font-bold text-[#1D63FF] flex items-center gap-1.5">
-                    <Award className="w-4 h-4 text-[#1D63FF]" />
+                <tr className="bg-[#D1E8E2]/50 font-medium border-t-2 border-[#116466]">
+                  <td className="py-4 px-3 font-bold text-[#116466] flex items-center gap-1.5 font-serif">
+                    <Award className="w-4 h-4 text-[#116466]" />
                     Synapse-Voice (Our Model)
                   </td>
-                  <td className="py-4 px-3 text-[#6B6D72]">Honest screening</td>
-                  <td className="py-4 px-3 font-mono text-[#6B6D72]">&mdash;</td>
-                  <td className="py-4 px-3 font-mono font-bold text-[#1D63FF]">
+                  <td className="py-4 px-3 text-[#2C3531]/70">Honest screening</td>
+                  <td className="py-4 px-3 font-mono text-[#2C3531]/60">&mdash;</td>
+                  <td className="py-4 px-3 font-mono font-bold text-[#116466]">
                     79.41% ± 7.77% (AUC 0.941)
                   </td>
-                  <td className="py-4 px-3 font-mono font-bold text-emerald-600">0.0% (Zero Leakage)</td>
+                  <td className="py-4 px-3 font-mono font-bold text-[#116466]">0.0% (Zero Leakage)</td>
                   <td className="py-4 px-3">
-                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase">
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#D1E8E2] text-[#116466] border border-[#116466]/20 text-[10px] font-semibold uppercase">
                       Zero Leakage
                     </span>
                   </td>
@@ -271,9 +271,9 @@ export default function BenchmarksPage() {
       {activeTab === 'papers' && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {papers.map((p, idx) => (
-            <div key={idx} className="banky-card p-6 space-y-3">
+            <div key={idx} className="craft-card p-6 space-y-3">
               <div className="flex items-start justify-between gap-2">
-                <span className="font-mono text-xs font-bold text-[#1D63FF]">
+                <span className="font-mono text-xs font-bold text-[#116466]">
                   {p.year} &middot; {p.venue}
                 </span>
                 {p.doi && (
@@ -281,21 +281,21 @@ export default function BenchmarksPage() {
                     href={`https://doi.org/${p.doi}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-[#1D63FF] hover:underline"
+                    className="text-[#116466] hover:underline flex items-center gap-0.5"
                   >
                     <ExternalLink className="w-4 h-4" />
                   </a>
                 )}
               </div>
-              <h4 className="font-headline text-lg font-medium text-[#141414] leading-snug">
+              <h4 className="font-serif text-lg font-normal text-[#2C3531] leading-snug">
                 {p.title}
               </h4>
-              <p className="text-xs text-[#6B6D72]">{p.authors}</p>
-              <div className="pt-2 border-t border-[#141414]/10 text-xs space-y-1">
+              <p className="text-xs text-[#2C3531]/70 font-sans">{p.authors}</p>
+              <div className="pt-2 border-t border-[#D9B08C]/30 text-xs space-y-1">
                 <p>
                   <strong>Reported:</strong> {p.metric}
                 </p>
-                <p className="text-[#6B6D72]">
+                <p className="text-[#2C3531]/70">
                   <strong>Protocol:</strong> {p.protocol}
                 </p>
               </div>

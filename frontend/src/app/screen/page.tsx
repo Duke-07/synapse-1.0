@@ -10,10 +10,8 @@ import {
   RotateCcw,
   CheckCircle,
   Shield,
-  Activity,
   FileAudio,
   Info,
-  Clock,
   Sparkles,
 } from 'lucide-react';
 import WaveformVisualizer from '@/components/WaveformVisualizer';
@@ -345,27 +343,27 @@ export default function ScreenPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-14 space-y-10">
       {/* Page Header */}
       <div className="text-center space-y-3">
-        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1D63FF]">
+        <span className="text-xs font-display font-semibold uppercase tracking-wider text-[#116466]">
           Acoustic Voice Screening
         </span>
-        <h1 className="font-headline text-4xl sm:text-6xl font-medium tracking-tight text-[#141414] uppercase leading-[0.92]">
+        <h1 className="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-[#2C3531] uppercase leading-[0.92]">
           Screen in 5 Seconds
         </h1>
-        <p className="text-sm sm:text-base text-[#141414]/75 max-w-xl mx-auto font-normal">
-          Hold a sustained steady <strong className="text-[#141414]">&quot;ahhh&quot;</strong> vowel at a comfortable pitch. Our neural engine extracts 22 biomarkers for microtremors.
+        <p className="text-sm sm:text-base text-[#2C3531]/75 max-w-xl mx-auto font-sans font-normal leading-relaxed">
+          Hold a sustained steady <strong className="text-[#116466] font-serif">&quot;ahhh&quot;</strong> vowel at a comfortable pitch. Our neural engine extracts 22 biomarkers for microtremors.
         </p>
       </div>
 
       {/* Protocol Instructions Box */}
-      <div className="banky-card p-6 sm:p-8 space-y-3 text-sm">
-        <h3 className="font-headline text-lg sm:text-xl font-medium text-[#141414] flex items-center gap-2">
-          <Info className="w-5 h-5 text-[#1D63FF]" />
+      <div className="craft-card p-6 sm:p-8 space-y-3 text-sm">
+        <h3 className="font-serif text-lg sm:text-xl font-normal text-[#2C3531] flex items-center gap-2">
+          <Info className="w-5 h-5 text-[#116466]" />
           Quick Instructions For Accurate Screening
         </h3>
-        <ol className="list-decimal list-inside space-y-1.5 text-xs sm:text-sm text-[#141414]/80 font-normal">
+        <ol className="list-decimal list-inside space-y-1.5 text-xs sm:text-sm text-[#2C3531]/80 font-sans leading-relaxed">
           <li>Sit in a quiet room with minimal background noise or echo.</li>
           <li>Hold your microphone approximately 15 cm (6 inches) from your mouth.</li>
-          <li>Take a breath and vocalize a steady <strong className="text-[#1D63FF]">&quot;ahhh&quot;</strong> for at least 5 seconds.</li>
+          <li>Take a breath and vocalize a steady <strong className="text-[#116466] font-serif">&quot;ahhh&quot;</strong> for at least 5 seconds.</li>
           <li>Maintain a consistent loudness without whispering or straining.</li>
         </ol>
       </div>
@@ -376,8 +374,8 @@ export default function ScreenPage() {
           onClick={() => setMode('mic')}
           className={`px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
             mode === 'mic'
-              ? 'bg-[#1D63FF] text-white shadow-[0_4px_16px_rgba(29,99,255,0.35)] scale-[1.02]'
-              : 'bg-white text-[#141414] hover:bg-white/80 shadow-sm'
+              ? 'bg-[#116466] text-white shadow-sm scale-[1.02]'
+              : 'bg-white text-[#2C3531] border border-[#D9B08C]/40 hover:bg-[#D1E8E2]/30 shadow-xs'
           }`}
         >
           <span className="flex items-center gap-2">
@@ -388,8 +386,8 @@ export default function ScreenPage() {
           onClick={() => setMode('upload')}
           className={`px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
             mode === 'upload'
-              ? 'bg-[#1D63FF] text-white shadow-[0_4px_16px_rgba(29,99,255,0.35)] scale-[1.02]'
-              : 'bg-white text-[#141414] hover:bg-white/80 shadow-sm'
+              ? 'bg-[#116466] text-white shadow-sm scale-[1.02]'
+              : 'bg-white text-[#2C3531] border border-[#D9B08C]/40 hover:bg-[#D1E8E2]/30 shadow-xs'
           }`}
         >
           <span className="flex items-center gap-2">
@@ -400,8 +398,8 @@ export default function ScreenPage() {
 
       {/* Mic Recording Card */}
       {mode === 'mic' && (
-        <div className="banky-card p-8 sm:p-12 text-center space-y-8">
-          {/* Live Waveform Canvas in Blue on Yellow */}
+        <div className="craft-card p-8 sm:p-12 text-center space-y-8">
+          {/* Live Waveform Canvas */}
           <div className="space-y-2">
             <div className="h-28 sm:h-32 flex items-center justify-center">
               <WaveformVisualizer
@@ -409,20 +407,20 @@ export default function ScreenPage() {
                 isRecording={isRecording}
               />
             </div>
-            <div className="flex justify-between items-center text-xs font-semibold tracking-wider uppercase text-[#141414]/60 px-1">
+            <div className="flex justify-between items-center text-xs font-semibold tracking-wider uppercase text-[#2C3531]/60 px-1">
               <span>{isRecording ? 'Capturing Acoustic Signal...' : 'Microphone Ready'}</span>
-              <span className="font-mono text-[#1D63FF]">
+              <span className="font-mono text-[#116466]">
                 {recordingTime}s / 5s minimum
               </span>
             </div>
           </div>
 
-          {/* Huge Blue Circular Mic Button with Pulsing Ring & 5s Circular Progress Ring */}
+          {/* Circular Mic Button with Pulsing Ring & 5s Circular Progress Ring */}
           <div className="flex flex-col items-center justify-center py-4">
             <div className="relative flex items-center justify-center">
               {/* Outer Pulsing Ring when recording */}
               {isRecording && (
-                <div className="absolute inset-0 -m-4 rounded-full border-4 border-[#1D63FF]/30 animate-pulse-ring pointer-events-none" />
+                <div className="absolute inset-0 -m-4 rounded-full border-4 border-[#116466]/20 animate-pulse pointer-events-none" />
               )}
 
               {/* 5-Second Circular Progress Ring SVG */}
@@ -435,7 +433,8 @@ export default function ScreenPage() {
                   cx="110"
                   cy="110"
                   r={ringRadius}
-                  stroke="#F0F0F0"
+                  stroke="#D1E8E2"
+                  strokeOpacity="0.5"
                   strokeWidth="8"
                   fill="transparent"
                 />
@@ -443,7 +442,7 @@ export default function ScreenPage() {
                   cx="110"
                   cy="110"
                   r={ringRadius}
-                  stroke={recordingTime >= 5 ? '#22C55E' : '#1D63FF'}
+                  stroke={recordingTime >= 5 ? '#116466' : '#D9B08C'}
                   strokeWidth="8"
                   fill="transparent"
                   strokeDasharray={ringCircumference}
@@ -453,17 +452,17 @@ export default function ScreenPage() {
                 />
               </svg>
 
-              {/* Huge Blue Circular Mic Button */}
+              {/* Circular Mic Button */}
               <div className="absolute inset-0 flex items-center justify-center">
                 {!isRecording && !audioBlob && (
                   <button
                     onClick={startRecording}
                     disabled={isLoading}
-                    className="w-40 h-40 rounded-full bg-[#1D63FF] hover:bg-[#1453E6] text-white shadow-[0_12px_32px_rgba(29,99,255,0.4)] hover:scale-105 active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer group"
+                    className="w-40 h-40 rounded-full bg-[#116466] hover:bg-[#0c4b4d] text-white shadow-[0_10px_28px_rgba(17,100,102,0.35)] hover:scale-105 active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer group"
                     aria-label="Start Voice Recording"
                   >
                     <Mic className="w-10 h-10 group-hover:scale-110 transition-transform" />
-                    <span className="font-headline text-base font-medium tracking-wide uppercase mt-1">
+                    <span className="font-serif text-base font-normal tracking-wide uppercase mt-1">
                       RECORD
                     </span>
                   </button>
@@ -472,11 +471,11 @@ export default function ScreenPage() {
                 {isRecording && (
                   <button
                     onClick={stopRecording}
-                    className="w-40 h-40 rounded-full bg-red-600 hover:bg-red-700 text-white shadow-[0_12px_32px_rgba(220,38,38,0.4)] flex flex-col items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-all"
+                    className="w-40 h-40 rounded-full bg-[#B84A39] hover:bg-[#9e3a2c] text-white shadow-[0_10px_28px_rgba(184,74,57,0.35)] flex flex-col items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-all"
                     aria-label="Stop Voice Recording"
                   >
                     <Square className="w-9 h-9 fill-current" />
-                    <span className="font-headline text-base font-medium tracking-wide uppercase mt-1">
+                    <span className="font-serif text-base font-normal tracking-wide uppercase mt-1">
                       STOP ({recordingTime}s)
                     </span>
                   </button>
@@ -486,11 +485,11 @@ export default function ScreenPage() {
                   <button
                     onClick={resetRecording}
                     disabled={isLoading}
-                    className="w-40 h-40 rounded-full bg-[#FFCE32] hover:bg-[#F2C32B] text-[#141414] shadow-[0_8px_24px_rgba(20,20,20,0.1)] hover:scale-105 active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer"
+                    className="w-40 h-40 rounded-full bg-[#FFCB9A] hover:bg-[#f5b87e] text-[#2C3531] border border-[#D9B08C] shadow-sm hover:scale-105 active:scale-95 transition-all flex flex-col items-center justify-center cursor-pointer"
                     aria-label="Re-record voice"
                   >
-                    <RotateCcw className="w-9 h-9" />
-                    <span className="font-headline text-sm font-medium tracking-wide uppercase mt-1">
+                    <RotateCcw className="w-9 h-9 text-[#2C3531]" />
+                    <span className="font-serif text-sm font-normal tracking-wide uppercase mt-1 text-[#2C3531]">
                       RE-RECORD
                     </span>
                   </button>
@@ -502,30 +501,30 @@ export default function ScreenPage() {
             <div className="mt-4 text-center">
               {isRecording ? (
                 recordingTime < 5 ? (
-                  <p className="text-xs sm:text-sm font-semibold text-[#1D63FF] uppercase tracking-wider">
+                  <p className="text-xs sm:text-sm font-semibold text-[#116466] uppercase tracking-wider font-display">
                     Sustaining vowel... {5 - recordingTime}s remaining for full 22 biomarkers
                   </p>
                 ) : (
-                  <p className="text-xs sm:text-sm font-semibold text-emerald-600 uppercase tracking-wider">
+                  <p className="text-xs sm:text-sm font-semibold text-[#116466] uppercase tracking-wider font-display">
                     ✓ 5s threshold achieved! Tap stop or keep holding.
                   </p>
                 )
               ) : audioBlob ? (
                 <div className="flex flex-col items-center gap-2">
-                  <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wider">
+                  <span className="text-xs font-semibold text-[#116466] uppercase tracking-wider font-display">
                     Vowel Recorded ({recordingTime}s)
                   </span>
                   {audioUrl && (
                     <audio
                       src={audioUrl}
                       controls
-                      className="h-10 rounded-full shadow-sm"
+                      className="h-10 rounded-full shadow-xs"
                     />
                   )}
                 </div>
               ) : (
-                <p className="text-xs text-[#141414]/60 uppercase tracking-wider font-semibold">
-                  Tap the blue circle to record your 5-second sustained vowel
+                <p className="text-xs text-[#2C3531]/60 uppercase tracking-wider font-medium font-sans">
+                  Tap the circular button to record your 5-second sustained vowel
                 </p>
               )}
             </div>
@@ -533,12 +532,12 @@ export default function ScreenPage() {
 
           {/* Mic Error */}
           {micError && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-2xl text-left flex items-start gap-3 text-xs sm:text-sm text-red-700">
+            <div className="p-4 bg-red-50/80 border border-red-200 rounded-2xl text-left flex items-start gap-3 text-xs sm:text-sm text-red-800">
               <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
               <div>
                 <p className="font-bold">Microphone Access Error</p>
                 <p className="mt-1">{micError}</p>
-                <p className="mt-1 font-semibold text-[#1D63FF]">
+                <p className="mt-1 font-semibold text-[#116466]">
                   Tip: You can switch to the &quot;Drop Audio File&quot; tab above if permissions are restricted.
                 </p>
               </div>
@@ -549,7 +548,7 @@ export default function ScreenPage() {
 
       {/* File Upload Mode */}
       {mode === 'upload' && (
-        <div className="banky-card p-8 sm:p-12 space-y-6">
+        <div className="craft-card p-8 sm:p-12 space-y-6">
           <div
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
@@ -557,10 +556,10 @@ export default function ScreenPage() {
             onDrop={handleDrop}
             className={`border-2 border-dashed rounded-3xl p-8 sm:p-14 text-center transition-all ${
               dragActive
-                ? 'border-[#1D63FF] bg-[#E8F2FF] scale-[1.01]'
+                ? 'border-[#116466] bg-[#D1E8E2]/30 scale-[1.01]'
                 : selectedFile
-                ? 'border-emerald-500 bg-emerald-50/50'
-                : 'border-[#141414]/20 hover:border-[#1D63FF] bg-white'
+                ? 'border-[#116466] bg-[#D1E8E2]/20'
+                : 'border-[#D9B08C]/60 hover:border-[#116466] bg-white'
             }`}
           >
             <input
@@ -574,28 +573,28 @@ export default function ScreenPage() {
               htmlFor="file-upload"
               className="cursor-pointer flex flex-col items-center justify-center space-y-4"
             >
-              <div className="w-16 h-16 rounded-full bg-[#E8F2FF] text-[#1D63FF] flex items-center justify-center shadow-sm">
+              <div className="w-16 h-16 rounded-2xl bg-[#D1E8E2] text-[#116466] flex items-center justify-center shadow-xs">
                 {selectedFile ? (
-                  <CheckCircle className="w-8 h-8 text-emerald-600" />
+                  <CheckCircle className="w-8 h-8 text-[#116466]" />
                 ) : (
-                  <FileAudio className="w-8 h-8 text-[#1D63FF]" />
+                  <FileAudio className="w-8 h-8 text-[#116466]" />
                 )}
               </div>
               {selectedFile ? (
                 <div>
-                  <p className="font-headline text-2xl font-medium text-[#141414]">
+                  <p className="font-serif text-2xl font-normal text-[#2C3531]">
                     {selectedFile.name}
                   </p>
-                  <p className="text-xs text-[#141414]/70 mt-1">
+                  <p className="text-xs text-[#2C3531]/70 mt-1 font-sans">
                     {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB &middot; Ready for acoustic screening
                   </p>
                 </div>
               ) : (
                 <div>
-                  <p className="font-headline text-2xl sm:text-3xl font-medium text-[#141414] uppercase tracking-tight">
+                  <p className="font-serif text-2xl sm:text-3xl font-normal text-[#2C3531] uppercase tracking-tight">
                     Drop Your Audio File Here
                   </p>
-                  <p className="text-xs text-[#141414]/65 mt-1 font-normal">
+                  <p className="text-xs text-[#2C3531]/65 mt-1 font-sans">
                     Supports uncompressed WAV, MP3, M4A, WebM (Max 25 MB)
                   </p>
                 </div>
@@ -606,10 +605,9 @@ export default function ScreenPage() {
       )}
 
       {/* Consent & Settings Card */}
-      <div className="banky-card p-6 sm:p-8 space-y-4">
-
-        <h4 className="font-headline text-lg sm:text-xl font-medium text-[#141414] flex items-center gap-2 uppercase tracking-tight">
-          <Shield className="w-5 h-5 text-[#1D63FF]" />
+      <div className="craft-card p-6 sm:p-8 space-y-4">
+        <h4 className="font-serif text-lg sm:text-xl font-normal text-[#2C3531] flex items-center gap-2 uppercase tracking-tight">
+          <Shield className="w-5 h-5 text-[#116466]" />
           Research Consent &amp; Privacy Protocol
         </h4>
 
@@ -619,10 +617,10 @@ export default function ScreenPage() {
               type="checkbox"
               checked={consent}
               onChange={(e) => setConsent(e.target.checked)}
-              className="mt-1 w-4 h-4 rounded border-[#141414]/30 accent-[#1D63FF]"
+              className="mt-1 w-4 h-4 rounded border-[#D9B08C] accent-[#116466]"
             />
-            <span className="text-xs sm:text-sm text-[#141414]/80 leading-relaxed font-normal">
-              <strong className="text-[#141414]">Required Research Consent:</strong> I acknowledge that Synapse-Voice is strictly an exploratory screening tool and research demonstration. It does <em>not</em> provide a medical diagnosis, clinical opinion, or disease confirmation.
+            <span className="text-xs sm:text-sm text-[#2C3531]/80 leading-relaxed font-sans">
+              <strong className="text-[#2C3531]">Required Research Consent:</strong> I acknowledge that Synapse-Voice is strictly an exploratory screening tool and research demonstration. It does <em>not</em> provide a medical diagnosis, clinical opinion, or disease confirmation.
             </span>
           </label>
 
@@ -631,10 +629,10 @@ export default function ScreenPage() {
               type="checkbox"
               checked={anonymous}
               onChange={(e) => setAnonymous(e.target.checked)}
-              className="mt-1 w-4 h-4 rounded border-[#141414]/30 accent-[#1D63FF]"
+              className="mt-1 w-4 h-4 rounded border-[#D9B08C] accent-[#116466]"
             />
-            <span className="text-xs sm:text-sm text-[#141414]/80 leading-relaxed font-normal">
-              <strong className="text-[#141414]">Zero-Retention Protocol:</strong> Discard raw audio immediately after extracting acoustic features. Do not retain voice recordings on cloud servers.
+            <span className="text-xs sm:text-sm text-[#2C3531]/80 leading-relaxed font-sans">
+              <strong className="text-[#2C3531]">Zero-Retention Protocol:</strong> Discard raw audio immediately after extracting acoustic features. Do not retain voice recordings on cloud servers.
             </span>
           </label>
         </div>
@@ -642,7 +640,7 @@ export default function ScreenPage() {
 
       {/* Error Alert */}
       {apiError && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-xs sm:text-sm flex items-start gap-3">
+        <div className="p-4 bg-red-50 border border-red-200 rounded-2xl text-red-800 text-xs sm:text-sm flex items-start gap-3">
           <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
           <p>{apiError}</p>
         </div>
@@ -659,11 +657,11 @@ export default function ScreenPage() {
             (mode === 'upload' && !selectedFile) ||
             !consent
           }
-          className="w-full sm:w-auto text-base py-4 px-10"
+          className="w-full sm:w-auto text-base py-3.5 px-10"
         >
           {isLoading ? (
             <span className="flex items-center justify-center gap-3">
-              <Sparkles className="w-5 h-5 animate-spin" />
+              <Sparkles className="w-5 h-5 animate-spin text-[#FFCB9A]" />
               Voicefying Your Health Check...
             </span>
           ) : (
@@ -672,7 +670,7 @@ export default function ScreenPage() {
         </PillButton>
 
         {isLoading && (
-          <p className="text-xs sm:text-sm font-semibold text-[#141414] mt-3 animate-pulse">
+          <p className="text-xs sm:text-sm font-semibold text-[#116466] mt-3 animate-pulse font-sans">
             {loadingStep}
           </p>
         )}

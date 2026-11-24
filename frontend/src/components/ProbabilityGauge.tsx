@@ -11,29 +11,30 @@ export const ProbabilityGauge: React.FC<ProbabilityGaugeProps> = ({ probability,
   const percentage = Math.round(probability * 100);
 
   const radius = 76;
-  const stroke = 12;
+  const stroke = 10;
   const normalizedRadius = radius - stroke * 2;
   const circumference = normalizedRadius * 2 * Math.PI;
   const strokeDashoffset = circumference - (percentage / 100) * (circumference / 2);
 
   const getColor = () => {
     if (probability < 0.35) {
-      return { stroke: '#1D63FF', bg: 'text-[#1D63FF]', badge: 'bg-[#E8F2FF] text-[#1D63FF]' };
+      return { stroke: '#116466', bg: 'text-[#116466]', badge: 'bg-[#D1E8E2] text-[#116466] border border-[#116466]/25' };
     }
     if (probability <= 0.65) {
-      return { stroke: '#141414', bg: 'text-[#141414]', badge: 'bg-[#FFF4DC] text-[#141414]' };
+      return { stroke: '#D9B08C', bg: 'text-[#2C3531]', badge: 'bg-[#FFCB9A]/50 text-[#2C3531] border border-[#D9B08C]' };
     }
-    return { stroke: '#E53E3E', bg: 'text-[#E53E3E]', badge: 'bg-red-50 text-[#E53E3E] border border-red-200' };
+    return { stroke: '#B84A39', bg: 'text-[#B84A39]', badge: 'bg-[#FFCB9A] text-[#2C3531] border border-[#D9B08C]' };
   };
 
   const style = getColor();
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 bg-white rounded-[32px] shadow-sm">
+    <div className="craft-card flex flex-col items-center justify-center p-6 sm:p-7">
       <div className="relative flex items-center justify-center">
         <svg height={radius * 2} width={radius * 2} className="transform -rotate-90">
           <circle
-            stroke="#F0F0F0"
+            stroke="#D1E8E2"
+            strokeOpacity="0.5"
             fill="transparent"
             strokeWidth={stroke}
             r={normalizedRadius}
@@ -49,7 +50,7 @@ export const ProbabilityGauge: React.FC<ProbabilityGaugeProps> = ({ probability,
             strokeDasharray={`${circumference} ${circumference}`}
             style={{
               strokeDashoffset,
-              transition: 'stroke-dashoffset 1s cubic-bezier(0.22, 1, 0.36, 1)',
+              transition: 'stroke-dashoffset 1s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
             r={normalizedRadius}
             cx={radius}
@@ -59,20 +60,20 @@ export const ProbabilityGauge: React.FC<ProbabilityGaugeProps> = ({ probability,
         </svg>
 
         <div className="absolute flex flex-col items-center justify-center">
-          <span className="font-headline text-4xl font-medium text-[#141414] tracking-tight">
+          <span className="font-serif text-4xl font-normal text-[#2C3531] tracking-tight">
             {percentage}%
           </span>
-          <span className="text-[10px] text-[#6B6D72] uppercase font-semibold tracking-wider">
+          <span className="text-[10px] text-[#2C3531]/60 uppercase font-display font-semibold tracking-wider">
             Risk Score
           </span>
         </div>
       </div>
 
       <div className="mt-4 text-center">
-        <span className={`inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${style.badge}`}>
+        <span className={`inline-block px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider ${style.badge}`}>
           {confidenceBand}
         </span>
-        <p className="text-xs text-[#6B6D72] mt-2 max-w-[210px] leading-relaxed">
+        <p className="text-xs text-[#2C3531]/70 mt-2 max-w-[210px] font-sans leading-relaxed">
           Posterior probability from 5-fold StratifiedGroupKFold classifier.
         </p>
       </div>

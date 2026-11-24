@@ -11,7 +11,7 @@ interface StatCardProps {
   label: string;
   subtext?: string;
   rotate?: number;
-  shadowColor?: 'orange' | 'yellow';
+  shadowColor?: 'orange' | 'yellow' | 'teal' | 'tan';
 }
 
 export const StatCard: React.FC<StatCardProps> = ({
@@ -22,7 +22,6 @@ export const StatCard: React.FC<StatCardProps> = ({
   label,
   subtext,
   rotate = 0,
-  shadowColor = 'orange',
 }) => {
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
@@ -32,7 +31,7 @@ export const StatCard: React.FC<StatCardProps> = ({
     if (!isInView) return;
 
     let start = 0;
-    const duration = 1500; // ms
+    const duration = 1500;
     const stepTime = 25;
     const steps = duration / stepTime;
     const increment = numericValue / steps;
@@ -50,32 +49,27 @@ export const StatCard: React.FC<StatCardProps> = ({
     return () => clearInterval(timer);
   }, [isInView, numericValue]);
 
-  const shadowClass =
-    shadowColor === 'yellow'
-      ? 'shadow-[6px_6px_0px_#FFC21F]'
-      : 'shadow-[6px_6px_0px_#FF5A1F]';
-
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      initial={{ opacity: 0, y: 24, scale: 0.96 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, type: 'spring', damping: 16 }}
-      whileHover={{ scale: 1.03, rotate: rotate > 0 ? rotate + 1 : rotate - 1 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
+      whileHover={{ scale: 1.02, rotate: rotate > 0 ? rotate + 0.5 : rotate - 0.5 }}
       style={{ transform: `rotate(${rotate}deg)` }}
-      className={`bg-[#1c1717] border-2 border-[#FFF4DC] rounded-2xl p-6 text-center transform transition-transform ${shadowClass}`}
+      className="bg-[#2C3531] border border-[#D9B08C]/40 rounded-2xl p-6 sm:p-7 text-center shadow-[4px_4px_0px_#116466] transition-transform"
     >
-      <div className="font-headline text-5xl sm:text-6xl md:text-7xl text-[#FFF4DC] leading-none tracking-tight">
+      <div className="font-serif text-5xl sm:text-6xl text-[#EBF4F1] leading-none tracking-tight">
         {prefix}
         {displayValue.toFixed(decimals)}
         {suffix}
       </div>
-      <div className="font-bold text-[#FF5A1F] uppercase text-sm sm:text-base tracking-wider mt-2">
+      <div className="font-display font-bold text-[#FFCB9A] uppercase text-xs sm:text-sm tracking-widest mt-3">
         {label}
       </div>
       {subtext && (
-        <p className="text-xs text-[#FFF4DC]/70 mt-1 font-body leading-tight">
+        <p className="text-xs text-[#D1E8E2]/80 mt-1.5 font-sans leading-relaxed">
           {subtext}
         </p>
       )}

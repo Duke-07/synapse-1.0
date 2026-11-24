@@ -17,16 +17,16 @@ export const StatPill: React.FC<StatPillProps> = ({
 }) => {
   return (
     <div
-      className={`banky-card p-6 sm:p-7 text-center flex flex-col items-center justify-center space-y-1 ${className}`}
+      className={`craft-card p-6 sm:p-7 text-center flex flex-col items-center justify-center space-y-1 ${className}`}
     >
-      <div className="font-headline text-4xl sm:text-5xl font-medium text-[#1D63FF] tracking-tight">
+      <div className="font-serif text-4xl sm:text-5xl font-normal text-[#116466] tracking-tight">
         {value}
       </div>
-      <div className="text-sm font-semibold text-[#141414] tracking-tight">
+      <div className="text-sm font-semibold text-[#2C3531] tracking-tight">
         {label}
       </div>
       {sublabel && (
-        <div className="text-xs text-[#6B6D72] font-normal">
+        <div className="text-xs text-[#2C3531]/70 font-normal">
           {sublabel}
         </div>
       )}

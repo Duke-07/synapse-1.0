@@ -81,22 +81,22 @@ function LoginForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto my-8 sm:my-14 banky-card p-8 sm:p-10 space-y-6">
+    <div className="max-w-md mx-auto my-8 sm:my-14 craft-card p-8 sm:p-10 space-y-6">
       <div className="text-center space-y-2">
-        <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#1D63FF]">
+        <span className="inline-block px-3.5 py-1 rounded-full bg-[#D1E8E2] text-[#116466] border border-[#116466]/20 text-xs font-semibold uppercase tracking-wider">
           Researcher Sign In
         </span>
-        <h1 className="font-headline text-3xl sm:text-4xl font-medium tracking-tight text-[#141414] uppercase leading-tight">
+        <h1 className="font-serif text-3xl sm:text-4xl font-normal tracking-tight text-[#2C3531] uppercase leading-tight">
           Welcome Back
         </h1>
-        <p className="text-xs sm:text-sm text-[#141414]/70">
+        <p className="text-xs sm:text-sm text-[#2C3531]/70 font-sans">
           Sign in to access your screening history and exported Praat acoustic biomarkers.
         </p>
       </div>
 
       {errorMessage && (
-        <div className="p-3.5 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-xs flex items-start gap-2.5">
-          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+        <div className="p-3.5 bg-red-50 border border-red-200 rounded-2xl text-red-800 text-xs flex items-start gap-2.5">
+          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-600" />
           <span>{errorMessage}</span>
         </div>
       )}
@@ -108,7 +108,7 @@ function LoginForm() {
             <p>{unverifiedWarning}</p>
             <Link
               href={`/verify-email?email=${encodeURIComponent(email)}`}
-              className="text-[#1D63FF] font-bold underline"
+              className="text-[#116466] font-semibold underline"
             >
               Click here to verify your email &rarr;
             </Link>
@@ -118,25 +118,25 @@ function LoginForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-[#141414] uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-semibold text-[#2C3531] uppercase tracking-wider mb-1.5 font-display">
             Email Address
           </label>
           <div className="relative">
-            <Mail className="w-4 h-4 text-[#6B6D72] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Mail className="w-4 h-4 text-[#2C3531]/40 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="researcher@university.edu"
               required
-              className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+              className="w-full pl-10 pr-4 py-3 rounded-2xl border border-[#D9B08C]/40 bg-white text-[#2C3531] text-sm focus:outline-none focus:border-[#116466] transition-colors"
             />
           </div>
         </div>
 
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label className="block text-xs font-semibold text-[#141414] uppercase tracking-wider">
+            <label className="block text-xs font-semibold text-[#2C3531] uppercase tracking-wider font-display">
               Password
             </label>
             <button
@@ -145,25 +145,25 @@ function LoginForm() {
                 setForgotEmail(email);
                 setShowForgotModal(true);
               }}
-              className="text-xs text-[#1D63FF] hover:underline font-medium"
+              className="text-xs text-[#116466] hover:underline font-medium"
             >
               Forgot?
             </button>
           </div>
           <div className="relative">
-            <Lock className="w-4 h-4 text-[#6B6D72] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Lock className="w-4 h-4 text-[#2C3531]/40 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full pl-10 pr-10 py-3 rounded-2xl border border-[#141414]/20 bg-white text-[#141414] text-sm focus:outline-none focus:border-[#1D63FF] transition-colors"
+              className="w-full pl-10 pr-10 py-3 rounded-2xl border border-[#D9B08C]/40 bg-white text-[#2C3531] text-sm focus:outline-none focus:border-[#116466] transition-colors"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6B6D72] hover:text-[#141414]"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#2C3531]/50 hover:text-[#2C3531]"
               aria-label="Toggle password visibility"
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -172,12 +172,12 @@ function LoginForm() {
         </div>
 
         <div className="flex items-center justify-between text-xs pt-1">
-          <label className="flex items-center gap-2 cursor-pointer select-none text-[#141414]/80">
+          <label className="flex items-center gap-2 cursor-pointer select-none text-[#2C3531]/80 font-sans">
             <input
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-4 h-4 rounded border-[#141414]/30 accent-[#1D63FF]"
+              className="w-4 h-4 rounded border-[#D9B08C] accent-[#116466]"
             />
             Remember this session
           </label>
@@ -195,20 +195,20 @@ function LoginForm() {
         </div>
       </form>
 
-      <div className="text-center pt-2 border-t border-[#141414]/10 text-xs text-[#141414]/70">
+      <div className="text-center pt-2 border-t border-[#D9B08C]/30 text-xs text-[#2C3531]/70 font-sans">
         Don&apos;t have an account?{' '}
-        <Link href="/register" className="text-[#1D63FF] font-semibold hover:underline">
+        <Link href="/register" className="text-[#116466] font-semibold hover:underline">
           Create free researcher account &rarr;
         </Link>
       </div>
 
       {showForgotModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
-          <div className="w-full max-w-sm banky-card p-6 space-y-4">
-            <h3 className="font-headline text-xl text-[#141414] uppercase">
+          <div className="w-full max-w-sm craft-card p-6 space-y-4">
+            <h3 className="font-serif text-xl text-[#2C3531] uppercase">
               Reset Your Password
             </h3>
-            <p className="text-xs text-[#141414]/70">
+            <p className="text-xs text-[#2C3531]/70 font-sans">
               Enter your email address and we will generate a recovery link.
             </p>
             <form onSubmit={handleForgotPassword} className="space-y-3">
@@ -218,23 +218,23 @@ function LoginForm() {
                 onChange={(e) => setForgotEmail(e.target.value)}
                 placeholder="you@domain.com"
                 required
-                className="w-full px-4 py-2.5 rounded-2xl border border-[#141414]/20 text-xs"
+                className="w-full px-4 py-2.5 rounded-2xl border border-[#D9B08C]/40 text-xs text-[#2C3531] focus:border-[#116466] focus:outline-none"
               />
               {forgotMessage && (
-                <p className="text-xs text-[#1D63FF] font-semibold">{forgotMessage}</p>
+                <p className="text-xs text-[#116466] font-semibold">{forgotMessage}</p>
               )}
               <div className="flex items-center justify-end gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowForgotModal(false)}
-                  className="px-4 py-2 text-xs font-semibold text-[#141414]/70 hover:text-[#141414]"
+                  className="px-4 py-2 text-xs font-semibold text-[#2C3531]/70 hover:text-[#2C3531]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={forgotSending}
-                  className="px-4 py-2 rounded-full bg-[#1D63FF] text-white text-xs font-semibold"
+                  className="px-4 py-2 rounded-full bg-[#116466] text-white text-xs font-semibold hover:bg-[#0c4b4d]"
                 >
                   {forgotSending ? 'Sending...' : 'Send Link'}
                 </button>
@@ -252,7 +252,7 @@ export default function LoginPage() {
     <Suspense
       fallback={
         <div className="min-h-[50vh] flex items-center justify-center">
-          <div className="w-10 h-10 border-4 border-[#1D63FF] border-t-transparent rounded-full animate-spin" />
+          <div className="w-10 h-10 border-4 border-[#116466] border-t-transparent rounded-full animate-spin" />
         </div>
       }
     >

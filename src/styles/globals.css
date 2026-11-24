@@ -1,144 +1,148 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --yellow: #FFCE32;
-  --yellow-hover: #F2C32B;
-  --blue: #1D63FF;
-  --blue-hover: #1453E6;
-  --blue-pale: #E8F2FF;
-  --ink: #141414;
-  --ink-muted: #6B6D72;
-  --white: #FFFFFF;
-  --red: #E53E3E;
+  --charcoal: #2C3531;
+  --teal: #116466;
+  --tan: #D9B08C;
+  --peach: #FFCB9A;
+  --mint: #D1E8E2;
+  --canvas: #EBF4F1;
+  --paper: #FFFFFF;
 
-  --font-headline: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-sans: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 html {
-  background-color: var(--yellow);
-  color: var(--ink);
+  background-color: var(--canvas);
+  color: var(--charcoal);
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--yellow);
-  color: var(--ink);
-  font-family: var(--font-body), sans-serif;
+  background-color: var(--canvas);
+  color: var(--charcoal);
+  font-family: var(--font-sans), sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Banky Typography Utilities */
-.font-headline {
-  font-family: var(--font-headline), sans-serif;
-  letter-spacing: -0.015em;
-  line-height: 0.92;
-  font-weight: 500;
+/* Bespoke Craft Containers */
+.craft-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(44, 53, 49, 0.08);
+  border-radius: 1.75rem;
+  box-shadow: 0 4px 24px rgba(44, 53, 49, 0.04);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.font-body {
-  font-family: var(--font-body), sans-serif;
+.craft-card:hover {
+  border-color: rgba(17, 100, 102, 0.2);
 }
 
-/* Banky-style animations */
-@keyframes floatGentle {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-
-.animate-float-gentle {
-  animation: floatGentle 4s ease-in-out infinite;
-}
-
-@keyframes pulseRing {
-  0% {
-    transform: scale(0.95);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.08);
-    opacity: 0.3;
-  }
-  100% {
-    transform: scale(0.95);
-    opacity: 0.8;
-  }
-}
-
-.animate-pulse-ring {
-  animation: pulseRing 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-}
-
-/* Banky Card & Pill Elevation */
 .banky-card {
-  background-color: var(--white);
-  border-radius: 32px;
-  box-shadow: 0 4px 20px rgba(20, 20, 20, 0.04);
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(44, 53, 49, 0.08);
+  border-radius: 1.75rem;
+  box-shadow: 0 4px 24px rgba(44, 53, 49, 0.04);
 }
 
-.banky-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 36px rgba(20, 20, 20, 0.08);
+.craft-panel-mint {
+  background: rgba(209, 232, 226, 0.5);
+  border: 1px solid rgba(17, 100, 102, 0.15);
+  border-radius: 1.75rem;
 }
 
-.banky-pill-cta {
-  background-color: var(--blue);
-  color: var(--white);
+.craft-panel-charcoal {
+  background: #2C3531;
+  color: #FFFFFF;
+  border: 1px solid #2C3531;
+  border-radius: 1.75rem;
+}
+
+.hairline {
+  border-color: rgba(44, 53, 49, 0.1);
+}
+
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.875rem;
   border-radius: 9999px;
-  box-shadow: 0 8px 24px rgba(29, 99, 255, 0.35);
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease-out;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
 }
 
-.banky-pill-cta:hover {
-  background-color: var(--blue-hover);
-  transform: scale(1.03);
+/* Frequency Bars Animation */
+@keyframes freq-wave {
+  0%, 100% {
+    transform: scaleY(0.25);
+  }
+  50% {
+    transform: scaleY(1);
+  }
 }
 
-.banky-pill-cta:active {
-  transform: scale(0.97);
+.animate-freq-1 {
+  animation: freq-wave 1.2s ease-in-out infinite;
+}
+.animate-freq-2 {
+  animation: freq-wave 0.9s ease-in-out infinite 0.15s;
+}
+.animate-freq-3 {
+  animation: freq-wave 1.4s ease-in-out infinite 0.3s;
+}
+.animate-freq-4 {
+  animation: freq-wave 1.1s ease-in-out infinite 0.45s;
+}
+.animate-freq-5 {
+  animation: freq-wave 0.8s ease-in-out infinite 0.6s;
 }
 
-/* Smooth nav slide-in underline */
-.nav-link-underline {
-  position: relative;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.nav-link-underline::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: var(--ink);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+::-webkit-scrollbar-track {
+  background: #EBF4F1;
 }
 
-.nav-link-underline:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
+::-webkit-scrollbar-thumb {
+  background: #D9B08C;
+  border-radius: 4px;
 }
 
-/* Respect user motion preference */
-@media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+::-webkit-scrollbar-thumb:hover {
+  background: #116466;
+}
+
+/* Print Stylesheet for Reports */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .craft-card {
+    box-shadow: none !important;
+    border: 1px solid #CCCCCC !important;
   }
 }
