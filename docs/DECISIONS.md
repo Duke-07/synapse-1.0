@@ -130,3 +130,20 @@ This document tracks key engineering, modeling, and architectural decisions made
   - *Mandatory OAuth login*: Degrades user privacy and introduces onboarding friction for anonymous screening.
 - **Consequences**:
   Privacy-preserving, responsive client interface with zero-retention compliance and client-side history control.
+
+---
+
+## ADR-009: Continuous Decimal Probability Calibration & Transient Gating
+
+- **Status**: Accepted
+- **Context**: 
+  Earlier iterations utilized coarse integer rounding (e.g. `Math.round(prob * 100)`) and artificial clamp ceilings/floors (e.g. `Math.min(0.94, rawProb)` or `Math.max(0.052, ...)`), causing varied audio recordings to report identical scores (such as flat 94% or 5.2%). Furthermore, microphone onset breath transients and room reverberations inflated Pitch Period Entropy (PPE) and period difference variance.
+- **Decision**: 
+  1. Transition from integer percentages to exact decimal point outputs formatted to 1 decimal place (e.g. `8.4%`, `42.6%`, `94.2%`), powered by continuous 4-decimal model posterior probabilities ($P \in [0.015, 0.985]$).
+  2. Implement Praat-equivalent period continuity filtering and 10% onset/offset transient gating to discard speech initiation and release noise before computing logarithmic period variance and Shannon entropy.
+  3. Recalibrate the logistic sigmoid coefficients across the canonical Oxford biomarker distributions so that clean sustained vowels score Low Risk (<35%), standard room microphone phonations with slight room acoustic variation score dynamically between 12% and 45%, and Parkinsonian phonations with tremor evaluate to Elevated Risk (>65%).
+- **Alternatives Considered**:
+  - *Hard boundary clamping*: Pinned multiple distinct recordings to identical threshold ceilings (94% / 5.2%), degrading user trust.
+  - *Raw unnormalized z-scores*: Overly sensitive slope caused minor room noise to jump steeply between disparate confidence bands.
+- **Consequences**:
+  Screening outputs reflect genuine, granular acoustic dysphonia variations without artificial step saturations, ensuring high fidelity across diverse recording environments.

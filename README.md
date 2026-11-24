@@ -34,8 +34,10 @@ A complete, publication-grade Jupyter Notebook containing all clinical backgroun
 2. **22 Praat Acoustic Biomarkers**: Measures micro-perturbations in pitch frequency (Jitter variants), amplitude (Shimmer variants), harmonic noise ratios (HNR), and nonlinear chaotic dynamics (RPDE, DFA, Spread1/2, D2, PPE).
 3. **Champion Soft-Voting Ensemble**: Combines ExtraTrees, XGBoost, LightGBM, Random Forest, and Calibrated Support Vector Classifiers to achieve **97.13% ROC-AUC** and **97.95% Sensitivity**.
 4. **Subject-Isolated Cross-Validation**: Exposes recording-level data leakage in published literature and provides honest evaluation via `StratifiedGroupKFold`.
-5. **Explainable AI (XAI)**: Generates patient-level SHAP attributions and cites indexed medical literature with active DOIs.
-6. **Zero-Retention Privacy Default**: Discards raw voice audio immediately following feature extraction; no voice recordings are stored permanently.
+5. **Continuous Decimal Precision & Calibrated Scoring**: Outputs exact risk scores with decimal point precision (e.g., `8.4%`, `42.6%`, `94.2%`) across three clinically defined risk bands: Low Risk ($< 35\%$), Moderate Concern ($35\% - 65\%$), and Elevated Risk ($> 65\%$), avoiding artificial step clamps.
+6. **Explainable AI (XAI)**: Generates patient-level SHAP attributions and cites indexed medical literature with active DOIs.
+7. **Bespoke Dual-Mode Execution**: Operates either through the high-throughput Python FastAPI microservice (Parselmouth Praat + joblib ensemble) or zero-dependency in-browser Web Audio API & client YIN acoustic engine for instant client-side offline screening.
+8. **Zero-Retention Privacy Default**: Discards raw voice audio immediately following feature extraction; no voice recordings are stored permanently.
 
 ---
 
