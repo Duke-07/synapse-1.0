@@ -16,6 +16,7 @@ import { DefinitionBlock } from '@/components/ui/DefinitionBlock';
 import { SwooshPath } from '@/components/ui/SwooshPath';
 import { StepCard } from '@/components/ui/StepCard';
 import { StatPill } from '@/components/ui/StatPill';
+import { SynapseHero3D, TiltCard3D, AcousticManifold3D } from '@/components/3d';
 
 export default function LandingPage() {
   const scrollToSteps = (e: React.MouseEvent) => {
@@ -122,33 +123,49 @@ export default function LandingPage() {
             </div>
           </motion.div>
 
-          {/* Under Hero: 3 Stat Pills */}
+          {/* 3D Interactive Acoustic Neural Core Centerpiece */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.38, ease: [0.16, 1, 0.3, 1] as const }}
+            className="w-full pt-4"
+          >
+            <SynapseHero3D />
+          </motion.div>
+
+          {/* Under Hero: 3 Stat Pills with 3D Tilt */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.44, ease: [0.16, 1, 0.3, 1] as const }}
             className="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-6"
           >
-            <StatPill
-              value="97.1%"
-              label="AUC ROC Metric"
-              sublabel="Champion Multi-Model Ensemble"
-            />
-            <StatPill
-              value="22"
-              label="Acoustic Biomarkers"
-              sublabel="Praat Jitter, Shimmer & Entropy"
-            />
-            <StatPill
-              value="5-Fold"
-              label="GroupKFold CV"
-              sublabel="Zero Patient-Level Data Leakage"
-            />
+            <TiltCard3D maxTilt={8} depth={15}>
+              <StatPill
+                value="97.1%"
+                label="AUC ROC Metric"
+                sublabel="Champion Multi-Model Ensemble"
+              />
+            </TiltCard3D>
+            <TiltCard3D maxTilt={8} depth={15}>
+              <StatPill
+                value="22"
+                label="Acoustic Biomarkers"
+                sublabel="Praat Jitter, Shimmer & Entropy"
+              />
+            </TiltCard3D>
+            <TiltCard3D maxTilt={8} depth={15}>
+              <StatPill
+                value="5-Fold"
+                label="GroupKFold CV"
+                sublabel="Zero Patient-Level Data Leakage"
+              />
+            </TiltCard3D>
           </motion.div>
         </div>
       </section>
 
-      {/* HOW IT WORKS SECTION */}
+      {/* HOW IT WORKS SECTION WITH 3D TILT CARDS */}
       <section id="how-it-works" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
@@ -164,29 +181,35 @@ export default function LandingPage() {
           </p>
         </div>
 
-        {/* 3 Step Cards */}
+        {/* 3 Step Cards in 3D Perspective */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <StepCard
-            number="01"
-            title="Record Your Vowel"
-            description='Sit in a quiet room, tap the mic button, and sustain a steady "ahhh" vowel for 5 seconds. Audio is analyzed in real time with pitch tracking.'
-            badge="5s sustained vowel"
-            icon={<Mic className="w-6 h-6" />}
-          />
-          <StepCard
-            number="02"
-            title="Extract 22 Biomarkers"
-            description="Our signal processing engine extracts 22 clinical acoustic parameters: fundamental frequency microtremors, jitter, shimmer, HNR, and RPDE."
-            badge="22 Praat parameters"
-            icon={<Activity className="w-6 h-6" />}
-          />
-          <StepCard
-            number="03"
-            title="Read The Receipts"
-            description="Review your calibrated risk tier (Low / Moderate / Elevated), interactive SHAP feature attributions, and citations from Little et al. and Tsanas et al."
-            badge="Calibrated ML + Citations"
-            icon={<Brain className="w-6 h-6" />}
-          />
+          <TiltCard3D maxTilt={14} depth={30} className="h-full">
+            <StepCard
+              number="01"
+              title="Record Your Vowel"
+              description='Sit in a quiet room, tap the mic button, and sustain a steady "ahhh" vowel for 5 seconds. Audio is analyzed in real time with pitch tracking.'
+              badge="5s sustained vowel"
+              icon={<Mic className="w-6 h-6" />}
+            />
+          </TiltCard3D>
+          <TiltCard3D maxTilt={14} depth={30} className="h-full">
+            <StepCard
+              number="02"
+              title="Extract 22 Biomarkers"
+              description="Our signal processing engine extracts 22 clinical acoustic parameters: fundamental frequency microtremors, jitter, shimmer, HNR, and RPDE."
+              badge="22 Praat parameters"
+              icon={<Activity className="w-6 h-6" />}
+            />
+          </TiltCard3D>
+          <TiltCard3D maxTilt={14} depth={30} className="h-full">
+            <StepCard
+              number="03"
+              title="Read The Receipts"
+              description="Review your calibrated risk tier (Low / Moderate / Elevated), interactive SHAP feature attributions, and citations from Little et al. and Tsanas et al."
+              badge="Calibrated ML + Citations"
+              icon={<Brain className="w-6 h-6" />}
+            />
+          </TiltCard3D>
         </div>
 
         {/* Action Button */}
@@ -195,14 +218,14 @@ export default function LandingPage() {
             variant="primary"
             href="/screen"
             showArrow
-            className="py-3.5 px-8 text-base"
+            className="py-3.5 px-8 text-base shadow-[0_12px_30px_rgba(17,100,102,0.3)] hover:scale-105 transition-transform"
           >
             Start Voice Screening Now
           </PillButton>
         </div>
       </section>
 
-      {/* OUTCOME TIERS ("WHAT DOES IT TELL YOU?") */}
+      {/* OUTCOME TIERS ("WHAT DOES IT TELL YOU?") WITH 3D TILT */}
       <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
         <div className="text-center max-w-xl mx-auto space-y-2">
           <span className="text-xs font-display font-semibold uppercase tracking-wider text-[#116466]">
@@ -218,53 +241,64 @@ export default function LandingPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Low Risk */}
-          <div className="craft-card p-8 space-y-4 hover:border-[#116466]/40 transition-colors">
-            <div className="flex items-center justify-between">
-              <span className="px-3.5 py-1 rounded-full bg-[#D1E8E2] text-[#116466] text-xs font-semibold uppercase tracking-wider border border-[#116466]/20">
-                Low Risk
-              </span>
-              <span className="font-serif text-2xl font-normal text-[#116466]">&lt; 35%</span>
+          <TiltCard3D maxTilt={12} depth={25} className="h-full rounded-[1.75rem]">
+            <div className="craft-card h-full p-8 space-y-4 hover:border-[#116466]/40 transition-colors">
+              <div className="flex items-center justify-between">
+                <span className="px-3.5 py-1 rounded-full bg-[#D1E8E2] text-[#116466] text-xs font-semibold uppercase tracking-wider border border-[#116466]/20">
+                  Low Risk
+                </span>
+                <span className="font-serif text-2xl font-normal text-[#116466]">&lt; 35%</span>
+              </div>
+              <h3 className="font-serif text-xl text-[#2C3531] tracking-tight">
+                Healthy Phonation Range
+              </h3>
+              <p className="text-xs sm:text-sm text-[#2C3531]/75 leading-relaxed font-sans font-normal">
+                Acoustic markers show normal fundamental frequency stability, low shimmer, and high harmonic clarity. No significant vocal tremors detected.
+              </p>
             </div>
-            <h3 className="font-serif text-xl text-[#2C3531] tracking-tight">
-              Healthy Phonation Range
-            </h3>
-            <p className="text-xs sm:text-sm text-[#2C3531]/75 leading-relaxed font-sans font-normal">
-              Acoustic markers show normal fundamental frequency stability, low shimmer, and high harmonic clarity. No significant vocal tremors detected.
-            </p>
-          </div>
+          </TiltCard3D>
 
           {/* Moderate Concern */}
-          <div className="craft-card p-8 space-y-4 hover:border-[#D9B08C] transition-colors">
-            <div className="flex items-center justify-between">
-              <span className="px-3.5 py-1 rounded-full bg-[#FFCB9A]/40 text-[#2C3531] text-xs font-semibold uppercase tracking-wider border border-[#D9B08C]">
-                Moderate Concern
-              </span>
-              <span className="font-serif text-2xl font-normal text-[#2C3531]">35% – 65%</span>
+          <TiltCard3D maxTilt={12} depth={25} className="h-full rounded-[1.75rem]">
+            <div className="craft-card h-full p-8 space-y-4 hover:border-[#D9B08C] transition-colors">
+              <div className="flex items-center justify-between">
+                <span className="px-3.5 py-1 rounded-full bg-[#FFCB9A]/40 text-[#2C3531] text-xs font-semibold uppercase tracking-wider border border-[#D9B08C]">
+                  Moderate Concern
+                </span>
+                <span className="font-serif text-2xl font-normal text-[#2C3531]">35% – 65%</span>
+              </div>
+              <h3 className="font-serif text-xl text-[#2C3531] tracking-tight">
+                Acoustic Perturbation
+              </h3>
+              <p className="text-xs sm:text-sm text-[#2C3531]/75 leading-relaxed font-sans font-normal">
+                Mild irregularities or elevated jitter detected. This can stem from vocal fatigue, ambient noise, or early dysphonia patterns. A repeat test is advised.
+              </p>
             </div>
-            <h3 className="font-serif text-xl text-[#2C3531] tracking-tight">
-              Acoustic Perturbation
-            </h3>
-            <p className="text-xs sm:text-sm text-[#2C3531]/75 leading-relaxed font-sans font-normal">
-              Mild irregularities or elevated jitter detected. This can stem from vocal fatigue, ambient noise, or early dysphonia patterns. A repeat test is advised.
-            </p>
-          </div>
+          </TiltCard3D>
 
           {/* Elevated Risk */}
-          <div className="craft-card p-8 space-y-4 hover:border-[#B84A39]/40 transition-colors">
-            <div className="flex items-center justify-between">
-              <span className="px-3.5 py-1 rounded-full bg-[#FFCB9A] text-[#2C3531] text-xs font-semibold uppercase tracking-wider border border-[#D9B08C]">
-                Elevated Risk
-              </span>
-              <span className="font-serif text-2xl font-normal text-[#B84A39]">&gt; 65%</span>
+          <TiltCard3D maxTilt={12} depth={25} className="h-full rounded-[1.75rem]">
+            <div className="craft-card h-full p-8 space-y-4 hover:border-[#B84A39]/40 transition-colors">
+              <div className="flex items-center justify-between">
+                <span className="px-3.5 py-1 rounded-full bg-[#FFCB9A] text-[#2C3531] text-xs font-semibold uppercase tracking-wider border border-[#D9B08C]">
+                  Elevated Risk
+                </span>
+                <span className="font-serif text-2xl font-normal text-[#B84A39]">&gt; 65%</span>
+              </div>
+              <h3 className="font-serif text-xl text-[#2C3531] tracking-tight">
+                Dysarthria Biomarkers
+              </h3>
+              <p className="text-xs sm:text-sm text-[#2C3531]/75 leading-relaxed font-sans font-normal">
+                Elevated pitch microtremors, amplitude perturbation, and recurrence metrics associated with hypokinetic dysarthria. Clinical evaluation recommended.
+              </p>
             </div>
-            <h3 className="font-serif text-xl text-[#2C3531] tracking-tight">
-              Dysarthria Biomarkers
-            </h3>
-            <p className="text-xs sm:text-sm text-[#2C3531]/75 leading-relaxed font-sans font-normal">
-              Elevated pitch microtremors, amplitude perturbation, and recurrence metrics associated with hypokinetic dysarthria. Clinical evaluation recommended.
-            </p>
-          </div>
+          </TiltCard3D>
         </div>
+      </section>
+
+      {/* INTERACTIVE 3D ACOUSTIC LATENT SPACE MANIFOLD SECTION */}
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <AcousticManifold3D />
       </section>
 
       {/* BENCHMARKS SECTION (ARCHITECTURAL DARK CHARCOAL WITH PALE MINT & WARM TAN) */}
@@ -284,52 +318,58 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* Structured Benchmark Cards */}
+          {/* Structured Benchmark Cards with 3D Tilt */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            <div className="bg-[#1f2623] border border-[#D9B08C]/40 rounded-3xl p-8 sm:p-9 space-y-4 shadow-lg hover:-translate-y-1 transition-transform duration-300">
-              <div className="font-serif text-5xl sm:text-6xl font-normal text-[#FFCB9A] tracking-tight">
-                97.1%
+            <TiltCard3D maxTilt={10} depth={22} className="h-full rounded-3xl">
+              <div className="bg-[#1f2623] h-full border border-[#D9B08C]/40 rounded-3xl p-8 sm:p-9 space-y-4 shadow-lg">
+                <div className="font-serif text-5xl sm:text-6xl font-normal text-[#FFCB9A] tracking-tight">
+                  97.1%
+                </div>
+                <h3 className="font-serif text-2xl font-normal text-[#EBF4F1] tracking-tight">
+                  AUC ROC Score
+                </h3>
+                <p className="text-xs sm:text-sm text-[#D1E8E2]/80 leading-relaxed font-sans font-normal">
+                  Evaluated under 10-Fold Stratified Cross-Validation on the Champion Multi-Model Soft Voting Ensemble (79.1% under strict GroupKFold).
+                </p>
+                <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                  <div className="h-full bg-[#116466] rounded-full w-[97.1%]" />
+                </div>
               </div>
-              <h3 className="font-serif text-2xl font-normal text-[#EBF4F1] tracking-tight">
-                AUC ROC Score
-              </h3>
-              <p className="text-xs sm:text-sm text-[#D1E8E2]/80 leading-relaxed font-sans font-normal">
-                Evaluated under 10-Fold Stratified Cross-Validation on the Champion Multi-Model Soft Voting Ensemble (79.1% under strict GroupKFold).
-              </p>
-              <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-                <div className="h-full bg-[#116466] rounded-full w-[97.1%]" />
-              </div>
-            </div>
+            </TiltCard3D>
 
-            <div className="bg-[#1f2623] border border-[#D9B08C]/40 rounded-3xl p-8 sm:p-9 space-y-4 shadow-lg hover:-translate-y-1 transition-transform duration-300">
-              <div className="font-serif text-5xl sm:text-6xl font-normal text-[#D1E8E2] tracking-tight">
-                98.0%
+            <TiltCard3D maxTilt={10} depth={22} className="h-full rounded-3xl">
+              <div className="bg-[#1f2623] h-full border border-[#D9B08C]/40 rounded-3xl p-8 sm:p-9 space-y-4 shadow-lg">
+                <div className="font-serif text-5xl sm:text-6xl font-normal text-[#D1E8E2] tracking-tight">
+                  98.0%
+                </div>
+                <h3 className="font-serif text-2xl font-normal text-[#EBF4F1] tracking-tight">
+                  Sensitivity (Recall)
+                </h3>
+                <p className="text-xs sm:text-sm text-[#D1E8E2]/80 leading-relaxed font-sans font-normal">
+                  Identifies 144 out of 147 dysphonia-positive samples without false confidence, prioritizing patient safety in pre-clinical screening.
+                </p>
+                <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                  <div className="h-full bg-[#116466] rounded-full w-[98.0%]" />
+                </div>
               </div>
-              <h3 className="font-serif text-2xl font-normal text-[#EBF4F1] tracking-tight">
-                Sensitivity (Recall)
-              </h3>
-              <p className="text-xs sm:text-sm text-[#D1E8E2]/80 leading-relaxed font-sans font-normal">
-                Identifies 144 out of 147 dysphonia-positive samples without false confidence, prioritizing patient safety in pre-clinical screening.
-              </p>
-              <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-                <div className="h-full bg-[#116466] rounded-full w-[98.0%]" />
-              </div>
-            </div>
+            </TiltCard3D>
 
-            <div className="bg-[#1f2623] border border-[#D9B08C]/40 rounded-3xl p-8 sm:p-9 space-y-4 shadow-lg hover:-translate-y-1 transition-transform duration-300">
-              <div className="font-serif text-5xl sm:text-6xl font-normal text-[#FFCB9A] tracking-tight">
-                91.3%
+            <TiltCard3D maxTilt={10} depth={22} className="h-full rounded-3xl">
+              <div className="bg-[#1f2623] h-full border border-[#D9B08C]/40 rounded-3xl p-8 sm:p-9 space-y-4 shadow-lg">
+                <div className="font-serif text-5xl sm:text-6xl font-normal text-[#FFCB9A] tracking-tight">
+                  91.3%
+                </div>
+                <h3 className="font-serif text-2xl font-normal text-[#EBF4F1] tracking-tight">
+                  Specificity
+                </h3>
+                <p className="text-xs sm:text-sm text-[#D1E8E2]/80 leading-relaxed font-sans font-normal">
+                  Accurately identifies healthy control voices under varied acoustic conditions, minimizing false positives and unnecessary anxiety.
+                </p>
+                <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                  <div className="h-full bg-[#116466] rounded-full w-[91.3%]" />
+                </div>
               </div>
-              <h3 className="font-serif text-2xl font-normal text-[#EBF4F1] tracking-tight">
-                Specificity
-              </h3>
-              <p className="text-xs sm:text-sm text-[#D1E8E2]/80 leading-relaxed font-sans font-normal">
-                Accurately identifies healthy control voices under varied acoustic conditions, minimizing false positives and unnecessary anxiety.
-              </p>
-              <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-                <div className="h-full bg-[#116466] rounded-full w-[91.3%]" />
-              </div>
-            </div>
+            </TiltCard3D>
           </div>
 
           {/* Literature Benchmark Link */}

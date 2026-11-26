@@ -3,6 +3,7 @@ import '../styles/globals.css';
 import { DisclaimerBanner } from '../components/DisclaimerBanner';
 import { Navbar } from '../components/Navbar';
 import { FloatingChatBubble } from '../components/ui/FloatingChatBubble';
+import { NeuralBackground3D } from '../components/3d/NeuralBackground3D';
 import { AuthProvider } from '../lib/auth-context';
 import Link from 'next/link';
 
@@ -19,7 +20,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="antialiased flex flex-col min-h-screen bg-[#EBF4F1] text-[#2C3531] font-sans selection:bg-[#116466] selection:text-white">
+      <body className="antialiased flex flex-col min-h-screen bg-[#EBF4F1] text-[#2C3531] font-sans selection:bg-[#116466] selection:text-white relative">
+        <NeuralBackground3D />
         <AuthProvider>
           <DisclaimerBanner />
           <Navbar />

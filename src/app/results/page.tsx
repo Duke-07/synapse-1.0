@@ -16,6 +16,7 @@ import ShapChart from '@/components/ShapChart';
 import BiomarkerTable from '@/components/BiomarkerTable';
 import ChatModal from '@/components/ChatModal';
 import { PillButton } from '@/components/ui/PillButton';
+import { TiltCard3D } from '@/components/3d';
 import { getAnalysisResult } from '@/lib/api';
 import { AnalysisResponse, CitationItem } from '@/lib/types';
 
@@ -155,39 +156,41 @@ function ResultsContent() {
       </div>
 
       {/* Hero Result Banner */}
-      <div className="craft-card p-8 sm:p-12 space-y-8">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-[#D9B08C]/30">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              {getRiskPill()}
-              <span className="text-xs text-[#2C3531]/60 font-mono">
-                ID: {data.id.slice(0, 8)} &middot; {new Date(data.created_at).toLocaleDateString()}
-              </span>
+      <TiltCard3D maxTilt={6} depth={15} className="rounded-[1.75rem]">
+        <div className="craft-card p-8 sm:p-12 space-y-8">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-[#D9B08C]/30">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                {getRiskPill()}
+                <span className="text-xs text-[#2C3531]/60 font-mono">
+                  ID: {data.id.slice(0, 8)} &middot; {new Date(data.created_at).toLocaleDateString()}
+                </span>
+              </div>
+              <h1 className="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-[#2C3531] uppercase leading-[0.92]">
+                Acoustic Screening Report
+              </h1>
             </div>
-            <h1 className="font-serif text-4xl sm:text-6xl font-normal tracking-tight text-[#2C3531] uppercase leading-[0.92]">
-              Acoustic Screening Report
-            </h1>
+
+            <div className="shrink-0">
+              <ProbabilityGauge
+                probability={data.probability}
+                confidenceBand={data.confidence_band}
+              />
+            </div>
           </div>
 
-          <div className="shrink-0">
-            <ProbabilityGauge
-              probability={data.probability}
-              confidenceBand={data.confidence_band}
-            />
+          {/* Plain Language Interpretation */}
+          <div className="space-y-2">
+            <h3 className="font-serif text-xl font-normal text-[#2C3531] uppercase tracking-tight">
+              Plain-Language Analysis
+            </h3>
+            <p className="text-sm sm:text-base text-[#2C3531]/85 leading-relaxed font-sans font-normal">
+              {data.explanation ||
+                'Your sustained vowel phonation was evaluated using 22 calibrated MDVP parameters. The classifier evaluates pitch microtremors and nonlinear recurrence patterns associated with hypokinetic dysarthria.'}
+            </p>
           </div>
         </div>
-
-        {/* Plain Language Interpretation */}
-        <div className="space-y-2">
-          <h3 className="font-serif text-xl font-normal text-[#2C3531] uppercase tracking-tight">
-            Plain-Language Analysis
-          </h3>
-          <p className="text-sm sm:text-base text-[#2C3531]/85 leading-relaxed font-sans font-normal">
-            {data.explanation ||
-              'Your sustained vowel phonation was evaluated using 22 calibrated MDVP parameters. The classifier evaluates pitch microtremors and nonlinear recurrence patterns associated with hypokinetic dysarthria.'}
-          </p>
-        </div>
-      </div>
+      </TiltCard3D>
 
       {/* Grid: SHAP Attributions & Medical Receipts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">

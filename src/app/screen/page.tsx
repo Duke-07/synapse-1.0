@@ -15,6 +15,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import WaveformVisualizer from '@/components/WaveformVisualizer';
+import { PhonationOrb3D, TiltCard3D } from '@/components/3d';
 import { analyzeVoice } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
 import { PillButton } from '@/components/ui/PillButton';
@@ -399,6 +400,16 @@ export default function ScreenPage() {
       {/* Mic Recording Card */}
       {mode === 'mic' && (
         <div className="craft-card p-8 sm:p-12 text-center space-y-8">
+          {/* 3D Interactive Phonation Receptor Orb */}
+          <div className="w-full max-w-sm mx-auto h-52 sm:h-64 flex items-center justify-center">
+            <PhonationOrb3D
+              analyser={analyserRef.current}
+              isRecording={isRecording}
+              isLoading={isLoading}
+              className="w-full h-full"
+            />
+          </div>
+
           {/* Live Waveform Canvas */}
           <div className="space-y-2">
             <div className="h-28 sm:h-32 flex items-center justify-center">
