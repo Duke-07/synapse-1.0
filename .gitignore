@@ -78,7 +78,10 @@ temp_audio/
 !ml/data/parkinsons_standardized.csv
 !ml/data/parkinsons_telemonitoring.csv
 
-# Presentation slides and local viva guides (kept locally, not pushed)
+# Presentation slides, academic reports, and local viva guides (kept locally, not pushed)
 *.pptx
 *.ppt
 *.pdf
+*.docx
+*.doc
+generate_phase1_report.py
